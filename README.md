@@ -43,9 +43,9 @@ npm install
 npm run build
 ```
 
-Built files go to `build/` (not committed). The demo expects `demo/build` → that folder; `npm run build` creates the link automatically.
+Built files go to `build/` (not committed). The demo HTML loads `./build/...` relative to `demo/`, so for local preview you either run **`npm start`** (build + symlink `demo/build` → `../build` + dev server) or run **`npm run build`** then **`npm run link:demo`** if you open `demo/index.html` another way.
 
-- `npm start` — build, then serve the `demo/` folder on port **2222**
+- `npm start` — build, link demo assets, serve `demo/` on port **2222**
 - `npm run develop` — watch JS (Vite) and SCSS (parallel watchers; stop with Ctrl+C)
 
 ## Usage

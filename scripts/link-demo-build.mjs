@@ -7,7 +7,7 @@ const buildDir = path.join(root, 'build');
 const linkPath = path.join(root, 'demo', 'build');
 
 if (!fs.existsSync(buildDir)) {
-  console.warn('link-demo-build: skip — build/ does not exist yet (run npm run build)');
+  console.warn('link-demo-build: skip — build/ missing (run npm run build first)');
   process.exit(0);
 }
 
