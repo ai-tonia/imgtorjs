@@ -40,14 +40,32 @@ Use an annotated tag (`-a`) so the release shows a clear message. If you use a s
 From the tagged tree (usually after `git checkout vX.Y.Z` or with `main` at that commit):
 
 ```bash
+npm whoami   # must succeed; if not: npm login
 npm publish
 ```
 
-**Note:** The `prepublishOnly` script runs **`npm run build`**, so the tarball includes fresh `build/` assets. Ensure you are logged in (`npm whoami`) and have publish rights to the package name.
+**Note:** The `prepublishOnly` script runs **`npm run build`**, so the tarball includes fresh `build/` assets.
+
+### First-time publish (package does not exist on npm yet)
+
+If `npm view imgtor` returns **404**, the name is still unclaimed. After `npm login` as the owning user or org:
+
+```bash
+git checkout main && git pull origin main
+npm publish --access public
+```
+
+Scoped packages (`@scope/name`) default to restricted; **unscoped** `imgtor` is public by default, but `--access public` is safe to pass. If the name is taken, rename in `package.json` and update docs before publishing.
 
 ## 5. GitHub Release
 
 Create a **Release** from tag `vX.Y.Z`. Paste a short excerpt from the matching `## X.Y.Z (YYYY-MM-DD)` section in CHANGELOG as the release description (you may trim or link to the full changelog).
+
+CLI example (requires [GitHub CLI](https://cli.github.com/) and auth):
+
+```bash
+gh release create vX.Y.Z --title "imgtor vX.Y.Z" --notes "See CHANGELOG for vX.Y.Z"
+```
 
 ## 6. Post-publish verification
 
