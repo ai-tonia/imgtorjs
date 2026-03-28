@@ -10,7 +10,7 @@
 | `demo/`                 | Static demo; run `npm start` after `npm install` (build + `demo/build` link + server) |
 | `tests/`                | Vitest: smoke tests on `build/` + unit tests for pure helpers                         |
 
-Rough size: on the order of **1–2k lines** of first-party JS/SCSS (excluding `demo/vendor/fabric.js`).
+Rough size: on the order of **1–2k lines** of first-party JS/SCSS (excluding `demo/vendor/fabric.js`). The project uses **npm** only; legacy Bower metadata has been removed.
 
 ### Framework (Fabric.js)
 
