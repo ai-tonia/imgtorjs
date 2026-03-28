@@ -1,7 +1,8 @@
 ## Checklist
 
-- [ ] **Base repository** is **[ai-tonia/imgtorjs](https://github.com/ai-tonia/imgtorjs)** (base branch is usually `main` or your feature base on that repo).
-- [ ] **Not** opening against **[MattKetmo/darkroomjs](https://github.com/MattKetmo/darkroomjs)** unless you deliberately intend to contribute to upstream DarkroomJS.
+- [ ] **Base repository** is **`ai-tonia/imgtorjs`** — the PR page must **not** show **`MattKetmo/darkroomjs`**.
+- [ ] I did **not** use a compare URL starting with `https://github.com/MattKetmo/darkroomjs/`.
+- [ ] Fork-only link used (example): `https://github.com/ai-tonia/imgtorjs/compare/main...<your-branch>`
 
 ## Summary
 

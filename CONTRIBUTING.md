@@ -47,6 +47,14 @@ TypeScript users can reference **`imgtor`** types via **`types/darkroom.d.ts`** 
 
 ## Pull requests
 
-**Where to open them:** Use GitHub’s “Open a pull request” screen with **base repository** set to **[`ai-tonia/imgtorjs`](https://github.com/ai-tonia/imgtorjs)** and **base branch** usually **`main`** (or your stacked branch on that same repo). Pushes from this clone go to `origin` (`ai-tonia/imgtorjs`); if a PR appears on **[`MattKetmo/darkroomjs`](https://github.com/MattKetmo/darkroomjs)**, the mistake is the **selected base repo** in the GitHub UI, not the remote URL—close that PR and open a new one against **`ai-tonia/imgtorjs`**.
+**`git push` only updates `ai-tonia/imgtorjs`.** If GitHub offers a PR into **[MattKetmo/darkroomjs](https://github.com/MattKetmo/darkroomjs)**, that comes from the **compare URL or the “base repository” dropdown** — not from Git. **Do not** use any link whose host path starts with `github.com/MattKetmo/darkroomjs/` for ImgTor work.
+
+**Fork-only compare links (always `github.com/ai-tonia/imgtorjs`, never `MattKetmo/darkroomjs`):**
+
+- Into **`main`** from **`migration/pr-02-core-unit-dom`**:  
+  [https://github.com/ai-tonia/imgtorjs/compare/main...migration/pr-02-core-unit-dom](https://github.com/ai-tonia/imgtorjs/compare/main...migration/pr-02-core-unit-dom)
+- Pattern for any feature branch: `https://github.com/ai-tonia/imgtorjs/compare/main...<branch-name>`
+
+On the PR page, **base repository** must show **`ai-tonia/imgtorjs`** — never **`MattKetmo/darkroomjs`**.
 
 Keep changes focused; match existing formatting (`npm run format`). For dependency upgrades, prefer one logical bump per commit when possible.
