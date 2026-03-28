@@ -6,11 +6,7 @@ git branch -D gh-pages 2>/dev/null || true
 git checkout -b gh-pages HEAD
 
 npm run build
-
-# Replace demo/build symlink with a real copy for static hosting
-rm -rf demo/build
-mkdir -p demo/build
-cp -r build/* demo/build/
+npm run sync:demo
 
 git add -f demo
 git commit -m "Build GH pages"

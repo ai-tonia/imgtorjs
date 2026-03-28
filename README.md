@@ -47,9 +47,11 @@ npm install
 npm run build
 ```
 
-Built files go to `build/` (not committed). The demo HTML loads `./build/...` relative to `demo/`, so for local preview you either run **`npm start`** (build + symlink `demo/build` → `../build` + dev server) or run **`npm run build`** then **`npm run link:demo`** if you open `demo/index.html` another way.
+The published npm tarball includes **`build/darkroom.js`** and **`build/darkroom.css`** (`package.json` `files`, `main`, `style`). **`npm publish`** runs **`prepublishOnly`** → **`npm run build`** first.
 
-- `npm start` — build, link demo assets, serve `demo/` on port **2222**
+Built files go to `build/` (not committed). The demo loads **`./build/...`** under `demo/`, so **`npm start`** runs **`npm run build`**, copies **`build/`** into **`demo/build/`** (`npm run sync:demo`), then serves the demo on port **2222**.
+
+- `npm start` — build, sync demo assets, serve `demo/` on port **2222**
 - `npm run develop` — watch JS (Vite) and SCSS (parallel watchers; stop with Ctrl+C)
 
 ## Usage
