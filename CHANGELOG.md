@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- ImgTor fork: Vite + Dart Sass build, Node 22+, ESLint / Prettier / Vitest, GitHub Actions CI
+- Remove Bower metadata (`bower.json`); use npm and vendored Fabric for the demo
 - Add type "button" to avoid html5 submit validation (#24)
 
 ## 2.0.0 (2015-08-01)
