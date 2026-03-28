@@ -23,3 +23,5 @@ pnpm-debug.log*
 # Tooling / test output
 .eslintcache
 coverage/
+/test-results/
+/playwright-report/

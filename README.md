@@ -123,8 +123,11 @@ Run checks:
 
 ```bash
 npm test
+npm run test:e2e
 npm run lint
 ```
+
+See [RELEASING.md](RELEASING.md) for publish steps and [SECURITY.md](SECURITY.md) to report vulnerabilities.
 
 ## FAQ
 

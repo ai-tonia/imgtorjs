@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Add **SECURITY.md** (responsible disclosure) and **RELEASING.md** (maintainer checklist)
+- Add **Playwright** demo smoke test (`npm run test:e2e`) and run it in CI with Chromium
+
 ## 3.0.0 (2026-03-28)
 
 - **Breaking (fork):** npm **`imgtor`** v3 — ImgTor modernization (Node 22+, Vite, Vitest, GitHub Actions CI)

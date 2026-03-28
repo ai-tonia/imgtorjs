@@ -7,7 +7,7 @@ export default [
     ignores: ['build/**', 'demo/build/**', 'demo/vendor/**', 'node_modules/**', 'types/**'],
   },
   {
-    files: ['scripts/**/*.mjs'],
+    files: ['scripts/**/*.mjs', 'playwright.config.js'],
     languageOptions: {
       ecmaVersion: 2024,
       sourceType: 'module',
