@@ -48,11 +48,26 @@ TypeScript users can reference **`imgtor`** types via **`types/darkroom.d.ts`** 
 
 ## Pull requests (always **ai-tonia/imgtorjs**)
 
-**Do not** open pull requests with **base repository** **[`MattKetmo/darkroomjs`](https://github.com/MattKetmo/darkroomjs)** unless you intentionally contribute to upstream. **`git push`** only updates **[`ai-tonia/imgtorjs`](https://github.com/ai-tonia/imgtorjs)** when `origin` is that repo.
+GitHub’s green **“Compare & pull request”** (and some compare URLs) default the **base** to **upstream** [`MattKetmo/darkroomjs`](https://github.com/MattKetmo/darkroomjs). That is wrong for ImgTor day-to-day work.
 
-- **Compare / open a PR into `main`:**  
-  `https://github.com/ai-tonia/imgtorjs/compare/main...<your-branch>`
-- **Base branch** must be **`main`** (not `master`, not another feature branch). If the PR lists dozens of unrelated files, the base is almost always wrong — edit the PR and set **base repository** + **base branch** to **`ai-tonia/imgtorjs`** / **`main`**.
-- On the PR page, **base** must show **`ai-tonia/imgtorjs`** — never **`MattKetmo/darkroomjs`**.
+### Recommended: GitHub CLI (cannot target upstream by accident)
+
+1. Push your branch: `git push -u origin <branch>`
+2. From that branch, run:
+
+```bash
+npm run pr:create
+```
+
+This runs **`gh pr create --repo ai-tonia/imgtorjs --base main`**, so the PR is always opened **on this fork** into **`main`**. Add flags as needed, e.g. `--title "…" --body "…"` or `--fill` (use commit message).
+
+Requires [GitHub CLI](https://cli.github.com/) (`gh`) and `gh auth login`.
+
+### Web UI (only if you verify the base)
+
+1. Open **[github.com/ai-tonia/imgtorjs/compare](https://github.com/ai-tonia/imgtorjs/compare)** — URL must start with **`github.com/ai-tonia/imgtorjs`**, not `MattKetmo`.
+2. Set **base** = **`main`**, **compare** = your branch:  
+   `https://github.com/ai-tonia/imgtorjs/compare/main...<your-branch>`
+3. On the PR page, **base repository** must be **`ai-tonia/imgtorjs`**. If the PR lists dozens of unrelated files, the base is wrong — edit the PR or close it and use **`npm run pr:create`** instead.
 
 **Suggested migration / test branches** (rebase on latest `main` before each PR; one PR per branch): `migration/pr-03-plugin-save-tests`, then further `migration/pr-NN-…` slices from your local **`migration-plan/`** checklist (gitignored).

@@ -5,6 +5,8 @@
 
 **ImgTor** is the maintained fork of **DarkroomJS**, hosted at [github.com/ai-tonia/imgtorjs](https://github.com/ai-tonia/imgtorjs). The npm package name is **`imgtor`**. The original author’s project is discontinued; this fork modernizes the build (Vite, Dart Sass), targets **Node.js 22+**, and keeps the same browser API (`window.Darkroom` + Fabric.js canvas editing).
 
+> **Maintainers — pull requests:** GitHub’s “Compare & pull request” button often targets **upstream** [`MattKetmo/darkroomjs`](https://github.com/MattKetmo/darkroomjs). **Do not use that for ImgTor work.** From your feature branch, run **`npm run pr:create`** (uses GitHub CLI with `--repo ai-tonia/imgtorjs --base main`) or open **[compare on this repo only](https://github.com/ai-tonia/imgtorjs/compare)** and set **base = `main`**, **head = your branch**. See **CONTRIBUTING.md**.
+
 ### Install from npm
 
 ```bash
