@@ -3,8 +3,7 @@
 /node_modules/
 /build/
 /demo/build
-# Local-only sub-agent prompts (not published); see CONTRIBUTING.md
-/docs/agents/
+/docs/
 
 # OS
 .DS_Store
