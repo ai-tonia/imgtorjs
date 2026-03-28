@@ -23,9 +23,10 @@ The library is built and tested against **Fabric.js 1.4.x** (`demo/vendor/fabric
 There is **no** legacy unit/integration suite. CI-style checks are:
 
 ```bash
-npm test       # build + Vitest (smoke + unit)
-npm run test:unit   # unit tests only (no build required)
-npm run test:e2e    # Playwright: build + sync:demo + demo smoke (needs: npx playwright install chromium)
+npm test            # build + Vitest (smoke + unit)
+npm run test:coverage   # build + Vitest with coverage (same as CI unit step)
+npm run test:unit     # unit tests only (no build required)
+npm run test:e2e      # Playwright: build + sync:demo + demo smoke (needs: npx playwright install chromium)
 npm run lint
 npm run audit
 ```
@@ -39,8 +40,34 @@ npm run audit
 
 ## CI
 
-GitHub Actions runs **`npm ci`**, Playwright browser install, **`npm run lint`**, **`npm test`**, **`npm run test:e2e`**, and **`npm run audit`** on pushes and pull requests to `main` (see `.github/workflows/ci.yml`).
+GitHub Actions runs **`npm ci`**, Playwright browser install, **`npm run lint`**, **`npm run test:coverage`** (with a **`coverage/`** artifact), **`npm run test:e2e`**, and **`npm run audit`** on pushes and pull requests to `main` (see `.github/workflows/ci.yml`).
 
 **Dependabot** opens weekly grouped PRs for npm devDependencies (see `.github/dependabot.yml`).
 
 TypeScript users can reference **`imgtor`** types via **`types/darkroom.d.ts`** (global `Darkroom`; Fabric remains untyped).
+
+## Pull requests (always **ai-tonia/imgtorjs**)
+
+GitHub’s green **“Compare & pull request”** (and some compare URLs) default the **base** to **upstream** [`MattKetmo/darkroomjs`](https://github.com/MattKetmo/darkroomjs). That is wrong for ImgTor day-to-day work.
+
+### Recommended: GitHub CLI (cannot target upstream by accident)
+
+1. Push your branch: `git push -u origin <branch>`
+2. From that branch, run:
+
+```bash
+npm run pr:create
+```
+
+This runs **`gh pr create --repo ai-tonia/imgtorjs --base main`**, so the PR is always opened **on this fork** into **`main`**. Add flags as needed, e.g. `--title "…" --body "…"` or `--fill` (use commit message).
+
+Requires [GitHub CLI](https://cli.github.com/) (`gh`) and `gh auth login`.
+
+### Web UI (only if you verify the base)
+
+1. Open **[github.com/ai-tonia/imgtorjs/compare](https://github.com/ai-tonia/imgtorjs/compare)** — URL must start with **`github.com/ai-tonia/imgtorjs`**, not `MattKetmo`.
+2. Set **base** = **`main`**, **compare** = your branch:  
+   `https://github.com/ai-tonia/imgtorjs/compare/main...<your-branch>`
+3. On the PR page, **base repository** must be **`ai-tonia/imgtorjs`**. If the PR lists dozens of unrelated files, the base is wrong — edit the PR or close it and use **`npm run pr:create`** instead.
+
+**Suggested migration / test branches** (rebase on latest `main` before each PR; one PR per branch): `migration/pr-03-plugin-save-tests`, then further `migration/pr-NN-…` slices from your local **`migration-plan/`** checklist (gitignored).

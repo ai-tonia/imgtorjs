@@ -78,7 +78,8 @@
     "test:unit": "vitest run tests/unit",
     "test:coverage": "npm run build && vitest run --coverage",
     "test:e2e": "playwright test",
-    "audit": "npm audit"
+    "audit": "npm audit",
+    "pr:create": "gh pr create --repo ai-tonia/imgtorjs --base main"
   },
   "ignore": [
     "**/.*",
