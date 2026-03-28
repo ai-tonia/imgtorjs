@@ -96,6 +96,8 @@ The core turns the target image into a Fabric canvas and an empty toolbar. Featu
 
 ## Contributing
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for layout, tests, and workflow.
+
 ```bash
 npm run develop
 ```
