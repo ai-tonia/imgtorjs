@@ -4,8 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 3.1.0 (2026-03-28)
+
 - Add **SECURITY.md** (responsible disclosure) and **RELEASING.md** (maintainer checklist)
 - Add **Playwright** demo smoke test (`npm run test:e2e`) and run it in CI with Chromium
+- Publish **SECURITY.md** in the npm package `files` list for discoverability
 
 ## 3.0.0 (2026-03-28)
 
