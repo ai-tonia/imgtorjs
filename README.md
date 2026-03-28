@@ -1,8 +1,19 @@
 # ImgTor (DarkroomJS fork)
 
 ![License MIT](http://img.shields.io/badge/license-MIT-blue.svg)
+[![CI](https://github.com/ai-tonia/imgtorjs/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ai-tonia/imgtorjs/actions/workflows/ci.yml)
 
 **ImgTor** is the maintained fork of **DarkroomJS**, hosted at [github.com/ai-tonia/imgtorjs](https://github.com/ai-tonia/imgtorjs). The npm package name is **`imgtor`**. The original author’s project is discontinued; this fork modernizes the build (Vite, Dart Sass), targets **Node.js 22+**, and keeps the same browser API (`window.Darkroom` + Fabric.js canvas editing).
+
+### Install from npm
+
+```bash
+npm install imgtor
+```
+
+The package ships **`build/darkroom.js`** and **`build/darkroom.css`**. You still need **Fabric.js 1.4.x** on the page before loading ImgTor.
+
+**TypeScript:** ambient types live in **`types/darkroom.d.ts`**. At the top of a global script entry, use `/// <reference types="imgtor" />` (or reference that file from your `tsconfig`), then `Darkroom` is known as a global. Fabric remains `any`-ish in these typings.
 
 Upstream history: [DarkroomJS](https://github.com/MattKetmo/darkroomjs) by Matthieu Moquet.
 
