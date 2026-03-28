@@ -1,0 +1,346 @@
+/**
+ * @vitest-environment happy-dom
+ */
+import { beforeAll, describe, expect, it, vi } from 'vitest';
+
+let Crop;
+
+function fabricStub() {
+  function Rect() {
+    this.width = 0;
+    this.height = 0;
+    this.left = 0;
+    this.top = 0;
+    this.scaleX = 1;
+    this.scaleY = 1;
+    this.flipX = false;
+    this.flipY = false;
+  }
+  Rect.prototype.containsPoint = () => false;
+  Rect.prototype.setWidth = function setWidth(w) {
+    this.width = w;
+  };
+  Rect.prototype.setHeight = function setHeight(h) {
+    this.height = h;
+  };
+  Rect.prototype.setScaleX = function setScaleX(s) {
+    this.scaleX = s;
+  };
+  Rect.prototype.setScaleY = function setScaleY(s) {
+    this.scaleY = s;
+  };
+  Rect.prototype.setLeft = function setLeft(v) {
+    this.left = v;
+  };
+  Rect.prototype.setTop = function setTop(v) {
+    this.top = v;
+  };
+  Rect.prototype.getWidth = function getWidth() {
+    return this.width * this.scaleX;
+  };
+  Rect.prototype.getHeight = function getHeight() {
+    return this.height * this.scaleY;
+  };
+  Rect.prototype.getLeft = function getLeft() {
+    return this.left;
+  };
+  Rect.prototype.getTop = function getTop() {
+    return this.top;
+  };
+  Rect.prototype.setCoords = vi.fn();
+  Rect.prototype.remove = vi.fn();
+  Rect.prototype.set = function set(keyOrProps, value) {
+    if (typeof keyOrProps === 'string') this[keyOrProps] = value;
+    else Object.assign(this, keyOrProps);
+  };
+  Rect.prototype.scaleToWidth = function scaleToWidth(w) {
+    const ratio = w / this.getWidth();
+    this.setScaleX(this.scaleX * ratio);
+  };
+  Rect.prototype.scaleToHeight = function scaleToHeight(h) {
+    const ratio = h / this.getHeight();
+    this.setScaleY(this.scaleY * ratio);
+  };
+  Rect.prototype.getScaleX = function getScaleX() {
+    return this.scaleX;
+  };
+  Rect.prototype.getScaleY = function getScaleY() {
+    return this.scaleY;
+  };
+
+  class Point {
+    constructor(x, y) {
+      this.x = x;
+      this.y = y;
+    }
+  }
+
+  return {
+    document,
+    Point,
+    Image: vi.fn(function FabricImageMock(el, opts) {
+      this.el = el;
+      this.opts = opts;
+    }),
+    Rect,
+    util: {
+      createClass(parent, props) {
+        function Klass() {
+          if (parent) parent.apply(this, arguments);
+        }
+        Klass.prototype = Object.create(parent?.prototype ?? null);
+        Object.assign(Klass.prototype, props);
+        Klass.prototype.callSuper = function callSuper(name, ...args) {
+          const sup = Object.getPrototypeOf(Object.getPrototypeOf(this));
+          const fn = sup?.[name];
+          if (typeof fn === 'function') return fn.apply(this, args);
+        };
+        return Klass;
+      },
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+    },
+  };
+}
+
+beforeAll(async () => {
+  globalThis.fabric = fabricStub();
+  globalThis.Darkroom = { plugins: [] };
+  await import('../../lib/js/core/utils.js');
+  await import('../../lib/js/core/plugin.js');
+  await import('../../lib/js/core/transformation.js');
+  await import('../../lib/js/core/ui.js');
+  const extendSpy = vi.spyOn(Darkroom.Transformation, 'extend');
+  await import('../../lib/js/plugins/darkroom.crop.js');
+  Crop = extendSpy.mock.results[0].value;
+  extendSpy.mockRestore();
+});
+
+function createDarkroomForCrop() {
+  const toolbarHost = document.createElement('div');
+  const canvasHost = document.createElement('div');
+  const handlers = new Map();
+  const canvas = {
+    getElement: () => canvasHost,
+    handlers,
+    on(name, fn) {
+      if (!handlers.has(name)) handlers.set(name, []);
+      handlers.get(name).push(fn);
+    },
+    getPointer: vi.fn(() => ({ x: 50, y: 40 })),
+    calcOffset: vi.fn(),
+    discardActiveObject: vi.fn(),
+    setActiveObject: vi.fn(),
+    bringToFront: vi.fn(),
+    add: vi.fn(),
+    getActiveObject: vi.fn(() => null),
+    getWidth: vi.fn(() => 800),
+    getHeight: vi.fn(() => 600),
+    defaultCursor: 'default',
+  };
+  return {
+    toolbar: new Darkroom.UI.Toolbar(toolbarHost),
+    image: {
+      getTop: vi.fn(() => 0),
+      getLeft: vi.fn(() => 0),
+      getWidth: vi.fn(() => 400),
+      getHeight: vi.fn(() => 300),
+    },
+    canvas,
+    applyTransformation: vi.fn(),
+    addEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  };
+}
+
+function newCropPlugin(darkroom, options = {}) {
+  return new Darkroom.plugins.crop(darkroom, options);
+}
+
+describe('crop plugin mouse drag', () => {
+  it('onMouseDown is a no-op without focus', () => {
+    const darkroom = createDarkroomForCrop();
+    const plugin = newCropPlugin(darkroom, {});
+
+    plugin.onMouseDown({ e: {} });
+
+    expect(darkroom.canvas.calcOffset).not.toHaveBeenCalled();
+  });
+
+  it('onMouseDown returns when pointer is inside existing crop zone', () => {
+    const darkroom = createDarkroomForCrop();
+    const plugin = newCropPlugin(darkroom, {});
+    plugin.requireFocus();
+    darkroom.canvas.getPointer.mockReturnValue({ x: 10, y: 10 });
+    vi.spyOn(plugin.cropZone, 'containsPoint').mockReturnValue(true);
+    plugin.cropZone.set({ left: 0, top: 0, width: 200, height: 200 });
+
+    plugin.onMouseDown({ e: {} });
+
+    expect(darkroom.canvas.discardActiveObject).not.toHaveBeenCalled();
+    expect(plugin.startX).toBeNull();
+    expect(plugin.startY).toBeNull();
+  });
+
+  it('onMouseDown returns when crop zone is the active object', () => {
+    const darkroom = createDarkroomForCrop();
+    const plugin = newCropPlugin(darkroom, {});
+    plugin.requireFocus();
+    darkroom.canvas.getActiveObject.mockReturnValue(plugin.cropZone);
+    darkroom.canvas.getPointer.mockReturnValue({ x: 500, y: 500 });
+
+    plugin.onMouseDown({ e: {} });
+
+    expect(darkroom.canvas.discardActiveObject).not.toHaveBeenCalled();
+    expect(plugin.startX).toBeNull();
+  });
+
+  it('onMouseDown outside zone resets dimensions and records drag origin', () => {
+    const darkroom = createDarkroomForCrop();
+    const plugin = newCropPlugin(darkroom, {});
+    plugin.requireFocus();
+    plugin.cropZone.set({ left: 20, top: 30, width: 100, height: 80 });
+    plugin.cropZone.setScaleX(2);
+    plugin.cropZone.setScaleY(1.5);
+    darkroom.canvas.getPointer.mockReturnValue({ x: 5, y: 7 });
+
+    plugin.onMouseDown({ e: {} });
+
+    expect(darkroom.canvas.discardActiveObject).toHaveBeenCalledOnce();
+    expect(plugin.cropZone.width).toBe(0);
+    expect(plugin.cropZone.height).toBe(0);
+    expect(plugin.cropZone.scaleX).toBe(1);
+    expect(plugin.cropZone.scaleY).toBe(1);
+    expect(plugin.startX).toBe(5);
+    expect(plugin.startY).toBe(7);
+    expect(darkroom.canvas.calcOffset).toHaveBeenCalled();
+  });
+
+  it('onMouseMove does nothing when drag was not started', () => {
+    const darkroom = createDarkroomForCrop();
+    const plugin = newCropPlugin(darkroom, {});
+    plugin.requireFocus();
+    const spy = vi.spyOn(plugin, '_renderCropZone');
+
+    plugin.onMouseMove({ e: {} });
+
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('onMouseMove updates zone via _renderCropZone while dragging', () => {
+    const darkroom = createDarkroomForCrop();
+    const plugin = newCropPlugin(darkroom, {});
+    plugin.requireFocus();
+    plugin.startX = 10;
+    plugin.startY = 20;
+    darkroom.canvas.getPointer.mockReturnValue({ x: 110, y: 90 });
+
+    plugin.onMouseMove({ e: {} });
+
+    expect(plugin.cropZone.left).toBe(10);
+    expect(plugin.cropZone.top).toBe(20);
+    expect(plugin.cropZone.width).toBe(100);
+    expect(plugin.cropZone.height).toBe(70);
+    expect(darkroom.canvas.bringToFront).toHaveBeenCalledWith(plugin.cropZone);
+    expect(darkroom.dispatchEvent).toHaveBeenCalledWith('crop:update');
+  });
+
+  it('onMouseMove delegates to key-crop handler when isKeyCroping', () => {
+    const darkroom = createDarkroomForCrop();
+    const plugin = newCropPlugin(darkroom, { quickCropKey: 71 });
+    plugin.requireFocus();
+    plugin.isKeyCroping = true;
+    const spy = vi.spyOn(plugin, 'onMouseMoveKeyCrop');
+
+    plugin.onMouseMove({ e: { type: 'mousemove' } });
+
+    expect(spy).toHaveBeenCalledOnce();
+  });
+
+  it('onMouseUp is a no-op when no drag is in progress', () => {
+    const darkroom = createDarkroomForCrop();
+    const plugin = newCropPlugin(darkroom, {});
+    plugin.requireFocus();
+
+    plugin.onMouseUp({});
+
+    expect(plugin.cropZone.setCoords).not.toHaveBeenCalled();
+    expect(darkroom.canvas.setActiveObject).not.toHaveBeenCalled();
+  });
+
+  it('onMouseUp finalizes drag: coords, active object, clears start', () => {
+    const darkroom = createDarkroomForCrop();
+    const plugin = newCropPlugin(darkroom, {});
+    plugin.requireFocus();
+    plugin.startX = 0;
+    plugin.startY = 0;
+
+    plugin.onMouseUp({});
+
+    expect(plugin.cropZone.setCoords).toHaveBeenCalled();
+    expect(darkroom.canvas.setActiveObject).toHaveBeenCalledWith(plugin.cropZone);
+    expect(darkroom.canvas.calcOffset).toHaveBeenCalled();
+    expect(plugin.startX).toBeNull();
+    expect(plugin.startY).toBeNull();
+  });
+});
+
+describe('crop plugin _renderCropZone', () => {
+  it('clamps rectangle to canvas bounds', () => {
+    const darkroom = createDarkroomForCrop();
+    const plugin = newCropPlugin(darkroom, {});
+    plugin.requireFocus();
+
+    plugin._renderCropZone(-50, -30, 900, 700);
+
+    expect(plugin.cropZone.left).toBe(0);
+    expect(plugin.cropZone.top).toBe(0);
+    expect(plugin.cropZone.width).toBe(800);
+    expect(plugin.cropZone.height).toBe(600);
+  });
+
+  it('enforces minimum width and height on a zero-area drag', () => {
+    const darkroom = createDarkroomForCrop();
+    const plugin = newCropPlugin(darkroom, { minWidth: 40, minHeight: 25 });
+    plugin.requireFocus();
+
+    plugin._renderCropZone(100, 100, 100, 100);
+
+    expect(plugin.cropZone.width).toBe(40);
+    expect(plugin.cropZone.height).toBe(25);
+    expect(plugin.cropZone.left).toBe(60);
+    expect(plugin.cropZone.top).toBe(75);
+  });
+
+  it('honors fixed aspect ratio when option is set', () => {
+    const darkroom = createDarkroomForCrop();
+    const plugin = newCropPlugin(darkroom, { ratio: 2 });
+    plugin.requireFocus();
+
+    plugin._renderCropZone(0, 0, 100, 100);
+
+    const w = plugin.cropZone.width;
+    const h = plugin.cropZone.height;
+    expect(w / h).toBeCloseTo(2, 5);
+    expect(w).toBeGreaterThan(0);
+    expect(h).toBeGreaterThan(0);
+  });
+
+  it('caps min dimensions by canvas size when options exceed canvas', () => {
+    const darkroom = createDarkroomForCrop();
+    const plugin = newCropPlugin(darkroom, { minWidth: 2000, minHeight: 1500 });
+    plugin.requireFocus();
+
+    plugin._renderCropZone(400, 300, 400, 300);
+
+    expect(plugin.cropZone.width).toBe(800);
+    expect(plugin.cropZone.height).toBe(600);
+  });
+});
+
+describe('crop plugin Crop (smoke)', () => {
+  it('Crop transformation class is available from plugin module', () => {
+    expect(Crop).toBeDefined();
+    expect(typeof Crop).toBe('function');
+  });
+});
