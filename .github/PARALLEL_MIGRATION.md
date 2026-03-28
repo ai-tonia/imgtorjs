@@ -28,4 +28,4 @@ Or compare: `https://github.com/ai-tonia/imgtorjs/compare/main...<branch>` only.
 
 > You may **only** add or edit `tests/unit/<one-file>.test.js`. Match `plugin-save.test.js` / `plugin-history.test.js` patterns. Do not change `package.json`. Return the file path and test count.
 
-Merge **bottom-up**: merge PR 4 → pull `main` → branch PR 5 from `main`.
+Merge **bottom-up**: merge PR 4 → then `git fetch origin && git checkout migration/pr-05-plugin-rotate-tests && git rebase origin/main` (or merge `main`) so PR 5’s diff stays small, then merge PR 5.
