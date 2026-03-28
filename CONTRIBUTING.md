@@ -18,7 +18,7 @@ The demo still ships **Fabric.js 1.4.x** (`demo/vendor/fabric.js`). Upgrading to
 
 ### Local sub-agent prompts (optional)
 
-If you use phased modernization checklists, keep them under **`docs/agents/`** (e.g. `01-assess-what-you-have.md`). That directory is **gitignored** so prompts stay local and are not published with the repo.
+If you use phased modernization checklists, run **`npm run seed:agents`** to create **`docs/agents/*.md`** locally. That directory is **gitignored** so prompts are not published with the repo.
 
 ## Tests
 

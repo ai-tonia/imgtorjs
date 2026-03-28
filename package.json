@@ -37,7 +37,8 @@
     "format:check": "prettier --check .",
     "test": "npm run build && vitest run",
     "test:unit": "vitest run tests/unit",
-    "audit": "npm audit"
+    "audit": "npm audit",
+    "seed:agents": "node scripts/seed-docs-agents.mjs"
   },
   "ignore": [
     "**/.*",
