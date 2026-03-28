@@ -44,17 +44,3 @@ GitHub Actions runs **`npm ci`**, Playwright browser install, **`npm run lint`**
 **Dependabot** opens weekly grouped PRs for npm devDependencies (see `.github/dependabot.yml`).
 
 TypeScript users can reference **`imgtor`** types via **`types/darkroom.d.ts`** (global `Darkroom`; Fabric remains untyped).
-
-## Pull requests
-
-**`git push` only updates `ai-tonia/imgtorjs`.** If GitHub offers a PR into **[MattKetmo/darkroomjs](https://github.com/MattKetmo/darkroomjs)**, that comes from the **compare URL or the “base repository” dropdown** — not from Git. **Do not** use any link whose host path starts with `github.com/MattKetmo/darkroomjs/` for ImgTor work.
-
-**Fork-only compare links (always `github.com/ai-tonia/imgtorjs`, never `MattKetmo/darkroomjs`):**
-
-- Into **`main`** from **`migration/pr-02-core-unit-dom`**:  
-  [https://github.com/ai-tonia/imgtorjs/compare/main...migration/pr-02-core-unit-dom](https://github.com/ai-tonia/imgtorjs/compare/main...migration/pr-02-core-unit-dom)
-- Pattern for any feature branch: `https://github.com/ai-tonia/imgtorjs/compare/main...<branch-name>`
-
-On the PR page, **base repository** must show **`ai-tonia/imgtorjs`** — never **`MattKetmo/darkroomjs`**.
-
-Keep changes focused; match existing formatting (`npm run format`). For dependency upgrades, prefer one logical bump per commit when possible.
