@@ -14,7 +14,9 @@ Rough size: on the order of **1–2k lines** of first-party JS/SCSS (excluding `
 
 ### Framework (Fabric.js)
 
-The demo still ships **Fabric.js 1.4.x** (`demo/vendor/fabric.js`). Upgrading to current Fabric is a **large, breaking** migration and is tracked as maintainers’ work, not part of the default PR flow.
+The library is built and tested against **Fabric.js 1.4.x** (`demo/vendor/fabric.js`). ImgTor does **not** declare Fabric as an npm dependency so consumers can pin their own copy.
+
+**Upgrading Fabric (5.x / 6.x, etc.):** treat as a dedicated project: replace or vendor a new build, update every `fabric.*` usage in `lib/js` and the demo, and manually verify crop, rotate, undo/redo, and save. There is no automated visual regression suite yet.
 
 ## Tests
 
@@ -33,6 +35,10 @@ npm run audit
 - `npm install`
 - `npm run build` — writes `build/` (ignored by git)
 - `npm start` — build, link `demo/build` → `../build`, serve demo on port 2222
+
+## CI
+
+GitHub Actions runs **`npm ci`**, **`npm run lint`**, **`npm test`**, and **`npm run audit`** on pushes and pull requests to `main` (see `.github/workflows/ci.yml`).
 
 ## Pull requests
 
