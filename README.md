@@ -8,10 +8,10 @@ Upstream history: [DarkroomJS](https://github.com/MattKetmo/darkroomjs) by Matth
 
 ## What changed in this fork
 
-- New name and repository: **ImgTor** / `imgtor` — see `docs/MODERNIZATION.md` for the full modernization log.
-- Gulp and `node-sass` removed; builds use **Vite** (library IIFE) and **`sass`** for CSS.
-- **ESLint**, **Prettier**, and **Vitest** smoke tests; `npm audit` clean on current devDependencies.
-- Demo no longer loads third-party analytics scripts.
+- **Name:** **ImgTor** (npm package **`imgtor`**, repository **ai-tonia/imgtorjs**). The in-browser API remains `Darkroom` for compatibility with existing examples.
+- **Build:** Gulp and `node-sass` were replaced by **Vite** (IIFE bundle) and **Dart Sass** so installs work on current Node without native `node-sass` builds.
+- **Tooling:** ESLint, Prettier, and Vitest smoke tests (`npm test`).
+- **Demo:** third-party analytics were removed from the sample page.
 
 The original “try Pintura” section below is preserved as a pointer to a maintained commercial editor.
 
@@ -104,10 +104,6 @@ Run checks:
 npm test
 npm run lint
 ```
-
-## Chained modernization PRs
-
-Sub-agent task specs live under `docs/agents/`. For GitHub stacking order, see `docs/CHAINED_PRS.md`.
 
 ## FAQ
 
