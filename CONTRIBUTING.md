@@ -23,9 +23,10 @@ The library is built and tested against **Fabric.js 1.4.x** (`demo/vendor/fabric
 There is **no** legacy unit/integration suite. CI-style checks are:
 
 ```bash
-npm test       # build + Vitest (smoke + unit)
-npm run test:unit   # unit tests only (no build required)
-npm run test:e2e    # Playwright: build + sync:demo + demo smoke (needs: npx playwright install chromium)
+npm test            # build + Vitest (smoke + unit)
+npm run test:coverage   # build + Vitest with coverage (same as CI unit step)
+npm run test:unit     # unit tests only (no build required)
+npm run test:e2e      # Playwright: build + sync:demo + demo smoke (needs: npx playwright install chromium)
 npm run lint
 npm run audit
 ```
@@ -39,8 +40,19 @@ npm run audit
 
 ## CI
 
-GitHub Actions runs **`npm ci`**, Playwright browser install, **`npm run lint`**, **`npm test`**, **`npm run test:e2e`**, and **`npm run audit`** on pushes and pull requests to `main` (see `.github/workflows/ci.yml`).
+GitHub Actions runs **`npm ci`**, Playwright browser install, **`npm run lint`**, **`npm run test:coverage`** (with a **`coverage/`** artifact), **`npm run test:e2e`**, and **`npm run audit`** on pushes and pull requests to `main` (see `.github/workflows/ci.yml`).
 
 **Dependabot** opens weekly grouped PRs for npm devDependencies (see `.github/dependabot.yml`).
 
 TypeScript users can reference **`imgtor`** types via **`types/darkroom.d.ts`** (global `Darkroom`; Fabric remains untyped).
+
+## Pull requests (always **ai-tonia/imgtorjs**)
+
+**Do not** open pull requests with **base repository** **[`MattKetmo/darkroomjs`](https://github.com/MattKetmo/darkroomjs)** unless you intentionally contribute to upstream. **`git push`** only updates **[`ai-tonia/imgtorjs`](https://github.com/ai-tonia/imgtorjs)** when `origin` is that repo.
+
+- **Compare / open a PR into `main`:**  
+  `https://github.com/ai-tonia/imgtorjs/compare/main...<your-branch>`
+- **Base branch** must be **`main`** (not `master`, not another feature branch). If the PR lists dozens of unrelated files, the base is almost always wrong — edit the PR and set **base repository** + **base branch** to **`ai-tonia/imgtorjs`** / **`main`**.
+- On the PR page, **base** must show **`ai-tonia/imgtorjs`** — never **`MattKetmo/darkroomjs`**.
+
+**Suggested migration / test branches** (rebase on latest `main` before each PR; one PR per branch): `migration/pr-03-plugin-save-tests`, then further `migration/pr-NN-…` slices from your local **`migration-plan/`** checklist (gitignored).
