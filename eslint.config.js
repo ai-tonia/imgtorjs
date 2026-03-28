@@ -7,6 +7,14 @@ export default [
     ignores: ['build/**', 'demo/vendor/**', 'node_modules/**'],
   },
   {
+    files: ['scripts/**/*.mjs'],
+    languageOptions: {
+      ecmaVersion: 2024,
+      sourceType: 'module',
+      globals: { ...globals.node },
+    },
+  },
+  {
     languageOptions: {
       ecmaVersion: 2024,
       sourceType: 'module',

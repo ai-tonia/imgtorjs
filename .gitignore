@@ -1,5 +1,6 @@
 /.sass-cache/
 /bower_components/
 /node_modules/
-build/*.map
+/build/
+/demo/build
 /docs/

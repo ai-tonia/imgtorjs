@@ -26,7 +26,7 @@
   "scripts": {
     "build:js": "vite build",
     "build:css": "sass lib/css/darkroom.scss build/darkroom.css --style=compressed --no-source-map",
-    "build": "npm run build:js && npm run build:css",
+    "build": "npm run build:js && npm run build:css && node scripts/link-demo-build.mjs",
     "dev": "vite build --watch & sass --watch lib/css/darkroom.scss:build/darkroom.css --style=expanded",
     "develop": "npm run dev",
     "preview": "vite --config vite.demo.config.js",

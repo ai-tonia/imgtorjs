@@ -43,6 +43,8 @@ npm install
 npm run build
 ```
 
+Built files go to `build/` (not committed). The demo expects `demo/build` → that folder; `npm run build` creates the link automatically.
+
 - `npm start` — build, then serve the `demo/` folder on port **2222**
 - `npm run develop` — watch JS (Vite) and SCSS (parallel watchers; stop with Ctrl+C)
 
