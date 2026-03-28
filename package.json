@@ -1,7 +1,7 @@
 {
   "name": "imgtor",
   "description": "Extensible image editing tool via HTML canvas (fork of DarkroomJS)",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "license": "MIT",
   "type": "module",
   "engines": {
@@ -15,9 +15,20 @@
   "author": "Matthieu Moquet <matthieu@moquet.net> (http://moquet.net/)",
   "main": "./build/darkroom.js",
   "style": "./build/darkroom.css",
+  "types": "./types/darkroom.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/darkroom.d.ts",
+      "default": "./build/darkroom.js"
+    },
+    "./darkroom.js": "./build/darkroom.js",
+    "./darkroom.css": "./build/darkroom.css",
+    "./package.json": "./package.json"
+  },
   "files": [
     "build/darkroom.js",
     "build/darkroom.css",
+    "types/darkroom.d.ts",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"
@@ -49,5 +60,8 @@
     "test:unit": "vitest run tests/unit",
     "audit": "npm audit"
   },
-  "ignore": ["**/.*", "node_modules"]
+  "ignore": [
+    "**/.*",
+    "node_modules"
+  ]
 }

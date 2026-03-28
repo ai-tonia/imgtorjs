@@ -3,11 +3,18 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
-- npm: `main`, `style`, `files`, and `prepublishOnly` for publishing built assets
-- Replace demo `build/` symlink with `sync:demo` (copy `build/` → `demo/build/`)
-- ImgTor fork: Vite + Dart Sass build, Node 22+, ESLint / Prettier / Vitest, GitHub Actions CI
-- Remove Bower metadata (`bower.json`); use npm and vendored Fabric for the demo
-- Add type "button" to avoid html5 submit validation (#24)
+
+## 3.0.0 (2026-03-28)
+
+- **Breaking (fork):** npm **`imgtor`** v3 — ImgTor modernization (Node 22+, Vite, Vitest, GitHub Actions CI)
+- TypeScript **ambient types** for global `Darkroom` (`types/darkroom.d.ts`); **`exports`** and **`types`** in `package.json`
+- **Dependabot** weekly npm updates (grouped devDependencies)
+- Demo and docs: ImgTor / **ai-tonia/imgtorjs**; README CI badge and `npm install imgtor`
+- npm **`main`**, **`style`**, **`files`**, **`prepublishOnly`** for publishing built assets
+- **`sync:demo`**: copy `build/` → `demo/build/` (no symlink)
+- Remove **Bower**; shared **`extendObject`** and viewport math with unit tests
+- Modern DOM APIs (`addEventListener` / `Event`)
+- Add type **button** to avoid HTML5 submit validation (#24)
 
 ## 2.0.0 (2015-08-01)
 

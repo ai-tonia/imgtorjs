@@ -4,7 +4,7 @@ import globals from 'globals';
 export default [
   js.configs.recommended,
   {
-    ignores: ['build/**', 'demo/vendor/**', 'node_modules/**'],
+    ignores: ['build/**', 'demo/build/**', 'demo/vendor/**', 'node_modules/**', 'types/**'],
   },
   {
     files: ['scripts/**/*.mjs'],

@@ -40,6 +40,10 @@ npm run audit
 
 GitHub Actions runs **`npm ci`**, **`npm run lint`**, **`npm test`**, and **`npm run audit`** on pushes and pull requests to `main` (see `.github/workflows/ci.yml`).
 
+**Dependabot** opens weekly grouped PRs for npm devDependencies (see `.github/dependabot.yml`).
+
+TypeScript users can reference **`imgtor`** types via **`types/darkroom.d.ts`** (global `Darkroom`; Fabric remains untyped).
+
 ## Pull requests
 
 Keep changes focused; match existing formatting (`npm run format`). For dependency upgrades, prefer one logical bump per commit when possible.
