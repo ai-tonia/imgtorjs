@@ -56,10 +56,6 @@ export default defineConfig({
     outDir: 'build',
     emptyOutDir: false,
     sourcemap: false,
-    rollupOptions: {
-      output: {
-        inlineDynamicImports: true,
-      },
-    },
+    rollupOptions: {},
   },
 });
