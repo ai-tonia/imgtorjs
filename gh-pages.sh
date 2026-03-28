@@ -1,21 +1,19 @@
 #!/bin/bash
+set -euo pipefail
 
-# Update gh-pages branch
-git branch -D gh-pages
+# Update gh-pages branch (run from repo root after npm install)
+git branch -D gh-pages 2>/dev/null || true
 git checkout -b gh-pages HEAD
 
-# Build assets
-rm -rf build
-gulp build --prod
+npm run build
 
-# Put build into demo folder
-rm demo/build
-cp -r build demo/build
+# Replace demo/build symlink with a real copy for static hosting
+rm -rf demo/build
+mkdir -p demo/build
+cp -r build/* demo/build/
 
-# Commit
 git add -f demo
 git commit -m "Build GH pages"
 
-# Push & reset
-git push origin `git subtree split --prefix demo HEAD`:gh-pages --force
+git push origin "$(git subtree split --prefix demo HEAD)":gh-pages --force
 git checkout -

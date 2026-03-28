@@ -1,15 +1,23 @@
-# DarkroomJS
+# ImgTor (DarkroomJS fork)
 
 ![License MIT](http://img.shields.io/badge/license-MIT-blue.svg)
 
-DarkroomJS is a JavaScript library which provides basic image editing tools in
-your browser, such as **rotation** or **cropping**. It is based on the awesome
-[FabricJS](http://fabricjs.com/) library to handle images in HTML5 canvas.
+**ImgTor** is the maintained fork of **DarkroomJS**, hosted at [github.com/ai-tonia/imgtorjs](https://github.com/ai-tonia/imgtorjs). The npm package name is **`imgtor`**. The original author’s project is discontinued; this fork modernizes the build (Vite, Dart Sass), targets **Node.js 22+**, and keeps the same browser API (`window.Darkroom` + Fabric.js canvas editing).
 
+Upstream history: [DarkroomJS](https://github.com/MattKetmo/darkroomjs) by Matthieu Moquet.
 
-## ⚠️ IMPORTANT UPDATE
+## What changed in this fork
 
-This library has been discontinued and is **no longer maintained**.
+- **Name:** **ImgTor** (npm package **`imgtor`**, repository **ai-tonia/imgtorjs**). The in-browser API remains `Darkroom` for compatibility with existing examples.
+- **Build:** Gulp and `node-sass` were replaced by **Vite** (IIFE bundle) and **Dart Sass** so installs work on current Node without native `node-sass` builds.
+- **Tooling:** ESLint, Prettier, and Vitest smoke tests (`npm test`).
+- **Demo:** third-party analytics were removed from the sample page.
+
+The original “try Pintura” section below is preserved as a pointer to a maintained commercial editor.
+
+## ⚠️ Upstream notice (historical)
+
+The upstream library has been discontinued and is **no longer maintained** by the original author.
 
 If you're looking for an alternative, you should have a look at **[Pintura Image Editor](https://www.ktm.sh/pintura)**.
 
@@ -20,96 +28,101 @@ If you're looking for an alternative, you should have a look at **[Pintura Image
 - annotating support
 - and much more, [try the online demo](https://www.ktm.sh/pintura):
 
-[![Pintura Image Editor demo](demo/images/doka-image-editor-gh.gif?raw=true "Pintura Image Editor (click on the image to view)")](https://www.ktm.sh/pintura)
+[![Pintura Image Editor demo](demo/images/doka-image-editor-gh.gif?raw=true 'Pintura Image Editor (click the image to view)')](https://www.ktm.sh/pintura)
 
-[**[Demo] Try Pintura Image Editor →**](https://www.ktm.sh/pintura)
+**[[Demo] Try Pintura Image Editor →](https://www.ktm.sh/pintura)**
+
+## Requirements
+
+- **Node.js 22+** and npm
 
 ## Building
 
-- Install [Node](http://nodejs.org/) & `npm`.
-- Run `npm install` to build dependencies.
-- Run `npm start` to build the assets and start the demo webserver.
+```bash
+npm install
+npm run build
+```
+
+Built files go to `build/` (not committed). The demo HTML loads `./build/...` relative to `demo/`, so for local preview you either run **`npm start`** (build + symlink `demo/build` → `../build` + dev server) or run **`npm run build`** then **`npm run link:demo`** if you open `demo/index.html` another way.
+
+- `npm start` — build, link demo assets, serve `demo/` on port **2222**
+- `npm run develop` — watch JS (Vite) and SCSS (parallel watchers; stop with Ctrl+C)
 
 ## Usage
 
-Simply instanciate a new Darkroom object with a reference to the image element:
+Instantiate a new Darkroom object with a reference to the image element:
 
 ```html
-<img src="some-image.jpg" id="target">
+<img src="some-image.jpg" id="target" />
+<script src="path/to/fabric.js"></script>
+<script src="path/to/build/darkroom.js"></script>
 <script>
   new Darkroom('#target');
 </script>
 ```
 
-You can also pass some options:
+You can also pass options:
 
 ```javascript
 new Darkroom('#target', {
-  // Canvas initialization size
   minWidth: 100,
   minHeight: 100,
   maxWidth: 500,
   maxHeight: 500,
-
-  // Plugins options
   plugins: {
     crop: {
       minHeight: 50,
       minWidth: 50,
-      ratio: 1
+      ratio: 1,
     },
-    save: false // disable plugin
+    save: false,
   },
-
-  // Post initialization method
-  initialize: function() {
-    // Active crop selection
+  initialize: function () {
     this.plugins['crop'].requireFocus();
-
-    // Add custom listener
-    this.addEventListener('core:transformation', function() { /* ... */ });
-  }
+    this.addEventListener('core:transformation', function () {
+      /* ... */
+    });
+  },
 });
 ```
 
 ## Why?
 
-It's easy to get a javascript script to crop an image in a web page.
-But if your want more features like rotation or brightness adjustment, then you
-will have to do it yourself. No more jQuery plugins here.
-It only uses the power of HTML5 canvas to make what ever you want with your image.
+It's easy to get a JavaScript snippet to crop an image on a page. If you want rotation or more canvas work, you often build it yourself. This library uses **HTML5 canvas** (via Fabric.js) without jQuery.
 
 ## The concept
 
-The library is designed to be easily extendable. The core script only transforms
-the target image to a canvas with a FabricJS instance, and creates an empty toolbar.
-All the features are then implemented in separate plugins.
-
-Each plugin is responsible for creating its own functionality.
-Buttons can easily be added to the toolbar and binded with those features.
+The core turns the target image into a Fabric canvas and an empty toolbar. Features live in plugins; each plugin can add toolbar buttons and behavior.
 
 ## Contributing
 
-Run `npm develop` to build and watch the files while developing.
+```bash
+npm run develop
+```
+
+Run checks:
+
+```bash
+npm test
+npm run lint
+```
 
 ## FAQ
 
 How can I access the edited image?
 
-In order to get the edited image data, you must ask the canvas for it. By doing so inside the callback of your choice (in this case save), you can assign the edited image data to wherever you please.
+Ask the canvas for data inside your save callback (or another hook):
 
 ```javascript
 save: {
-      callback: function() {
-          this.darkroom.selfDestroy(); // Cleanup
-          var newImage = dkrm.canvas.toDataURL();
-          fileStorageLocation = newImage;
-      }
-  }
+  callback: function () {
+    this.darkroom.selfDestroy();
+    const newImage = dkrm.canvas.toDataURL();
+    fileStorageLocation = newImage;
+  },
+},
 ```
 
 ## License
 
-DarkroomJS is released under the MIT License. See the [bundled LICENSE file](LICENSE)
-for details.
-
+Released under the MIT License. See [LICENSE](LICENSE).
