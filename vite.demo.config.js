@@ -4,7 +4,7 @@ import { defineConfig } from 'vite';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-/** Static server for `demo/` (run `npm run build` first so `build/` and `demo/build` exist). */
+/** Static server for `demo/` (run `npm start` or `npm run build && npm run sync:demo` first). */
 export default defineConfig({
   root: path.resolve(__dirname, 'demo'),
   server: {

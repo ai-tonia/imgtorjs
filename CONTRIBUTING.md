@@ -34,7 +34,7 @@ npm run audit
 - **Node.js 22+**
 - `npm install`
 - `npm run build` — writes `build/` (ignored by git)
-- `npm start` — build, link `demo/build` → `../build`, serve demo on port 2222
+- `npm start` — build, `sync:demo` (copy `build/` → `demo/build/`), serve demo on port 2222
 
 ## CI
 

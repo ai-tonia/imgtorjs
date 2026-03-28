@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- npm: `main`, `style`, `files`, and `prepublishOnly` for publishing built assets
+- Replace demo `build/` symlink with `sync:demo` (copy `build/` → `demo/build/`)
 - Add type "button" to avoid html5 submit validation (#24)
 
 ## 2.0.0 (2015-08-01)

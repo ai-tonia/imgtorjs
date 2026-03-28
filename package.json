@@ -13,6 +13,15 @@
     "url": "https://github.com/ai-tonia/imgtorjs.git"
   },
   "author": "Matthieu Moquet <matthieu@moquet.net> (http://moquet.net/)",
+  "main": "./build/darkroom.js",
+  "style": "./build/darkroom.css",
+  "files": [
+    "build/darkroom.js",
+    "build/darkroom.css",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
   "dependencies": {},
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -27,11 +36,12 @@
     "build:js": "vite build",
     "build:css": "sass lib/css/darkroom.scss build/darkroom.css --style=compressed --no-source-map",
     "build": "npm run build:js && npm run build:css",
-    "link:demo": "node scripts/link-demo-build.mjs",
+    "sync:demo": "node scripts/sync-demo-build.mjs",
+    "prepublishOnly": "npm run build",
     "dev": "vite build --watch & sass --watch lib/css/darkroom.scss:build/darkroom.css --style=expanded",
     "develop": "npm run dev",
     "preview": "vite --config vite.demo.config.js",
-    "start": "npm run build && npm run link:demo && vite --config vite.demo.config.js",
+    "start": "npm run build && npm run sync:demo && vite --config vite.demo.config.js",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
