@@ -25,6 +25,7 @@ There is **no** legacy unit/integration suite. CI-style checks are:
 ```bash
 npm test       # build + Vitest (smoke + unit)
 npm run test:unit   # unit tests only (no build required)
+npm run test:e2e    # Playwright: build + sync:demo + demo smoke (needs: npx playwright install chromium)
 npm run lint
 npm run audit
 ```
@@ -38,7 +39,7 @@ npm run audit
 
 ## CI
 
-GitHub Actions runs **`npm ci`**, **`npm run lint`**, **`npm test`**, and **`npm run audit`** on pushes and pull requests to `main` (see `.github/workflows/ci.yml`).
+GitHub Actions runs **`npm ci`**, Playwright browser install, **`npm run lint`**, **`npm test`**, **`npm run test:e2e`**, and **`npm run audit`** on pushes and pull requests to `main` (see `.github/workflows/ci.yml`).
 
 **Dependabot** opens weekly grouped PRs for npm devDependencies (see `.github/dependabot.yml`).
 
