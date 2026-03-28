@@ -36,6 +36,10 @@ If you're looking for an alternative, you should have a look at **[Pintura Image
 
 - **Node.js 22+** and npm
 
+## Fabric.js
+
+The library targets **Fabric.js 1.4.x** (same era as the original DarkroomJS). The demo loads **`demo/vendor/fabric.js`**. Newer Fabric major versions change APIs widely; upgrading is a separate, breaking effort. See **CONTRIBUTING.md** for maintainer notes.
+
 ## Building
 
 ```bash
