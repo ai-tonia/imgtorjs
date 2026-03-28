@@ -44,9 +44,3 @@ GitHub Actions runs **`npm ci`**, Playwright browser install, **`npm run lint`**
 **Dependabot** opens weekly grouped PRs for npm devDependencies (see `.github/dependabot.yml`).
 
 TypeScript users can reference **`imgtor`** types via **`types/darkroom.d.ts`** (global `Darkroom`; Fabric remains untyped).
-
-## Pull requests
-
-**Where to open them:** Use GitHub’s “Open a pull request” screen with **base repository** set to **[`ai-tonia/imgtorjs`](https://github.com/ai-tonia/imgtorjs)** and **base branch** usually **`main`** (or your stacked branch on that same repo). Pushes from this clone go to `origin` (`ai-tonia/imgtorjs`); if a PR appears on **[`MattKetmo/darkroomjs`](https://github.com/MattKetmo/darkroomjs)**, the mistake is the **selected base repo** in the GitHub UI, not the remote URL—close that PR and open a new one against **`ai-tonia/imgtorjs`**.
-
-Keep changes focused; match existing formatting (`npm run format`). For dependency upgrades, prefer one logical bump per commit when possible.

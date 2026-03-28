@@ -15,12 +15,12 @@ export default defineConfig({
       all: true,
       reporter: ['text', 'json-summary', 'html', 'lcov'],
       reportsDirectory: './coverage',
-      // Non-regression floor (PR-02 raises this after more unit tests land).
+      // Non-regression floor; raise toward 80% / 70% as the suite grows.
       thresholds: {
-        lines: 1,
-        branches: 2,
-        statements: 1,
-        functions: 2,
+        lines: 14,
+        branches: 8,
+        statements: 14,
+        functions: 31,
       },
     },
   },
