@@ -49,9 +49,5 @@
     "test:unit": "vitest run tests/unit",
     "audit": "npm audit"
   },
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components"
-  ]
+  "ignore": ["**/.*", "node_modules"]
 }
