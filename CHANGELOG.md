@@ -4,9 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
-- **Internals:** rename **`lib/js/core/bootstrap.js`** → **`inject-icon-sprite.js`** (SVG sprite host; less confusion with app “bootstrap”)
-- **Tooling:** ESLint e2e config declares only global **`imgtor`** (runtime still sets **`ImgTor`** for legacy pages)
-- **Docs:** README thanks to Matthieu Moquet; integration test layout table in **`tests/README.md`**
+## 4.1.0 (2026-03-29)
+
+- **Plugins:** **`destroy()`** on **`imgtor.Plugin`**; built-in plugins detach listeners; **`selfDestroy()`** runs **`_destroyPlugins()`** first
+- **Core:** **`_initializePlugins`** try/catch per plugin with **`console.warn`**; **`removeEventListener`** mirrors **`addEventListener`**
+- **UI:** **`createButtonGroup({ position: 'append' | 'prepend' })`**
+- **Types:** **`ButtonOptions`**, **`ButtonGroupOptions`**; **`imgtor.plugins`** as constructor **`Record`**; **`Plugin.destroy`**
+- **Docs:** **`docs/PLUGIN_API.md`**, **`docs/MIGRATION_CANVAS_ADAPTER.md`**, **`docs/README.md`** (index)
+- **Tests:** integration **`build-entry.test.js`**; destroy + init-isolation coverage; **`tests/README.md`** layout table
 
 ## 4.0.0 (2026-03-28)
 

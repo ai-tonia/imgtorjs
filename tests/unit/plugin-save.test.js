@@ -41,4 +41,20 @@ describe('save plugin', () => {
     expect(callback).toHaveBeenCalledOnce();
     expect(selfDestroy).not.toHaveBeenCalled();
   });
+
+  it('destroy removes save button listener', () => {
+    const callback = vi.fn();
+    const toolbarHost = document.createElement('div');
+    const editor = {
+      toolbar: new imgtor.UI.Toolbar(toolbarHost),
+      selfDestroy: vi.fn(),
+    };
+    const instance = new imgtor.plugins.save(editor, { callback });
+
+    instance.destroy();
+    callback.mockClear();
+    instance.destroyButton.element.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+    expect(callback).not.toHaveBeenCalled();
+  });
 });

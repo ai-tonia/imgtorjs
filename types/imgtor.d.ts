@@ -10,7 +10,7 @@ declare class imgtor {
     plugins?: unknown,
   );
 
-  static plugins: Array<new (editor: imgtor, options: unknown) => unknown>;
+  static plugins: Record<string, new (editor: imgtor, options: unknown) => imgtor.Plugin>;
 
   containerElement: HTMLElement | null;
   canvas: any;
@@ -20,10 +20,11 @@ declare class imgtor {
   originalImageElement: HTMLImageElement | null;
   transformations: unknown[];
   options: imgtor.ImgTorOptions;
-  plugins: Record<string, unknown>;
+  plugins: Record<string, imgtor.Plugin>;
 
   selfDestroy(): void;
   addEventListener(eventName: string, callback: (ev: Event) => void): void;
+  removeEventListener(eventName: string, callback: (ev: Event) => void): void;
   dispatchEvent(eventName: string): void;
   refresh(next?: () => void): void;
   applyTransformation(transformation: unknown): void;
@@ -42,6 +43,18 @@ declare namespace imgtor {
     initialize?: (this: imgtor) => void;
   }
 
+  interface ButtonOptions {
+    image?: string;
+    type?: string;
+    group?: string;
+    hide?: boolean;
+    disabled?: boolean;
+  }
+
+  interface ButtonGroupOptions {
+    position?: 'append' | 'prepend';
+  }
+
   namespace Utils {
     function extend(target: unknown, source: unknown): unknown;
     function computeImageViewPort(image: {
@@ -57,6 +70,7 @@ declare namespace imgtor {
     options: unknown;
     defaults: Record<string, unknown>;
     initialize(): void;
+    destroy(): void;
     static extend(
       protoProps: Record<string, unknown> & { constructor?: new (...args: unknown[]) => unknown },
     ): typeof Plugin;
@@ -75,12 +89,12 @@ declare namespace imgtor {
     class Toolbar {
       constructor(element: HTMLElement);
       element: HTMLElement;
-      createButtonGroup(options?: unknown): ButtonGroup;
+      createButtonGroup(options?: Partial<ButtonGroupOptions>): ButtonGroup;
     }
     class ButtonGroup {
       constructor(element: HTMLElement);
       element: HTMLElement;
-      createButton(options: Record<string, unknown>): Button;
+      createButton(options?: Partial<ButtonOptions>): Button;
     }
     class Button {
       constructor(element: HTMLButtonElement);

@@ -45,3 +45,5 @@ GitHub Actions runs **`npm ci`**, Playwright browser install, **`npm run lint`**
 **Dependabot** opens weekly grouped PRs for npm devDependencies (see `.github/dependabot.yml`).
 
 TypeScript users can reference **`imgtor`** types via **`types/imgtor.d.ts`** (global `imgtor`; Fabric remains untyped).
+
+Plugin lifecycle and extension points are summarized in **`docs/PLUGIN_API.md`**; see **`docs/README.md`** for the full docs index (including the Fabric → CanvasAdapter migration plan).

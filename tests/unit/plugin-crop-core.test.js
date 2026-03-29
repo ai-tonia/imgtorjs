@@ -214,6 +214,12 @@ function createEditorForCrop() {
       if (!handlers.has(name)) handlers.set(name, []);
       handlers.get(name).push(fn);
     },
+    off(name, fn) {
+      const list = handlers.get(name);
+      if (!list) return;
+      const i = list.indexOf(fn);
+      if (i !== -1) list.splice(i, 1);
+    },
     getPointer: vi.fn(() => ({ x: 50, y: 40 })),
     calcOffset: vi.fn(),
     discardActiveObject: vi.fn(),
@@ -236,6 +242,7 @@ function createEditorForCrop() {
     canvas,
     applyTransformation: vi.fn(),
     addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
   };
 }
@@ -330,5 +337,16 @@ describe('crop plugin interaction', () => {
     expect(plugin.cropZone.width).toBe(0);
     expect(plugin.cropZone.height).toBe(0);
     expect(editor.canvas.discardActiveObject).toHaveBeenCalled();
+  });
+
+  it('destroy removes canvas and core listeners', () => {
+    const editor = createEditorForCrop();
+    const plugin = new imgtor.plugins.crop(editor, {});
+    plugin.requireFocus();
+
+    plugin.destroy();
+
+    expect(editor.canvas.handlers.get('mouse:down') ?? []).toHaveLength(0);
+    expect(editor.removeEventListener).toHaveBeenCalled();
   });
 });
