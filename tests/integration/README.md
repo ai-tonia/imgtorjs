@@ -1,7 +1,8 @@
 # Integration tests
 
-Add Vitest specs here when a scenario needs **several modules** or **built output** together (e.g. import `build/darkroom.js` with a minimal JSDOM + Fabric stub).
+Vitest specs that load **multiple modules** or the **full ESM entry** (`lib/entry-darkroom.js`) with stubs.
 
-Naming: `*.test.js` so they are picked up by `vitest.config.js` (`tests/**/*.test.js`).
+- **`integration-build-entry.test.js`** — imports the entry bundle chain; asserts `Darkroom` + default plugins + bootstrap.
+- Naming: **`integration-*.test.js`** under this folder.
 
-Until specs exist, CI still runs unit + smoke tests via `npm run test:coverage`.
+Picked up by `vitest.config.js` (`tests/**/*.test.js`). Also run via **`npm run test:unit`** together with `tests/unit/`.

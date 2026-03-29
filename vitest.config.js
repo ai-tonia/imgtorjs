@@ -11,7 +11,10 @@ export default defineConfig({
     include: ['tests/**/*.test.js'],
     coverage: {
       provider: 'v8',
-      include: ['lib/js/**/*.js', 'lib/entry-darkroom.js'],
+      // `lib/entry-darkroom.js` is import-order only; behavior is covered via
+      // `tests/integration/integration-build-entry.test.js` and is omitted here
+      // so thresholds reflect executable library code under `lib/js/`.
+      include: ['lib/js/**/*.js'],
       all: true,
       reporter: ['text', 'json-summary', 'html', 'lcov'],
       reportsDirectory: './coverage',
