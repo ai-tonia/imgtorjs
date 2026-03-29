@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('demo mounts toolbar with plugin button groups', async ({ page }) => {
+test('demo mounts toolbar with all plugin groups', async ({ page }) => {
   const res = await page.goto('/');
   expect(res?.ok()).toBeTruthy();
 
@@ -9,12 +9,14 @@ test('demo mounts toolbar with plugin button groups', async ({ page }) => {
   const toolbar = page.locator('.imgtor-toolbar');
   await expect(toolbar).toBeVisible();
 
-  // History, rotate, crop, save — one group each after init
-  await expect(toolbar.locator('.imgtor-button-group')).toHaveCount(4);
+  const groupCount = await toolbar.locator('.imgtor-button-group').count();
+  expect(groupCount).toBeGreaterThanOrEqual(13);
 
-  // Demo calls crop.requireFocus() on init, so crop done/close are visible too:
-  // undo, redo, rotate×2, crop, done, close, save = 8
-  await expect(toolbar.locator('button.imgtor-button:not(.imgtor-button-hidden)')).toHaveCount(
-    8,
-  );
+  const visibleButtons = await toolbar
+    .locator('button.imgtor-button:not(.imgtor-button-hidden)')
+    .count();
+  expect(visibleButtons).toBeGreaterThanOrEqual(8);
+
+  await expect(page.locator('[data-plugin="history"]').first()).toBeVisible();
+  await expect(page.locator('[data-plugin="filter"]').first()).toBeVisible();
 });

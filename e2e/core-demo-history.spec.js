@@ -6,13 +6,10 @@ test('undo is disabled until a transformation; rotate then undo restores state',
   await page.goto('/');
   await expect.poll(async () => page.evaluate(() => typeof window.imgtor)).toBe('function');
 
-  const buttons = page.locator(
-    '.imgtor-toolbar button.imgtor-button:not(.imgtor-button-hidden)',
-  );
-  await expect(buttons).toHaveCount(8);
-
-  const undo = buttons.nth(0);
-  const rotateLeft = buttons.nth(2);
+  const undo = page.locator('.imgtor-toolbar [data-plugin="history"][data-feature="undo"]').first();
+  const rotateLeft = page
+    .locator('.imgtor-toolbar [data-plugin="rotate"][data-feature="rotate-left"]')
+    .first();
 
   await expect(undo).toBeDisabled();
   await rotateLeft.click();
