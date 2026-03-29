@@ -1,51 +1,14 @@
 /**
- * Integration: full ESM entry (`lib/entry-imgtor.js`) with a minimal global
- * `fabric` stub so plugin modules evaluate under Vitest + happy-dom.
+ * Integration: full ESM entry (`lib/entry-imgtor.js`).
  *
  * @vitest-environment happy-dom
  */
-import { beforeAll, describe, expect, it, vi } from 'vitest';
-
-/** Enough for `imgtor.crop.js` top-level `fabric.util.createClass(fabric.Rect, …)` and sibling plugins. */
-function createMinimalFabricStub() {
-  function Rect() {}
-  Rect.prototype = {};
-
-  return {
-    document: typeof document !== 'undefined' ? document : {},
-    Point: class Point {
-      constructor(x, y) {
-        this.x = x;
-        this.y = y;
-      }
-    },
-    Image: function FabricImageStub() {},
-    Canvas: function FabricCanvasStub() {},
-    Rect,
-    util: {
-      createClass(parent, props) {
-        function Klass() {
-          if (typeof parent === 'function') parent.apply(this, arguments);
-        }
-        Klass.prototype = Object.create(parent?.prototype ?? Object.prototype);
-        Object.assign(Klass.prototype, props);
-        Klass.prototype.callSuper = function callSuper(name, ...args) {
-          const sup = Object.getPrototypeOf(Object.getPrototypeOf(this));
-          const fn = sup?.[name];
-          if (typeof fn === 'function') return fn.apply(this, args);
-        };
-        return Klass;
-      },
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-    },
-  };
-}
+import { beforeAll, describe, expect, it } from 'vitest';
 
 describe('lib/entry-imgtor.js (ESM)', () => {
   beforeAll(async () => {
     document.body.replaceChildren();
-    globalThis.fabric = createMinimalFabricStub();
+    delete globalThis.fabric;
     delete globalThis.imgtor;
     await import('../../lib/entry-imgtor.js');
   });
@@ -58,6 +21,7 @@ describe('lib/entry-imgtor.js (ESM)', () => {
     expect(typeof imgtor.Transformation.extend).toBe('function');
     expect(imgtor.Plugin).toBeDefined();
     expect(typeof imgtor.Plugin.extend).toBe('function');
+    expect(imgtor.CanvasObject).toBeDefined();
 
     for (const name of ['history', 'rotate', 'crop', 'save']) {
       expect(imgtor.plugins).toHaveProperty(name);
@@ -71,19 +35,15 @@ describe('lib/entry-imgtor.js (ESM)', () => {
     expect(document.body.contains(icons)).toBe(true);
   });
 
-  it('exposes CanvasAdapterFabric with layout helpers (migration parity surface)', () => {
-    expect(imgtor.CanvasAdapterFabric).toBeDefined();
-    expect(typeof imgtor.CanvasAdapterFabric.createCanvas).toBe('function');
-    expect(typeof imgtor.CanvasAdapterFabric.createLockedImage).toBe('function');
-    expect(typeof imgtor.CanvasAdapterFabric.layoutSourceImage).toBe('function');
-    expect(typeof imgtor.CanvasAdapterFabric.layoutViewportImage).toBe('function');
-  });
-
   it('exposes CanvasAdapterNative (Canvas 2D implementation)', () => {
     expect(imgtor.CanvasAdapterNative).toBeDefined();
     const el = document.createElement('canvas');
     const c = imgtor.CanvasAdapterNative.createCanvas(el, {});
     expect(c.getElement()).toBe(el);
+  });
+
+  it('does not require a fabric global', () => {
+    expect(globalThis.fabric).toBeUndefined();
   });
 
   it('Utils.computeCropRectFromDrag is available for crop parity', () => {

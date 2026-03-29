@@ -11,15 +11,13 @@ class NoopPlugin {
 }
 
 const OriginalImage = globalThis.Image;
-/** @type {typeof globalThis.fabric | undefined} */
-let originalFabric;
 /** @type {unknown} */
 let originalImgtorPlugins;
 
 beforeAll(async () => {
   globalThis.imgtor = {};
   await import('../../lib/js/core/imgtor.js');
-  await import('../../lib/js/core/canvas-adapter-fabric.js');
+  await import('../../lib/js/core/canvas-adapter-native.js');
   await import('../../lib/js/core/utils.js');
   await import('../../lib/js/core/plugin.js');
   await import('../../lib/js/core/transformation.js');
@@ -28,28 +26,6 @@ beforeAll(async () => {
   originalImgtorPlugins = imgtor.plugins;
   imgtor.plugins = {
     noop: NoopPlugin,
-  };
-
-  originalFabric = globalThis.fabric;
-  globalThis.fabric = {
-    Image: vi.fn(function FabricImageMock() {
-      this.getWidth = vi.fn(() => 100);
-      this.getHeight = vi.fn(() => 80);
-      this.getAngle = vi.fn(() => 0);
-      this.setScaleX = vi.fn();
-      this.setScaleY = vi.fn();
-      this.setCoords = vi.fn();
-      this.remove = vi.fn();
-      this.selectable = true;
-      this.toDataURL = vi.fn(() => 'data:image/png;base64,AAAA');
-    }),
-    Canvas: vi.fn(function FabricCanvasMock(canvasElement) {
-      this.add = vi.fn();
-      this.setWidth = vi.fn();
-      this.setHeight = vi.fn();
-      this.centerObject = vi.fn();
-      this.getElement = vi.fn(() => canvasElement);
-    }),
   };
 
   globalThis.Image = function MockHTMLImage() {
@@ -75,11 +51,6 @@ beforeAll(async () => {
 afterAll(() => {
   imgtor.plugins = originalImgtorPlugins;
   globalThis.Image = OriginalImage;
-  if (originalFabric === undefined) {
-    delete globalThis.fabric;
-  } else {
-    globalThis.fabric = originalFabric;
-  }
 });
 
 function mountImg(id) {
@@ -119,7 +90,7 @@ describe('imgtor constructor', () => {
     expect(dr.originalImageElement).toBe(img);
     expect(dr.canvas).toBeDefined();
     expect(dr.sourceCanvas).toBeDefined();
-    expect(globalThis.fabric.Canvas).toHaveBeenCalled();
+    expect(dr.canvas.getElement()).toBeInstanceOf(HTMLCanvasElement);
     expect(dr.plugins.noop).toBeInstanceOf(NoopPlugin);
     expect(dr.plugins.noop.imgtor).toBe(dr);
 

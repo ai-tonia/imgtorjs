@@ -6,7 +6,7 @@ import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 beforeAll(async () => {
   globalThis.imgtor = {};
   await import('../../lib/js/core/imgtor.js');
-  await import('../../lib/js/core/canvas-adapter-fabric.js');
+  await import('../../lib/js/core/canvas-adapter-native.js');
   await import('../../lib/js/core/utils.js');
   await import('../../lib/js/core/plugin.js');
   await import('../../lib/js/core/transformation.js');

@@ -11,11 +11,9 @@
 npm install imgtor
 ```
 
-The package ships **`build/imgtor.js`** and **`build/imgtor.css`**. The default editor needs **Fabric.js 1.4.x** on the page before **`imgtor.js`**.
+The package ships **`build/imgtor.js`** and **`build/imgtor.css`**. The editor is **Canvas 2D only** — you do **not** load Fabric.js.
 
-**Fabric-free subset:** **`build/imgtor-native.js`** — load **`imgtor.css`** the same way. Use **`adapterKind: 'native'`** and disable crop: **`plugins: { crop: false }`**. Supports **rotate**, **history**, and **save** only (Canvas 2D).
-
-**TypeScript:** ambient types live in **`types/imgtor.d.ts`**. Use `/// <reference types="imgtor" />` (or include that file); the global **`imgtor`** constructor is declared there. Fabric remains `any`-ish in these typings.
+**TypeScript:** ambient types live in **`types/imgtor.d.ts`**. Use `/// <reference types="imgtor" />` (or include that file); the global **`imgtor`** constructor is declared there.
 
 Upstream history: [DarkroomJS](https://github.com/MattKetmo/darkroomjs) by Matthieu Moquet. **Thank you, Matthieu** — your original library was the icebreaker that made browser-side canvas editing approachable for so many of us; **ImgTor** exists to carry that idea forward with a modern toolchain.
 
@@ -33,10 +31,6 @@ The original project this line descends from is discontinued and **no longer mai
 ## Requirements
 
 - **Node.js 22+** and npm
-
-## Fabric.js
-
-The library targets **Fabric.js 1.4.x** (same era as the original canvas editor). The demo loads **`demo/vendor/fabric.js`**. Newer Fabric major versions change APIs widely; upgrading is a separate, breaking effort. See **CONTRIBUTING.md** for maintainer notes.
 
 ## Building
 
@@ -58,7 +52,6 @@ Instantiate the editor with a reference to the image element:
 
 ```html
 <img src="some-image.jpg" id="target" />
-<script src="path/to/fabric.js"></script>
 <script src="path/to/build/imgtor.js"></script>
 <script>
   new imgtor('#target');
@@ -92,11 +85,11 @@ new imgtor('#target', {
 
 ## Why?
 
-It's easy to get a JavaScript snippet to crop an image on a page. If you want rotation or more canvas work, you often build it yourself. This library uses **HTML5 canvas** (via Fabric.js) without jQuery.
+It's easy to get a JavaScript snippet to crop an image on a page. If you want rotation or more canvas work, you often build it yourself. This library uses **HTML5 canvas** (Canvas 2D) without jQuery.
 
 ## The concept
 
-The core turns the target image into a Fabric canvas and an empty toolbar. Features live in plugins; each plugin can add toolbar buttons and behavior.
+The core turns the target image into canvas surfaces and an empty toolbar. Features live in plugins; each plugin can add toolbar buttons and behavior.
 
 ## Contributing
 

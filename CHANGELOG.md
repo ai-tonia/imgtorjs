@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 5.0.0 (2026-03-28)
+
+- **Breaking:** **Fabric.js removed** — single **`build/imgtor.js`** bundle is **Canvas 2D only** (`CanvasAdapterNative`); no **`fabric`** global
+- **Crop:** **`imgtor.CanvasObject`** + native canvas overlay; **`imgtor.crop.js`** no longer uses `fabric.*`
+- **Removed:** **`canvas-adapter-fabric.js`**, **`demo/vendor/fabric.js`**, **`build/imgtor-native.js`** / **`lib/entry-imgtor-native.js`** / **`vite.config.native.js`**
+- **Core:** default runtime is native adapter only; **`adapterKind`** is effectively fixed to **`native`**
+- **Tests / e2e:** integration entry test without Fabric stub; **`core-demo-editor.spec.js`** asserts **`fabric` undefined**; **`core-demo-crop.spec.js`** crop smoke
+
 ## 4.7.0 (2026-03-29)
 
 - **Native subset:** **`lib/js/core/canvas-adapter-native.js`** — Canvas 2D **`CanvasAdapterNative`** (no Fabric)

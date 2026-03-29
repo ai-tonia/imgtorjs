@@ -5,14 +5,10 @@ Central entry point for maintainer-facing design and migration notes (not npm pa
 | Document | Purpose |
 | -------- | ------- |
 | [**PLUGIN_API.md**](./PLUGIN_API.md) | Plugin registration, **`initialize` / `destroy`**, toolbar options, error isolation, TypeScript surface. |
-| [**MIGRATION_CANVAS_ADAPTER.md**](./MIGRATION_CANVAS_ADAPTER.md) | Phased plan to introduce **CanvasAdapter**, decouple from Fabric, optional native path. |
-| [**FABRIC_UPGRADE.md**](./FABRIC_UPGRADE.md) | Playbook for upgrading the vendored Fabric.js major version. |
+| [**MIGRATION_CANVAS_ADAPTER.md**](./MIGRATION_CANVAS_ADAPTER.md) | Historical phased plan (Fabric → adapter); v5 completes the native default. |
+| [**FABRIC_UPGRADE.md**](./FABRIC_UPGRADE.md) | Historical note — Fabric is not used in v5+. |
 
-## Suggested PR sequence (architecture work)
+## Architecture (current)
 
-1. **Plugin hardening** (lifecycle, isolation, types, tests) — merged as v4.1.x.
-2. **Adapter scaffold + core wiring** (Phase A) — `CanvasAdapterFabric` + core use for canvas/image construction; no plugin behavior change.
-3. **Rotate / history / save** adapter-agnostic cleanup (Phase B).
-4. **Crop** pure-logic extraction (Phase B).
-5. **Native adapter** prototype + parity gates (Phase C).
-6. **Default switch** only after acceptance criteria (Phase D).
+- **Runtime:** **`imgtor.CanvasAdapterNative`** — viewport + source canvases, **`imgtor.CanvasObject`** for the crop overlay.
+- **Plugins:** same registration model as before; built-ins use DOM + canvas wrapper events only.

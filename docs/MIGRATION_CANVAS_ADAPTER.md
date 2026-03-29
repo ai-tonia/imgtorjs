@@ -1,5 +1,7 @@
 # Soft migration: Fabric.js → CanvasAdapter
 
+**Status (v5+):** The default editor is **Fabric-free** (`CanvasAdapterNative` only). The sections below describe how we got here; they are **not** a future roadmap unless you fork an older line.
+
 This plan matches the **plugin hardening** in [`PLUGIN_API.md`](./PLUGIN_API.md): public **`imgtor`** API and plugin **`initialize` / `destroy`** stay stable while internals move behind an adapter.
 
 ## Goals

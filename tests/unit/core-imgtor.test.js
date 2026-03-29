@@ -6,7 +6,7 @@ import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 beforeAll(async () => {
   globalThis.imgtor = {};
   await import('../../lib/js/core/imgtor.js');
-  await import('../../lib/js/core/canvas-adapter-fabric.js');
+  await import('../../lib/js/core/canvas-adapter-native.js');
   await import('../../lib/js/core/utils.js');
   await import('../../lib/js/core/plugin.js');
   await import('../../lib/js/core/transformation.js');
@@ -14,20 +14,15 @@ beforeAll(async () => {
 });
 
 function baseInstance() {
-  const canvasEl = document.createElement('div');
+  const viewportEl = document.createElement('canvas');
+  const sourceEl = document.createElement('canvas');
   const d = Object.create(imgtor.prototype);
-  d._canvasAdapter = imgtor.CanvasAdapterFabric;
+  d._canvasAdapter = imgtor.CanvasAdapterNative;
   d.options = imgtor.Utils.extend({}, imgtor.prototype.defaults);
   d.transformations = [];
   d.plugins = {};
-  d.canvas = {
-    getElement: () => canvasEl,
-    add: vi.fn(),
-    setWidth: vi.fn(),
-    setHeight: vi.fn(),
-    centerObject: vi.fn(),
-  };
-  d.sourceCanvas = {};
+  d.canvas = imgtor.CanvasAdapterNative.createCanvas(viewportEl, { backgroundColor: '#fff' });
+  d.sourceCanvas = imgtor.CanvasAdapterNative.createCanvas(sourceEl, { backgroundColor: '#fff' });
   d.sourceImage = {
     toDataURL: vi.fn(() => 'data:image/png;base64,AAAA'),
     remove: vi.fn(),
@@ -68,7 +63,7 @@ describe('imgtor core (prototype methods)', () => {
     d.addEventListener('core:transformation', handler);
     d.dispatchEvent('core:transformation');
     expect(handler).toHaveBeenCalledTimes(1);
-    expect(el).toBeInstanceOf(HTMLDivElement);
+    expect(el).toBeInstanceOf(HTMLCanvasElement);
   });
 
   it('_popTransformation with empty list dispatches reinitialized and refreshes', () => {
@@ -165,31 +160,15 @@ describe('imgtor core (prototype methods)', () => {
 
 describe('imgtor refresh, _replaceCurrentImage, reinitializeImage, _popTransformation (queue)', () => {
   const OriginalImage = globalThis.Image;
-  /** @type {typeof globalThis.fabric | undefined} */
-  let originalFabric;
+
+  function lockedImageFromNatural(w, h) {
+    const el = document.createElement('img');
+    Object.defineProperty(el, 'naturalWidth', { value: w, configurable: true });
+    Object.defineProperty(el, 'naturalHeight', { value: h, configurable: true });
+    return imgtor.CanvasAdapterNative.createLockedImage(el);
+  }
 
   beforeAll(() => {
-    originalFabric = globalThis.fabric;
-    globalThis.fabric = {
-      Image: vi.fn(function FabricImageMock() {
-        this.getWidth = vi.fn(() => 100);
-        this.getHeight = vi.fn(() => 80);
-        this.getAngle = vi.fn(() => 0);
-        this.setScaleX = vi.fn();
-        this.setScaleY = vi.fn();
-        this.setCoords = vi.fn();
-        this.remove = vi.fn();
-        this.selectable = true;
-      }),
-      Canvas: vi.fn(function FabricCanvasMock() {
-        this.add = vi.fn();
-        this.setWidth = vi.fn();
-        this.setHeight = vi.fn();
-        this.centerObject = vi.fn();
-        this.getElement = vi.fn(() => document.createElement('div'));
-      }),
-    };
-
     globalThis.Image = function MockHTMLImage() {
       this.onload = null;
       const self = this;
@@ -212,91 +191,74 @@ describe('imgtor refresh, _replaceCurrentImage, reinitializeImage, _popTransform
 
   afterAll(() => {
     globalThis.Image = OriginalImage;
-    if (originalFabric === undefined) {
-      delete globalThis.fabric;
-    } else {
-      globalThis.fabric = originalFabric;
-    }
   });
 
-  it('refresh decodes source data URL then replaces fabric image and invokes next', async () => {
+  it('refresh decodes source data URL then wraps clone and invokes next', async () => {
     const d = baseInstance();
     d.sourceImage.toDataURL.mockReturnValue('data:image/png;base64,xx');
     const next = vi.fn();
+    const spy = vi.spyOn(imgtor.CanvasAdapterNative, 'createLockedImage');
 
     d.refresh(next);
 
     await vi.waitFor(() => expect(next).toHaveBeenCalledTimes(1));
-    expect(globalThis.fabric.Image).toHaveBeenCalledTimes(1);
-    const clone = globalThis.fabric.Image.mock.calls[0][0];
+    expect(spy).toHaveBeenCalledTimes(1);
+    const clone = spy.mock.calls[0][0];
     expect(clone).toBeInstanceOf(globalThis.Image);
-    expect(d.canvas.add).toHaveBeenCalledWith(d.image);
     expect(d.image.selectable).toBe(false);
+    spy.mockRestore();
   });
 
   it('_replaceCurrentImage removes prior image, fits canvas, and centers new image', () => {
     const d = baseInstance();
     const oldImg = d.image;
     oldImg.remove = vi.fn();
-    const newImg = {
-      getWidth: () => 100,
-      getHeight: () => 80,
-      getAngle: () => 0,
-      setScaleX: vi.fn(),
-      setScaleY: vi.fn(),
-      setCoords: vi.fn(),
-      remove: vi.fn(),
-      selectable: true,
-    };
+    const el = document.createElement('img');
+    Object.defineProperty(el, 'naturalWidth', { value: 100, configurable: true });
+    Object.defineProperty(el, 'naturalHeight', { value: 80, configurable: true });
+    const newImg = imgtor.CanvasAdapterNative.createLockedImage(el);
+    newImg.remove = vi.fn();
+    newImg.selectable = true;
+    const spy = vi.spyOn(imgtor.CanvasAdapterNative, 'layoutViewportImage');
 
     d._replaceCurrentImage(newImg);
 
     expect(oldImg.remove).toHaveBeenCalledTimes(1);
     expect(d.image).toBe(newImg);
     expect(newImg.selectable).toBe(false);
-    expect(d.canvas.add).toHaveBeenCalledWith(newImg);
-    expect(d.canvas.setWidth).toHaveBeenCalled();
-    expect(d.canvas.setHeight).toHaveBeenCalled();
-    expect(d.canvas.centerObject).toHaveBeenCalledWith(newImg);
-    expect(newImg.setCoords).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalled();
+    const args = spy.mock.calls[0];
+    expect(args[0]).toBe(d.canvas);
+    expect(args[1]).toBe(newImg);
+    spy.mockRestore();
   });
 
   it('_replaceCurrentImage applies maxWidth scaling to canvas dimensions', () => {
     const d = baseInstance();
     d.options.maxWidth = 50;
     d.image = null;
-    const newImg = {
-      getWidth: () => 100,
-      getHeight: () => 80,
-      getAngle: () => 0,
-      setScaleX: vi.fn(),
-      setScaleY: vi.fn(),
-      setCoords: vi.fn(),
-    };
+    const newImg = lockedImageFromNatural(100, 80);
+    const spy = vi.spyOn(imgtor.CanvasAdapterNative, 'layoutViewportImage');
 
     d._replaceCurrentImage(newImg);
 
-    expect(d.canvas.setWidth.mock.calls[0][0]).toBe(50);
-    expect(d.canvas.setHeight.mock.calls[0][0]).toBe(40);
+    expect(spy.mock.calls[0][2]).toBe(50);
+    expect(spy.mock.calls[0][3]).toBe(40);
+    spy.mockRestore();
   });
 
   it('_replaceCurrentImage applies maxHeight when maxWidth does not bind', () => {
     const d = baseInstance();
     d.options.maxHeight = 40;
     d.image = null;
-    const newImg = {
-      getWidth: () => 100,
-      getHeight: () => 80,
-      getAngle: () => 0,
-      setScaleX: vi.fn(),
-      setScaleY: vi.fn(),
-      setCoords: vi.fn(),
-    };
+    const newImg = lockedImageFromNatural(100, 80);
+    const spy = vi.spyOn(imgtor.CanvasAdapterNative, 'layoutViewportImage');
 
     d._replaceCurrentImage(newImg);
 
-    expect(d.canvas.setHeight.mock.calls[0][0]).toBe(40);
-    expect(d.canvas.setWidth.mock.calls[0][0]).toBe(50);
+    expect(spy.mock.calls[0][3]).toBe(40);
+    expect(spy.mock.calls[0][2]).toBe(50);
+    spy.mockRestore();
   });
 
   it('_replaceCurrentImage uses min of maxWidth and maxHeight when both bind', () => {
@@ -304,57 +266,42 @@ describe('imgtor refresh, _replaceCurrentImage, reinitializeImage, _popTransform
     d.options.maxWidth = 50;
     d.options.maxHeight = 30;
     d.image = null;
-    const newImg = {
-      getWidth: () => 100,
-      getHeight: () => 80,
-      getAngle: () => 0,
-      setScaleX: vi.fn(),
-      setScaleY: vi.fn(),
-      setCoords: vi.fn(),
-    };
+    const newImg = lockedImageFromNatural(100, 80);
+    const spy = vi.spyOn(imgtor.CanvasAdapterNative, 'layoutViewportImage');
 
     d._replaceCurrentImage(newImg);
 
-    expect(d.canvas.setWidth.mock.calls[0][0]).toBe(37.5);
-    expect(d.canvas.setHeight.mock.calls[0][0]).toBe(30);
+    expect(spy.mock.calls[0][2]).toBe(37.5);
+    expect(spy.mock.calls[0][3]).toBe(30);
+    spy.mockRestore();
   });
 
   it('_replaceCurrentImage applies minWidth upscaling', () => {
     const d = baseInstance();
     d.options.minWidth = 200;
     d.image = null;
-    const newImg = {
-      getWidth: () => 100,
-      getHeight: () => 80,
-      getAngle: () => 0,
-      setScaleX: vi.fn(),
-      setScaleY: vi.fn(),
-      setCoords: vi.fn(),
-    };
+    const newImg = lockedImageFromNatural(100, 80);
+    const spy = vi.spyOn(imgtor.CanvasAdapterNative, 'layoutViewportImage');
 
     d._replaceCurrentImage(newImg);
 
-    expect(d.canvas.setWidth.mock.calls[0][0]).toBe(200);
-    expect(d.canvas.setHeight.mock.calls[0][0]).toBe(160);
+    expect(spy.mock.calls[0][2]).toBe(200);
+    expect(spy.mock.calls[0][3]).toBe(160);
+    spy.mockRestore();
   });
 
   it('_replaceCurrentImage applies minHeight upscaling when minWidth does not bind', () => {
     const d = baseInstance();
     d.options.minHeight = 160;
     d.image = null;
-    const newImg = {
-      getWidth: () => 100,
-      getHeight: () => 80,
-      getAngle: () => 0,
-      setScaleX: vi.fn(),
-      setScaleY: vi.fn(),
-      setCoords: vi.fn(),
-    };
+    const newImg = lockedImageFromNatural(100, 80);
+    const spy = vi.spyOn(imgtor.CanvasAdapterNative, 'layoutViewportImage');
 
     d._replaceCurrentImage(newImg);
 
-    expect(d.canvas.setHeight.mock.calls[0][0]).toBe(160);
-    expect(d.canvas.setWidth.mock.calls[0][0]).toBe(200);
+    expect(spy.mock.calls[0][3]).toBe(160);
+    expect(spy.mock.calls[0][2]).toBe(200);
+    spy.mockRestore();
   });
 
   it('_replaceCurrentImage uses max of minWidth and minHeight scales when both bind', () => {
@@ -362,38 +309,28 @@ describe('imgtor refresh, _replaceCurrentImage, reinitializeImage, _popTransform
     d.options.minWidth = 150;
     d.options.minHeight = 200;
     d.image = null;
-    const newImg = {
-      getWidth: () => 100,
-      getHeight: () => 80,
-      getAngle: () => 0,
-      setScaleX: vi.fn(),
-      setScaleY: vi.fn(),
-      setCoords: vi.fn(),
-    };
+    const newImg = lockedImageFromNatural(100, 80);
+    const spy = vi.spyOn(imgtor.CanvasAdapterNative, 'layoutViewportImage');
 
     d._replaceCurrentImage(newImg);
 
-    expect(d.canvas.setHeight.mock.calls[0][0]).toBe(200);
-    expect(d.canvas.setWidth.mock.calls[0][0]).toBe(250);
+    expect(spy.mock.calls[0][3]).toBe(200);
+    expect(spy.mock.calls[0][2]).toBe(250);
+    spy.mockRestore();
   });
 
   it('_replaceCurrentImage widens canvas when ratio option makes height the driver', () => {
     const d = baseInstance();
     d.options.ratio = 2;
     d.image = null;
-    const newImg = {
-      getWidth: () => 100,
-      getHeight: () => 100,
-      getAngle: () => 0,
-      setScaleX: vi.fn(),
-      setScaleY: vi.fn(),
-      setCoords: vi.fn(),
-    };
+    const newImg = lockedImageFromNatural(100, 100);
+    const spy = vi.spyOn(imgtor.CanvasAdapterNative, 'layoutViewportImage');
 
     d._replaceCurrentImage(newImg);
 
-    expect(d.canvas.setWidth.mock.calls[0][0]).toBe(200);
-    expect(d.canvas.setHeight.mock.calls[0][0]).toBe(100);
+    expect(spy.mock.calls[0][2]).toBe(200);
+    expect(spy.mock.calls[0][3]).toBe(100);
+    spy.mockRestore();
   });
 
   it('reinitializeImage removes source, re-initializes, and passes a slice of transformations to _popTransformation', () => {
