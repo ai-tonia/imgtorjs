@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
-- **tests:** rename Vitest and Playwright files to **`imgtor.*`** prefix; shared helper **`tests/imgtor.ns.js`**
+- **tests:** rename Vitest and Playwright files to **`imgtor.*`** prefix (filenames only; suite titles unchanged)
 
 ## 3.1.2 (2026-03-28)
 

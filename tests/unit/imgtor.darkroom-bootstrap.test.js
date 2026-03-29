@@ -2,9 +2,8 @@
  * @vitest-environment happy-dom
  */
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { imgtor } from '../imgtor.ns.js';
 
-describe(imgtor('bootstrap (icon sprite host)'), () => {
+describe('bootstrap (icon sprite host)', () => {
   beforeEach(() => {
     document.body.replaceChildren();
     vi.resetModules();
