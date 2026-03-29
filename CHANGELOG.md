@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- **tests:** file names use **`core-`**, **`plugin-`**, **`util-`**, **`core-build-`**, and **`core-demo-`** prefixes so related specs group in the tree
+
 ## 3.1.2 (2026-03-28)
 
 - **npm:** `keywords` and `bugs` URL for discoverability
