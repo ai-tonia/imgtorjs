@@ -1,5 +1,5 @@
 /**
- * Minify `lib/css/darkroom.css` → `build/darkroom.css` via Lightning CSS (Rust).
+ * Minify `lib/css/imgtor.css` → `build/imgtor.css` via Lightning CSS (Rust).
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -8,8 +8,8 @@ import { transform } from 'lightningcss';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
-const inPath = path.join(root, 'lib', 'css', 'darkroom.css');
-const outPath = path.join(root, 'build', 'darkroom.css');
+const inPath = path.join(root, 'lib', 'css', 'imgtor.css');
+const outPath = path.join(root, 'build', 'imgtor.css');
 
 const source = fs.readFileSync(inPath);
 const { code } = transform({

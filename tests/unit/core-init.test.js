@@ -5,7 +5,7 @@ import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
 class NoopPlugin {
   constructor(dr) {
-    this.darkroom = dr;
+    this.imgtor = dr;
   }
   initialize() {}
 }
@@ -14,18 +14,18 @@ const OriginalImage = globalThis.Image;
 /** @type {typeof globalThis.fabric | undefined} */
 let originalFabric;
 /** @type {unknown} */
-let originalDarkroomPlugins;
+let originalImgtorPlugins;
 
 beforeAll(async () => {
-  globalThis.Darkroom = {};
-  await import('../../lib/js/core/darkroom.js');
+  globalThis.imgtor = {};
+  await import('../../lib/js/core/imgtor.js');
   await import('../../lib/js/core/utils.js');
   await import('../../lib/js/core/plugin.js');
   await import('../../lib/js/core/transformation.js');
   await import('../../lib/js/core/ui.js');
 
-  originalDarkroomPlugins = Darkroom.plugins;
-  Darkroom.plugins = {
+  originalImgtorPlugins = imgtor.plugins;
+  imgtor.plugins = {
     noop: NoopPlugin,
   };
 
@@ -72,7 +72,7 @@ beforeAll(async () => {
 });
 
 afterAll(() => {
-  Darkroom.plugins = originalDarkroomPlugins;
+  imgtor.plugins = originalImgtorPlugins;
   globalThis.Image = OriginalImage;
   if (originalFabric === undefined) {
     delete globalThis.fabric;
@@ -91,45 +91,45 @@ function mountImg(id) {
   return { wrap, img };
 }
 
-describe('Darkroom constructor', () => {
+describe('imgtor constructor', () => {
   it('returns early without throwing when element is null', () => {
-    expect(() => new Darkroom(null)).not.toThrow();
-    const dr = new Darkroom(null);
+    expect(() => new imgtor(null)).not.toThrow();
+    const dr = new imgtor(null);
     expect(dr.containerElement).toBeNull();
   });
 
   it('returns early without throwing when selector matches nothing', () => {
-    expect(() => new Darkroom('#__darkroom_init_missing__')).not.toThrow();
-    const dr = new Darkroom('#__darkroom_init_missing__');
+    expect(() => new imgtor('#__imgtor_init_missing__')).not.toThrow();
+    const dr = new imgtor('#__imgtor_init_missing__');
     expect(dr.containerElement).toBeNull();
   });
 
   it('initializes from CSS selector: initialize callback, DOM, canvases, plugins', async () => {
-    const { wrap, img } = mountImg('darkroom-init-sel');
+    const { wrap, img } = mountImg('imgtor-init-sel');
     const initialize = vi.fn();
 
-    const dr = new Darkroom('#darkroom-init-sel', { initialize });
+    const dr = new imgtor('#imgtor-init-sel', { initialize });
 
     await vi.waitFor(() => expect(initialize).toHaveBeenCalledTimes(1));
     expect(initialize).toHaveBeenCalledWith();
 
     expect(dr.containerElement).toBeTruthy();
-    expect(dr.containerElement.className).toBe('darkroom-container');
+    expect(dr.containerElement.className).toBe('imgtor-container');
     expect(dr.originalImageElement).toBe(img);
     expect(dr.canvas).toBeDefined();
     expect(dr.sourceCanvas).toBeDefined();
     expect(globalThis.fabric.Canvas).toHaveBeenCalled();
     expect(dr.plugins.noop).toBeInstanceOf(NoopPlugin);
-    expect(dr.plugins.noop.darkroom).toBe(dr);
+    expect(dr.plugins.noop.imgtor).toBe(dr);
 
     wrap.remove();
   });
 
   it('initializes from img element reference the same way', async () => {
-    const { wrap, img } = mountImg('darkroom-init-el');
+    const { wrap, img } = mountImg('imgtor-init-el');
     const initialize = vi.fn();
 
-    const dr = new Darkroom(img, { initialize });
+    const dr = new imgtor(img, { initialize });
 
     await vi.waitFor(() => expect(initialize).toHaveBeenCalledTimes(1));
 

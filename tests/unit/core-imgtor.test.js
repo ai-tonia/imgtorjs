@@ -4,8 +4,8 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
 beforeAll(async () => {
-  globalThis.Darkroom = {};
-  await import('../../lib/js/core/darkroom.js');
+  globalThis.imgtor = {};
+  await import('../../lib/js/core/imgtor.js');
   await import('../../lib/js/core/utils.js');
   await import('../../lib/js/core/plugin.js');
   await import('../../lib/js/core/transformation.js');
@@ -14,8 +14,8 @@ beforeAll(async () => {
 
 function baseInstance() {
   const canvasEl = document.createElement('div');
-  const d = Object.create(Darkroom.prototype);
-  d.options = Darkroom.Utils.extend({}, Darkroom.prototype.defaults);
+  const d = Object.create(imgtor.prototype);
+  d.options = imgtor.Utils.extend({}, imgtor.prototype.defaults);
   d.transformations = [];
   d.plugins = {};
   d.canvas = {
@@ -41,7 +41,7 @@ function baseInstance() {
   return d;
 }
 
-describe('Darkroom core (prototype methods)', () => {
+describe('imgtor core (prototype methods)', () => {
   it('applyTransformation pushes and invokes transformation with canvases and callback', () => {
     const d = baseInstance();
     const transform = {
@@ -84,7 +84,7 @@ describe('Darkroom core (prototype methods)', () => {
     const d = baseInstance();
     d.options.plugins = { a: false, b: {} };
     const PluginB = vi.fn(function PluginB(dr, opts) {
-      this.darkroom = dr;
+      this.imgtor = dr;
       this.opts = opts;
     });
 
@@ -125,7 +125,7 @@ describe('Darkroom core (prototype methods)', () => {
   });
 });
 
-describe('Darkroom refresh, _replaceCurrentImage, reinitializeImage, _popTransformation (queue)', () => {
+describe('imgtor refresh, _replaceCurrentImage, reinitializeImage, _popTransformation (queue)', () => {
   const OriginalImage = globalThis.Image;
   /** @type {typeof globalThis.fabric | undefined} */
   let originalFabric;

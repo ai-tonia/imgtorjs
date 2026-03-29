@@ -1,12 +1,12 @@
 /**
- * Integration: full ESM entry (`lib/entry-darkroom.js`) with a minimal global
+ * Integration: full ESM entry (`lib/entry-imgtor.js`) with a minimal global
  * `fabric` stub so plugin modules evaluate under Vitest + happy-dom.
  *
  * @vitest-environment happy-dom
  */
 import { beforeAll, describe, expect, it, vi } from 'vitest';
 
-/** Enough for `darkroom.crop.js` top-level `fabric.util.createClass(fabric.Rect, …)` and sibling plugins. */
+/** Enough for `imgtor.crop.js` top-level `fabric.util.createClass(fabric.Rect, …)` and sibling plugins. */
 function createMinimalFabricStub() {
   function Rect() {}
   Rect.prototype = {};
@@ -42,31 +42,34 @@ function createMinimalFabricStub() {
   };
 }
 
-describe('lib/entry-darkroom.js (ESM)', () => {
+describe('lib/entry-imgtor.js (ESM)', () => {
   beforeAll(async () => {
     document.body.replaceChildren();
     globalThis.fabric = createMinimalFabricStub();
-    delete globalThis.Darkroom;
-    await import('../../lib/entry-darkroom.js');
+    delete globalThis.imgtor;
+    delete globalThis.ImgTor;
+    await import('../../lib/entry-imgtor.js');
   });
 
-  it('exposes Darkroom with core namespaces and default plugin constructors', () => {
-    expect(typeof Darkroom).toBe('function');
-    expect(Darkroom.Utils).toBeDefined();
-    expect(Darkroom.UI).toBeDefined();
-    expect(Darkroom.Transformation).toBeDefined();
-    expect(typeof Darkroom.Transformation.extend).toBe('function');
-    expect(Darkroom.Plugin).toBeDefined();
-    expect(typeof Darkroom.Plugin.extend).toBe('function');
+  it('exposes imgtor with core namespaces and default plugin constructors', () => {
+    expect(typeof imgtor).toBe('function');
+    expect(typeof globalThis.ImgTor).toBe('function');
+    expect(globalThis.ImgTor).toBe(imgtor);
+    expect(imgtor.Utils).toBeDefined();
+    expect(imgtor.UI).toBeDefined();
+    expect(imgtor.Transformation).toBeDefined();
+    expect(typeof imgtor.Transformation.extend).toBe('function');
+    expect(imgtor.Plugin).toBeDefined();
+    expect(typeof imgtor.Plugin.extend).toBe('function');
 
     for (const name of ['history', 'rotate', 'crop', 'save']) {
-      expect(Darkroom.plugins).toHaveProperty(name);
-      expect(typeof Darkroom.plugins[name]).toBe('function');
+      expect(imgtor.plugins).toHaveProperty(name);
+      expect(typeof imgtor.plugins[name]).toBe('function');
     }
   });
 
   it('runs bootstrap from the entry chain (icon host)', () => {
-    const icons = document.getElementById('darkroom-icons');
+    const icons = document.getElementById('imgtor-icons');
     expect(icons).toBeTruthy();
     expect(document.body.contains(icons)).toBe(true);
   });

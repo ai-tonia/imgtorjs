@@ -22,7 +22,7 @@ export default [
       globals: {
         ...globals.browser,
         ImgTor: 'readonly',
-        Darkroom: 'readonly',
+        imgtor: 'readonly',
       },
     },
   },
@@ -33,7 +33,7 @@ export default [
       globals: {
         ...globals.browser,
         fabric: 'readonly',
-        Darkroom: 'writable',
+        imgtor: 'writable',
       },
     },
     rules: {

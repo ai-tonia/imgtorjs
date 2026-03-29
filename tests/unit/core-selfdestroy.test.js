@@ -4,15 +4,15 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
 beforeAll(async () => {
-  globalThis.Darkroom = {};
-  await import('../../lib/js/core/darkroom.js');
+  globalThis.imgtor = {};
+  await import('../../lib/js/core/imgtor.js');
   await import('../../lib/js/core/utils.js');
   await import('../../lib/js/core/plugin.js');
   await import('../../lib/js/core/transformation.js');
   await import('../../lib/js/core/ui.js');
 });
 
-describe('Darkroom.prototype.selfDestroy', () => {
+describe('imgtor.prototype.selfDestroy', () => {
   const OriginalImage = globalThis.Image;
 
   beforeAll(() => {
@@ -61,7 +61,7 @@ describe('Darkroom.prototype.selfDestroy', () => {
     parent.appendChild(container);
     const replaceChildSpy = vi.spyOn(parent, 'replaceChild');
 
-    const d = Object.create(Darkroom.prototype);
+    const d = Object.create(imgtor.prototype);
     d.containerElement = container;
     d.sourceImage = {
       toDataURL: vi.fn(() => dataUrl),

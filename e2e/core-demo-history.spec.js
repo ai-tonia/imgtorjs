@@ -7,7 +7,7 @@ test('undo is disabled until a transformation; rotate then undo restores state',
   await expect.poll(async () => page.evaluate(() => typeof window.ImgTor)).toBe('function');
 
   const buttons = page.locator(
-    '.darkroom-toolbar button.darkroom-button:not(.darkroom-button-hidden)',
+    '.imgtor-toolbar button.imgtor-button:not(.imgtor-button-hidden)',
   );
   await expect(buttons).toHaveCount(8);
 

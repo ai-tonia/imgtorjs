@@ -6,20 +6,20 @@ import { beforeAll, describe, expect, it, vi } from 'vitest';
 let Rotation;
 
 beforeAll(async () => {
-  globalThis.Darkroom = { plugins: [] };
+  globalThis.imgtor = { plugins: [] };
   await import('../../lib/js/core/utils.js');
   await import('../../lib/js/core/plugin.js');
   await import('../../lib/js/core/transformation.js');
   await import('../../lib/js/core/ui.js');
-  const extendSpy = vi.spyOn(Darkroom.Transformation, 'extend');
-  await import('../../lib/js/plugins/darkroom.rotate.js');
+  const extendSpy = vi.spyOn(imgtor.Transformation, 'extend');
+  await import('../../lib/js/plugins/imgtor.rotate.js');
   Rotation = extendSpy.mock.results[0].value;
   extendSpy.mockRestore();
 });
 
 describe('rotate plugin', () => {
-  it('registers on Darkroom.plugins.rotate', () => {
-    expect(Darkroom.plugins.rotate).toBeDefined();
+  it('registers on imgtor.plugins.rotate', () => {
+    expect(imgtor.plugins.rotate).toBeDefined();
   });
 
   it('Rotation.applyTransformation updates angle, canvas, and calls next', () => {
@@ -57,11 +57,11 @@ describe('rotate plugin', () => {
   it('left and right buttons call applyTransformation with Rotation instances', () => {
     const applyTransformation = vi.fn();
     const toolbarHost = document.createElement('div');
-    const darkroom = {
-      toolbar: new Darkroom.UI.Toolbar(toolbarHost),
+    const editor = {
+      toolbar: new imgtor.UI.Toolbar(toolbarHost),
       applyTransformation,
     };
-    new Darkroom.plugins.rotate(darkroom, {});
+    new imgtor.plugins.rotate(editor, {});
 
     const buttons = toolbarHost.querySelectorAll('button');
     expect(buttons.length).toBe(2);

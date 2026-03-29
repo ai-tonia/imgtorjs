@@ -9,9 +9,9 @@ describe('bootstrap (icon sprite host)', () => {
     vi.resetModules();
   });
 
-  it('injects #darkroom-icons with build placeholder markup', async () => {
+  it('injects #imgtor-icons with build placeholder markup', async () => {
     await import('../../lib/js/core/bootstrap.js');
-    const el = document.getElementById('darkroom-icons');
+    const el = document.getElementById('imgtor-icons');
     expect(el).toBeTruthy();
     expect(el.innerHTML).toContain('inject:svg');
     expect(document.body.contains(el)).toBe(true);
@@ -19,7 +19,7 @@ describe('bootstrap (icon sprite host)', () => {
 
   it('uses hidden zero-size positioning', async () => {
     await import('../../lib/js/core/bootstrap.js');
-    const el = document.getElementById('darkroom-icons');
+    const el = document.getElementById('imgtor-icons');
     expect(el.style.visibility).toBe('hidden');
     expect(el.style.position).toBe('absolute');
   });

@@ -15,8 +15,8 @@ test('demo can instantiate ImgTor on #target without console errors', async ({ p
 
   await expect.poll(async () => page.evaluate(() => typeof window.ImgTor)).toBe('function');
 
-  await expect(page.locator('.darkroom-container').first()).toBeVisible({ timeout: 15_000 });
-  await expect(page.locator('.darkroom-toolbar').first()).toBeVisible({ timeout: 15_000 });
+  await expect(page.locator('.imgtor-container').first()).toBeVisible({ timeout: 15_000 });
+  await expect(page.locator('.imgtor-toolbar').first()).toBeVisible({ timeout: 15_000 });
 
   await page.evaluate(() => {
     new ImgTor('#target', {
@@ -30,7 +30,7 @@ test('demo can instantiate ImgTor on #target without console errors', async ({ p
   });
 
   await expect
-    .poll(async () => page.locator('.darkroom-container').count(), { timeout: 12_000 })
+    .poll(async () => page.locator('.imgtor-container').count(), { timeout: 12_000 })
     .toBeGreaterThanOrEqual(2);
 
   expect(errors, errors.join('\n')).toEqual([]);

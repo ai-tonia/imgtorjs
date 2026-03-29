@@ -11,7 +11,7 @@ export default defineConfig({
     include: ['tests/**/*.test.js'],
     coverage: {
       provider: 'v8',
-      // `lib/entry-darkroom.js` is import-order only; behavior is covered via
+      // `lib/entry-imgtor.js` is import-order only; behavior is covered via
       // `tests/integration/integration-build-entry.test.js` and is omitted here
       // so thresholds reflect executable library code under `lib/js/`.
       include: ['lib/js/**/*.js'],

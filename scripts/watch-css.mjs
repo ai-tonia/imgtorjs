@@ -1,5 +1,5 @@
 /**
- * Watch `lib/css/darkroom.css` and rebuild `build/darkroom.css`.
+ * Watch `lib/css/imgtor.css` and rebuild `build/imgtor.css`.
  */
 import { spawn } from 'node:child_process';
 import fs from 'node:fs';
@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
-const cssPath = path.join(root, 'lib', 'css', 'darkroom.css');
+const cssPath = path.join(root, 'lib', 'css', 'imgtor.css');
 const buildScript = path.join(__dirname, 'build-css.mjs');
 
 function runBuild() {
@@ -18,5 +18,5 @@ function runBuild() {
 
 runBuild();
 fs.watch(path.dirname(cssPath), { persistent: true }, (_event, filename) => {
-  if (filename === 'darkroom.css') runBuild();
+  if (filename === 'imgtor.css') runBuild();
 });
