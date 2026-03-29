@@ -1,7 +1,7 @@
 {
   "name": "imgtor",
   "description": "Extensible image editing tool via HTML canvas (ImgTor fork)",
-  "version": "4.7.0",
+  "version": "5.0.0",
   "license": "MIT",
   "type": "module",
   "engines": {
@@ -18,7 +18,6 @@
   "keywords": [
     "canvas",
     "crop",
-    "fabric",
     "image",
     "image-editor",
     "imgtor",
@@ -34,13 +33,11 @@
       "default": "./build/imgtor.js"
     },
     "./imgtor.js": "./build/imgtor.js",
-    "./imgtor-native.js": "./build/imgtor-native.js",
     "./imgtor.css": "./build/imgtor.css",
     "./package.json": "./package.json"
   },
   "files": [
     "build/imgtor.js",
-    "build/imgtor-native.js",
     "build/imgtor.css",
     "types/imgtor.d.ts",
     "README.md",
@@ -66,7 +63,7 @@
     "vitest": "^4.1.2"
   },
   "scripts": {
-    "build:js": "vite build && vite build --config vite.config.native.js",
+    "build:js": "vite build",
     "build:css": "node scripts/build-css.mjs",
     "build": "npm run build:js && npm run build:css",
     "sync:demo": "node scripts/sync-demo-build.mjs",

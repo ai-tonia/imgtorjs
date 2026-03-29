@@ -11,7 +11,6 @@ export default [
       'scripts/**/*.mjs',
       'playwright.config.js',
       'vite.config.js',
-      'vite.config.native.js',
       'vite.demo.config.js',
       'vite.icons-plugin.js',
     ],
@@ -38,7 +37,6 @@ export default [
       sourceType: 'module',
       globals: {
         ...globals.browser,
-        fabric: 'readonly',
         imgtor: 'writable',
       },
     },

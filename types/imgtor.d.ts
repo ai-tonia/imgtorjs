@@ -1,7 +1,6 @@
 /**
  * ImgTor global API.
- * Full editor: load `build/imgtor.js` after Fabric.js 1.4.x.
- * Native subset (no Fabric, no crop): `build/imgtor-native.js`.
+ * Load `build/imgtor.js` — Canvas 2D only (no Fabric.js).
  */
 
 declare class imgtor {
@@ -33,10 +32,43 @@ declare class imgtor {
 }
 
 declare namespace imgtor {
-  /**
-   * Default canvas/image factory (Fabric.js 1.4.x). Core assigns this at DOM init.
-   */
-  const CanvasAdapterFabric: {
+  class CanvasObject {
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+    scaleX: number;
+    scaleY: number;
+    flipX: boolean;
+    flipY: boolean;
+    lockUniScaling: boolean;
+    constructor(opts?: Record<string, unknown>);
+    getLeft(): number;
+    getTop(): number;
+    getWidth(): number;
+    getHeight(): number;
+    getScaleX(): number;
+    getScaleY(): number;
+    setLeft(v: number): void;
+    setTop(v: number): void;
+    setWidth(v: number): void;
+    setHeight(v: number): void;
+    setScaleX(v: number): void;
+    setScaleY(v: number): void;
+    set(keyOrProps: string | Record<string, unknown>, value?: unknown): void;
+    setCoords(): void;
+    containsPoint(point: { x: number; y: number }): boolean;
+    scaleToWidth(targetW: number): void;
+    scaleToHeight(targetH: number): void;
+    remove(): void;
+    callSuper(name: string, ...args: unknown[]): void;
+    _render(ctx: CanvasRenderingContext2D): void;
+    static extend(
+      protoProps: Record<string, unknown> & { constructor?: new (...args: unknown[]) => unknown },
+    ): typeof CanvasObject;
+  }
+
+  const CanvasAdapterNative: {
     createCanvas(canvasElement: HTMLCanvasElement, options: Record<string, unknown>): any;
     createLockedImage(imageElement: HTMLImageElement | globalThis.Image): any;
     layoutSourceImage(canvas: any, image: any, canvasWidth: number, canvasHeight: number): void;
@@ -49,9 +81,6 @@ declare namespace imgtor {
     ): void;
   };
 
-  /** Canvas 2D adapter (no Fabric). Subset: rotate / history / save; crop not supported. */
-  const CanvasAdapterNative: typeof CanvasAdapterFabric;
-
   interface ImgTorOptions {
     minWidth?: number | null;
     minHeight?: number | null;
@@ -60,8 +89,8 @@ declare namespace imgtor {
     ratio?: number | null;
     backgroundColor?: string;
     plugins?: Record<string, unknown | false>;
-    /** @default 'fabric' */
-    adapterKind?: 'fabric' | 'native';
+    /** @deprecated Only `'native'` is supported; kept for backward-compatible option bags. */
+    adapterKind?: 'native';
     initialize?: (this: imgtor) => void;
   }
 

@@ -30,8 +30,8 @@
           <p class="intro">
             <strong>ImgTor</strong> is a JavaScript library which provides basic image editing tools
             in your browser, such as <strong>rotation</strong> or <strong>cropping</strong>. It is
-            based on the awesome <a href="http://fabricjs.com/">FabricJS</a> library to handle
-            images in HTML5 canvas.
+            built on the HTML5 <code>canvas</code> API (Canvas 2D) with no third-party canvas
+            engine.
           </p>
 
           <div class="figure-wrapper">
@@ -66,7 +66,7 @@
 
           <p>
             The library is designed to be easily extendable. The core script only transforms the
-            target image to a canvas with a FabricJS instance, and creates an empty toolbar. All the
+            target image into a canvas surface and creates an empty toolbar. All the
             features are then implemented in separate plugins.
           </p>
 
@@ -128,7 +128,6 @@
       </div>
     </div>
 
-    <script src="./vendor/fabric.js"></script>
     <!-- Optional: <script src="../lib/js/compat/legacy-html5.js"></script> for very old browsers -->
     <script src="./build/imgtor.js"></script>
 
