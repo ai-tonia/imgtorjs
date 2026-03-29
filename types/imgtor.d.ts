@@ -48,6 +48,9 @@ declare namespace imgtor {
     ): void;
   };
 
+  /** Placeholder until native path is implemented (throws on use). */
+  const CanvasAdapterNative: typeof CanvasAdapterFabric;
+
   interface ImgTorOptions {
     minWidth?: number | null;
     minHeight?: number | null;
@@ -56,6 +59,8 @@ declare namespace imgtor {
     ratio?: number | null;
     backgroundColor?: string;
     plugins?: Record<string, unknown | false>;
+    /** @default 'fabric' */
+    adapterKind?: 'fabric' | 'native';
     initialize?: (this: imgtor) => void;
   }
 
