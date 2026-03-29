@@ -29,9 +29,12 @@
 
           <p class="intro">
             <strong>ImgTor</strong> is a JavaScript library which provides basic image editing tools
-            in your browser, such as <strong>rotation</strong> or <strong>cropping</strong>. It is
-            built on the HTML5 <code>canvas</code> API (Canvas 2D) with no third-party canvas
-            engine.
+            in your browser, such as <strong>rotation</strong>, <strong>cropping</strong>,
+            <strong>filters</strong>, <strong>finetune</strong> (brightness, contrast, …),
+            <strong>resize</strong>, <strong>frames</strong>, <strong>fill</strong>,
+            <strong>redact</strong>, <strong>annotate</strong>, <strong>decorate</strong>, and
+            <strong>retouch</strong> hooks. It is built on the HTML5 <code>canvas</code> API (Canvas
+            2D).
           </p>
 
           <div class="figure-wrapper">
@@ -56,67 +59,62 @@
             <a href="http://www.hotscripts.com/blog/javascript-image-cropping-scripts/">
               javascript script</a
             >
-            to crop an image in a web page. But if you want more features like rotation or
-            brightness adjustment, then you will have to do all of this yourself. No more jQuery
-            plugins here. ImgTor allows you to do whatever you want with your images by using the
-            power of the HTML5 canvas.
+            to crop an image in a web page. ImgTor bundles common canvas workflows in plugins you
+            can enable or disable per instance.
           </p>
 
           <h2>The concept</h2>
 
           <p>
-            The library is designed to be easily extendable. The core script only transforms the
-            target image into a canvas surface and creates an empty toolbar. All the
-            features are then implemented in separate plugins.
+            The core turns the target image into a canvas surface and toolbar. Features live in
+            plugins under <code>lib/js/plugins/</code> (flat files or namespaced folders).
           </p>
 
           <figure>
             <pre><code>.
 ├── imgtor.js
-└── plugins
+└── plugins (examples)
     ├── imgtor.crop.js
     ├── imgtor.history.js
     ├── imgtor.rotate.js
-    └── imgtor.save.js</code></pre>
+    ├── imgtor.save.js
+    ├── imgtor.filter/
+    ├── imgtor.finetune/
+    └── …</code></pre>
           </figure>
-
-          <p>
-            Each plugin is responsible for creating its own functionality. Buttons can easily be
-            added to the toolbar and binded with those features.
-          </p>
 
           <h2>Features</h2>
 
-          <p>Currently, the implemented features are:</p>
+          <p>This demo enables every bundled plugin so you can try them from the toolbar:</p>
 
           <dl>
-            <dt>Crop</dt>
-            <dd>
-              Crops the image by selecting a zone with your mouse. This supports several options
-              like ratio and dimensions control (min/max).
-            </dd>
-
-            <dt>Rotation</dt>
-            <dd>Adds two buttons to let you rotate the image left or right.</dd>
-
             <dt>History</dt>
-            <dd>Allows you to undo and redo any changes you've made to the image.</dd>
-
+            <dd>Undo / redo transformations.</dd>
+            <dt>Rotate</dt>
+            <dd>Rotate left or right.</dd>
+            <dt>Crop</dt>
+            <dd>Drag a crop zone (quick key <kbd>C</kbd> when configured).</dd>
+            <dt>Filter</dt>
+            <dd>Colour matrix presets (Classic, Monochrome, Sepia, …).</dd>
+            <dt>Finetune</dt>
+            <dd>Open the panel for brightness, contrast, saturation, exposure, gamma, clarity, vignette.</dd>
+            <dt>Resize</dt>
+            <dd>Preset sizes or width/height inputs, then Apply.</dd>
+            <dt>Frame</dt>
+            <dd>Pick a frame style, then Bake frame.</dd>
+            <dt>Fill</dt>
+            <dd>Swatch background preview, then Bake fill.</dd>
+            <dt>Redact</dt>
+            <dd>Toggle draw, drag a region, Apply redactions.</dd>
+            <dt>Annotate</dt>
+            <dd>Rect tool in image space; Bake annotations.</dd>
+            <dt>Decorate</dt>
+            <dd>Rect in viewport space; Bake decorate.</dd>
+            <dt>Retouch</dt>
+            <dd>Select region; host can wire <code>onSelectionComplete</code>.</dd>
             <dt>Save</dt>
-            <dd>
-              Transforms the canvas back into an image. This is mainly a proof of concept to show
-              how plugins work. This plugin only takes
-              <a
-                href="https://github.com/ai-tonia/imgtorjs/blob/main/lib/js/plugins/imgtor.save.js"
-                >a few lines</a
-              >.
-            </dd>
+            <dd>Default: replaces the editor with a flattened image.</dd>
           </dl>
-
-          <!--
-        <h2>Interactive example</h2>
-        <p></p>
-        -->
 
           <h2>Contributing</h2>
 
@@ -133,7 +131,6 @@
 
     <script>
       var editor = (window.demoEditor = new imgtor('#target', {
-        // Size options
         minWidth: 100,
         minHeight: 100,
         maxWidth: 600,
@@ -141,30 +138,25 @@
         ratio: 4 / 3,
         backgroundColor: '#000',
 
-        // Plugins options
         plugins: {
-          filter: false,
-          finetune: false,
-          resize: false,
-          frame: false,
-          fill: false,
-          redact: false,
-          annotate: false,
-          decorate: false,
-          retouch: false,
-          crop: {
-            quickCropKey: 67, //key "c"
-            //minHeight: 50,
-            //minWidth: 50,
-            //ratio: 4/3
+          filter: {},
+          finetune: {},
+          resize: {},
+          frame: {},
+          fill: {},
+          redact: { method: 'pixelate' },
+          annotate: {},
+          decorate: {},
+          retouch: {
+            onSelectionComplete: function (dataURL, region, placeResult) {
+              if (window.console && console.debug) {
+                console.debug('[demo retouch] region', region, 'len', dataURL && dataURL.length);
+              }
+            },
           },
-        },
-
-        // Post initialize script
-        initialize: function () {
-          var cropPlugin = this.plugins['crop'];
-          // cropPlugin.selectZone(170, 25, 300, 300);
-          cropPlugin.requireFocus();
+          crop: {
+            quickCropKey: 67,
+          },
         },
       }));
     </script>
