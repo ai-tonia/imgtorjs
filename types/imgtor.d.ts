@@ -83,6 +83,20 @@ declare namespace imgtor {
       getHeight(): number;
       getAngle(): number;
     }): { width: number; height: number };
+    function computeCropRectFromDrag(params: {
+      fromX: number;
+      fromY: number;
+      toX: number;
+      toY: number;
+      canvasWidth: number;
+      canvasHeight: number;
+      minWidth: number;
+      minHeight: number;
+      ratio: number | null;
+      isKeyCroping: boolean;
+      isKeyLeft: boolean;
+      isKeyUp: boolean;
+    }): { left: number; top: number; width: number; height: number };
   }
 
   class Plugin {
