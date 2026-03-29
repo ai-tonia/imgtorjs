@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 4.6.0 (2026-03-29)
+
+- **Tests (parity gates):** integration **`build-entry.test.js`** asserts **`CanvasAdapterFabric`** / **`CanvasAdapterNative`** / **`Utils.computeCropRectFromDrag`** on the full bundle
+
+## 4.5.0 (2026-03-29)
+
+- **Crop:** extract **`computeCropRectFromDrag`** to **`lib/js/crop-geometry.js`**; **`imgtor.Utils.computeCropRectFromDrag`**; crop plugin **`_renderCropZone`** delegates to it (behavior preserved)
+- **Tests:** **`util-crop-geometry.test.js`**
+
 ## 4.4.0 (2026-03-29)
 
 - **Options:** **`adapterKind: 'fabric' | 'native'`** (default **`fabric`**); **`native`** throws until Phase C is implemented
