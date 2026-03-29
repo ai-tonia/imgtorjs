@@ -15,6 +15,7 @@ export default defineConfig({
       // `tests/integration/integration-build-entry.test.js` and is omitted here
       // so thresholds reflect executable library code under `lib/js/`.
       include: ['lib/js/**/*.js'],
+      exclude: ['lib/js/compat/**'],
       all: true,
       reporter: ['text', 'json-summary', 'html', 'lcov'],
       reportsDirectory: './coverage',

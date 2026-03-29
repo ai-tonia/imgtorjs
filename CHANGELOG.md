@@ -4,10 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
-- **tests:** file names use **`core-`**, **`plugin-`**, **`util-`**, **`core-build-`**, and **`core-demo-`** prefixes so related specs group in the tree
-- **tests:** more **`_replaceCurrentImage`** (min/max width/height, ratio) and **`_initializePlugins`** inherited-key coverage; deeper **`_renderCropZone`** ratio branches
-- **tests:** **`tests/integration/integration-build-entry.test.js`** (moved from unit); coverage **`include`** is **`lib/js/**` only so `entry-darkroom.js` is not a false 0% line in thresholds
-- **scripts:** **`npm run test:unit`** runs **`tests/unit`** and **`tests/integration`**
+## 3.2.0 (2026-03-29)
+
+- **API:** global **`ImgTor`** (alias of **`Darkroom`**) for new code; demo uses **`ImgTor`**
+- **CSS:** plain **`lib/css/darkroom.css`** + **Lightning CSS** minify (`scripts/build-css.mjs`); **Dart Sass / SCSS removed**
+- **compat:** optional **`lib/js/compat/legacy-html5.js`** (`requestAnimationFrame` shims); comment in demo HTML
+- **e2e:** history/undo spec; toolbar **visual snapshot** (`e2e/__snapshots__/`); specs assert **`ImgTor`**
+- **types:** **`ImgTor`** in **`types/darkroom.d.ts`**
+- **docs:** remove Pintura; **`docs/FABRIC_UPGRADE.md`** playbook; README / CONTRIBUTING updates
+- **tests:** **`core-` / `plugin-` / `util-` / `core-build-`** file prefixes; extra darkroom scaling + crop ratio coverage; integration entry spec; **`test:unit`** includes **`tests/integration`**
+- **tooling:** ESLint globals for Playwright **`ImgTor`**
 
 ## 3.1.2 (2026-03-28)
 

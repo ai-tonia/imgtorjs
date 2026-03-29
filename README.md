@@ -3,7 +3,7 @@
 ![License MIT](http://img.shields.io/badge/license-MIT-blue.svg)
 [![CI](https://github.com/ai-tonia/imgtorjs/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ai-tonia/imgtorjs/actions/workflows/ci.yml)
 
-**ImgTor** is the maintained fork of **DarkroomJS**, hosted at [github.com/ai-tonia/imgtorjs](https://github.com/ai-tonia/imgtorjs). The npm package name is **`imgtor`**. The original author’s project is discontinued; this fork modernizes the build (Vite, Dart Sass), targets **Node.js 22+**, and keeps the same browser API (`window.Darkroom` + Fabric.js canvas editing).
+**ImgTor** is the maintained fork of **DarkroomJS**, hosted at [github.com/ai-tonia/imgtorjs](https://github.com/ai-tonia/imgtorjs). The npm package name is **`imgtor`**. The original author’s project is discontinued; this fork modernizes the build (**Vite** + **Lightning CSS** for styles), targets **Node.js 22+**, and keeps the **`Darkroom`** global for backward compatibility (also exposed as **`ImgTor`**).
 
 > **Maintainers — pull requests:** GitHub’s “Compare & pull request” button often targets **upstream** [`MattKetmo/darkroomjs`](https://github.com/MattKetmo/darkroomjs). **Do not use that for ImgTor work.** From your feature branch, run **`npm run pr:create`** (uses GitHub CLI with `--repo ai-tonia/imgtorjs --base main`) or open **[compare on this repo only](https://github.com/ai-tonia/imgtorjs/compare)** and set **base = `main`**, **head = your branch**. See **CONTRIBUTING.md**.
 
@@ -15,35 +15,20 @@ npm install imgtor
 
 The package ships **`build/darkroom.js`** and **`build/darkroom.css`**. You still need **Fabric.js 1.4.x** on the page before loading ImgTor.
 
-**TypeScript:** ambient types live in **`types/darkroom.d.ts`**. At the top of a global script entry, use `/// <reference types="imgtor" />` (or reference that file from your `tsconfig`), then `Darkroom` is known as a global. Fabric remains `any`-ish in these typings.
+**TypeScript:** ambient types live in **`types/darkroom.d.ts`**. Use `/// <reference types="imgtor" />` (or include that file); globals **`ImgTor`** and **`Darkroom`** are both declared. Fabric remains `any`-ish in these typings.
 
 Upstream history: [DarkroomJS](https://github.com/MattKetmo/darkroomjs) by Matthieu Moquet.
 
 ## What changed in this fork
 
-- **Name:** **ImgTor** (npm package **`imgtor`**, repository **ai-tonia/imgtorjs**). The in-browser API remains `Darkroom` for compatibility with existing examples.
-- **Build:** Gulp and `node-sass` were replaced by **Vite** (IIFE bundle) and **Dart Sass** so installs work on current Node without native `node-sass` builds.
+- **Name:** **ImgTor** (npm package **`imgtor`**, repository **ai-tonia/imgtorjs**). Use global **`ImgTor`** in new code; **`Darkroom`** remains as an alias for older snippets.
+- **Build:** **Vite** (IIFE bundle) and **Lightning CSS** minify `lib/css/darkroom.css` → `build/darkroom.css` (no Dart Sass).
 - **Tooling:** ESLint, Prettier, and Vitest smoke tests (`npm test`).
 - **Demo:** third-party analytics were removed from the sample page.
 
-The original “try Pintura” section below is preserved as a pointer to a maintained commercial editor.
-
 ## ⚠️ Upstream notice (historical)
 
-The upstream library has been discontinued and is **no longer maintained** by the original author.
-
-If you're looking for an alternative, you should have a look at **[Pintura Image Editor](https://www.ktm.sh/pintura)**.
-
-- framework agnostic
-- intuitive UI and mobile touch friendly
-- resizing / free rotating
-- color adjustment / photo filters
-- annotating support
-- and much more, [try the online demo](https://www.ktm.sh/pintura):
-
-[![Pintura Image Editor demo](demo/images/doka-image-editor-gh.gif?raw=true 'Pintura Image Editor (click the image to view)')](https://www.ktm.sh/pintura)
-
-**[[Demo] Try Pintura Image Editor →](https://www.ktm.sh/pintura)**
+The upstream **DarkroomJS** library has been discontinued and is **no longer maintained** by the original author. **ImgTor** carries the codebase forward with a modern toolchain and tests.
 
 ## Requirements
 
@@ -69,21 +54,21 @@ Built files go to `build/` (not committed). The demo loads **`./build/...`** und
 
 ## Usage
 
-Instantiate a new Darkroom object with a reference to the image element:
+Instantiate **ImgTor** with a reference to the image element:
 
 ```html
 <img src="some-image.jpg" id="target" />
 <script src="path/to/fabric.js"></script>
 <script src="path/to/build/darkroom.js"></script>
 <script>
-  new Darkroom('#target');
+  new ImgTor('#target');
 </script>
 ```
 
 You can also pass options:
 
 ```javascript
-new Darkroom('#target', {
+new ImgTor('#target', {
   minWidth: 100,
   minHeight: 100,
   maxWidth: 500,
