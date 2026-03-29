@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 - **tests:** file names use **`core-`**, **`plugin-`**, **`util-`**, **`core-build-`**, and **`core-demo-`** prefixes so related specs group in the tree
+- **tests:** more **`_replaceCurrentImage`** (min/max width/height, ratio) and **`_initializePlugins`** inherited-key coverage; deeper **`_renderCropZone`** ratio branches
+- **tests:** **`tests/integration/integration-build-entry.test.js`** (moved from unit); coverage **`include`** is **`lib/js/**` only so `entry-darkroom.js` is not a false 0% line in thresholds
+- **scripts:** **`npm run test:unit`** runs **`tests/unit`** and **`tests/integration`**
 
 ## 3.1.2 (2026-03-28)
 

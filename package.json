@@ -75,7 +75,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "npm run build && vitest run",
-    "test:unit": "vitest run tests/unit",
+    "test:unit": "vitest run tests/unit tests/integration",
     "test:coverage": "npm run build && vitest run --coverage",
     "test:e2e": "playwright test",
     "audit": "npm audit",
