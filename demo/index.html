@@ -132,7 +132,7 @@
     <script src="./build/imgtor.js"></script>
 
     <script>
-      var editor = new imgtor('#target', {
+      var editor = (window.demoEditor = new imgtor('#target', {
         // Size options
         minWidth: 100,
         minHeight: 100,
@@ -158,7 +158,7 @@
           // cropPlugin.selectZone(170, 25, 300, 300);
           cropPlugin.requireFocus();
         },
-      });
+      }));
     </script>
   </body>
 </html>
