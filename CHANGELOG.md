@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 4.4.0 (2026-03-29)
+
+- **Options:** **`adapterKind: 'fabric' | 'native'`** (default **`fabric`**); **`native`** throws until Phase C is implemented
+- **`lib/js/core/canvas-adapter-native-stub.js`** — **`imgtor.CanvasAdapterNative`** placeholder (throws on use); loaded after Fabric adapter in entry
+- **Tests:** **`core-adapter-kind.test.js`**
+
 ## 4.3.0 (2026-03-29)
 
 - **Adapter:** **`layoutSourceImage`** and **`layoutViewportImage`** on **`CanvasAdapterFabric`**; core **`_initializeImage`** / **`_replaceCurrentImage`** delegate layout to the adapter
