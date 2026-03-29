@@ -24,9 +24,9 @@ flowchart LR
 
 ### Phase A — Boundary extraction (no behavior change)
 
-- Add **`lib/js/core/canvas-adapter.js`** (contract / JSDoc) and **`canvas-adapter-fabric.js`** (default implementation).
-- Refactor **`lib/js/core/imgtor.js`** to call the adapter for operations it currently performs with **`fabric.Canvas`**, **`fabric.Image`**, dimensions, centering, etc.
-- Unit tests on the adapter + existing core tests as parity gates.
+- **Done (initial slice):** **`lib/js/core/canvas-adapter-fabric.js`** exposes **`imgtor.CanvasAdapterFabric`** with **`createCanvas`** and **`createLockedImage`**. Core uses it for viewport/source **`fabric.Canvas`** construction, source **`fabric.Image`**, and **`refresh()`** clone images. Further operations (dimensions, centering in adapter) remain in core for now.
+- Optional follow-up in this phase: expand the adapter surface (e.g. wrap **`setWidth` / `centerObject`**) and/or add a standalone **`canvas-adapter.js`** typedef module.
+- Unit tests: **`tests/unit/core-canvas-adapter-fabric.test.js`** + existing core tests as parity gates.
 
 ### Phase B — Plugin decoupling
 

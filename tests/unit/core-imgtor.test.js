@@ -6,6 +6,7 @@ import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 beforeAll(async () => {
   globalThis.imgtor = {};
   await import('../../lib/js/core/imgtor.js');
+  await import('../../lib/js/core/canvas-adapter-fabric.js');
   await import('../../lib/js/core/utils.js');
   await import('../../lib/js/core/plugin.js');
   await import('../../lib/js/core/transformation.js');
@@ -15,6 +16,7 @@ beforeAll(async () => {
 function baseInstance() {
   const canvasEl = document.createElement('div');
   const d = Object.create(imgtor.prototype);
+  d._canvasAdapter = imgtor.CanvasAdapterFabric;
   d.options = imgtor.Utils.extend({}, imgtor.prototype.defaults);
   d.transformations = [];
   d.plugins = {};
