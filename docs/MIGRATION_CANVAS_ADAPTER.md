@@ -43,6 +43,10 @@ flowchart LR
 
 - Move crop interaction in slices; keep **FabricAdapter** as fallback until native path meets stability and coverage targets.
 
+## Parity gates (CI)
+
+- Integration **`tests/integration/build-entry.test.js`** checks the shipped bundle exposes **`CanvasAdapterFabric`** (including layout helpers), **`CanvasAdapterNative`** (stub), and **`Utils.computeCropRectFromDrag`**. Extend it when the migration surface grows.
+
 ## Risk controls
 
 - Default stays **Fabric** until acceptance criteria pass (see below).
