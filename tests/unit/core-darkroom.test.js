@@ -95,6 +95,22 @@ describe('Darkroom core (prototype methods)', () => {
     expect(d.plugins.b).toBeInstanceOf(PluginB);
   });
 
+  it('_initializePlugins skips inherited (non-own) keys on the plugins object', () => {
+    const d = baseInstance();
+    d.options.plugins = { own: {}, inherited: {} };
+    const Own = vi.fn(function Own() {});
+    const Inherited = vi.fn(function Inherited() {});
+    const plugins = Object.create({ inherited: Inherited });
+    plugins.own = Own;
+
+    d._initializePlugins(plugins);
+
+    expect(Inherited).not.toHaveBeenCalled();
+    expect(Own).toHaveBeenCalledTimes(1);
+    expect(d.plugins.inherited).toBeUndefined();
+    expect(d.plugins.own).toBeInstanceOf(Own);
+  });
+
   it('_postTransformation updates source image when provided and calls refresh', () => {
     const d = baseInstance();
     const newImg = { tag: 'new' };
@@ -224,6 +240,122 @@ describe('Darkroom refresh, _replaceCurrentImage, reinitializeImage, _popTransfo
 
     expect(d.canvas.setWidth.mock.calls[0][0]).toBe(50);
     expect(d.canvas.setHeight.mock.calls[0][0]).toBe(40);
+  });
+
+  it('_replaceCurrentImage applies maxHeight when maxWidth does not bind', () => {
+    const d = baseInstance();
+    d.options.maxHeight = 40;
+    d.image = null;
+    const newImg = {
+      getWidth: () => 100,
+      getHeight: () => 80,
+      getAngle: () => 0,
+      setScaleX: vi.fn(),
+      setScaleY: vi.fn(),
+      setCoords: vi.fn(),
+    };
+
+    d._replaceCurrentImage(newImg);
+
+    expect(d.canvas.setHeight.mock.calls[0][0]).toBe(40);
+    expect(d.canvas.setWidth.mock.calls[0][0]).toBe(50);
+  });
+
+  it('_replaceCurrentImage uses min of maxWidth and maxHeight when both bind', () => {
+    const d = baseInstance();
+    d.options.maxWidth = 50;
+    d.options.maxHeight = 30;
+    d.image = null;
+    const newImg = {
+      getWidth: () => 100,
+      getHeight: () => 80,
+      getAngle: () => 0,
+      setScaleX: vi.fn(),
+      setScaleY: vi.fn(),
+      setCoords: vi.fn(),
+    };
+
+    d._replaceCurrentImage(newImg);
+
+    expect(d.canvas.setWidth.mock.calls[0][0]).toBe(37.5);
+    expect(d.canvas.setHeight.mock.calls[0][0]).toBe(30);
+  });
+
+  it('_replaceCurrentImage applies minWidth upscaling', () => {
+    const d = baseInstance();
+    d.options.minWidth = 200;
+    d.image = null;
+    const newImg = {
+      getWidth: () => 100,
+      getHeight: () => 80,
+      getAngle: () => 0,
+      setScaleX: vi.fn(),
+      setScaleY: vi.fn(),
+      setCoords: vi.fn(),
+    };
+
+    d._replaceCurrentImage(newImg);
+
+    expect(d.canvas.setWidth.mock.calls[0][0]).toBe(200);
+    expect(d.canvas.setHeight.mock.calls[0][0]).toBe(160);
+  });
+
+  it('_replaceCurrentImage applies minHeight upscaling when minWidth does not bind', () => {
+    const d = baseInstance();
+    d.options.minHeight = 160;
+    d.image = null;
+    const newImg = {
+      getWidth: () => 100,
+      getHeight: () => 80,
+      getAngle: () => 0,
+      setScaleX: vi.fn(),
+      setScaleY: vi.fn(),
+      setCoords: vi.fn(),
+    };
+
+    d._replaceCurrentImage(newImg);
+
+    expect(d.canvas.setHeight.mock.calls[0][0]).toBe(160);
+    expect(d.canvas.setWidth.mock.calls[0][0]).toBe(200);
+  });
+
+  it('_replaceCurrentImage uses max of minWidth and minHeight scales when both bind', () => {
+    const d = baseInstance();
+    d.options.minWidth = 150;
+    d.options.minHeight = 200;
+    d.image = null;
+    const newImg = {
+      getWidth: () => 100,
+      getHeight: () => 80,
+      getAngle: () => 0,
+      setScaleX: vi.fn(),
+      setScaleY: vi.fn(),
+      setCoords: vi.fn(),
+    };
+
+    d._replaceCurrentImage(newImg);
+
+    expect(d.canvas.setHeight.mock.calls[0][0]).toBe(200);
+    expect(d.canvas.setWidth.mock.calls[0][0]).toBe(250);
+  });
+
+  it('_replaceCurrentImage widens canvas when ratio option makes height the driver', () => {
+    const d = baseInstance();
+    d.options.ratio = 2;
+    d.image = null;
+    const newImg = {
+      getWidth: () => 100,
+      getHeight: () => 100,
+      getAngle: () => 0,
+      setScaleX: vi.fn(),
+      setScaleY: vi.fn(),
+      setCoords: vi.fn(),
+    };
+
+    d._replaceCurrentImage(newImg);
+
+    expect(d.canvas.setWidth.mock.calls[0][0]).toBe(200);
+    expect(d.canvas.setHeight.mock.calls[0][0]).toBe(100);
   });
 
   it('reinitializeImage removes source, re-initializes, and passes a slice of transformations to _popTransformation', () => {
