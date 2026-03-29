@@ -10,8 +10,8 @@ Central entry point for maintainer-facing design and migration notes (not npm pa
 
 ## Suggested PR sequence (architecture work)
 
-1. **Plugin hardening** (lifecycle, isolation, types, tests) — single PR or small stack.
-2. **Adapter scaffold + core wiring** (Phase A) — no plugin behavior change.
+1. **Plugin hardening** (lifecycle, isolation, types, tests) — merged as v4.1.x.
+2. **Adapter scaffold + core wiring** (Phase A) — `CanvasAdapterFabric` + core use for canvas/image construction; no plugin behavior change.
 3. **Rotate / history / save** adapter-agnostic cleanup (Phase B).
 4. **Crop** pure-logic extraction (Phase B).
 5. **Native adapter** prototype + parity gates (Phase C).

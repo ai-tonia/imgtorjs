@@ -32,6 +32,14 @@ declare class imgtor {
 }
 
 declare namespace imgtor {
+  /**
+   * Default canvas/image factory (Fabric.js 1.4.x). Core assigns this at DOM init.
+   */
+  const CanvasAdapterFabric: {
+    createCanvas(canvasElement: HTMLCanvasElement, options: Record<string, unknown>): any;
+    createLockedImage(imageElement: HTMLImageElement | globalThis.Image): any;
+  };
+
   interface ImgTorOptions {
     minWidth?: number | null;
     minHeight?: number | null;

@@ -19,6 +19,7 @@ let originalImgtorPlugins;
 beforeAll(async () => {
   globalThis.imgtor = {};
   await import('../../lib/js/core/imgtor.js');
+  await import('../../lib/js/core/canvas-adapter-fabric.js');
   await import('../../lib/js/core/utils.js');
   await import('../../lib/js/core/plugin.js');
   await import('../../lib/js/core/transformation.js');

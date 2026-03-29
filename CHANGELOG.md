@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 4.2.0 (2026-03-29)
+
+- **Architecture (Phase A):** **`lib/js/core/canvas-adapter-fabric.js`** — **`imgtor.CanvasAdapterFabric.createCanvas` / `createLockedImage`**; core uses it for viewport + source canvases, source image, and **`refresh()`** image clones (behavior unchanged; Fabric still required globally)
+- **Entry:** **`lib/entry-imgtor.js`** loads **`imgtor.js`** then **`canvas-adapter-fabric.js`** (global **`imgtor`** must exist before the adapter attaches)
+- **Tests:** **`core-canvas-adapter-fabric.test.js`**; unit imports that load **`imgtor.js`** directly also import the adapter module
+- **Docs:** **`MIGRATION_CANVAS_ADAPTER.md`** Phase A progress note
+
 ## 4.1.0 (2026-03-29)
 
 - **Plugins:** **`destroy()`** on **`imgtor.Plugin`**; built-in plugins detach listeners; **`selfDestroy()`** runs **`_destroyPlugins()`** first
