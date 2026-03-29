@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { extendObject } from '../../lib/js/extend-object.js';
+import { imgtor } from '../imgtor.ns.js';
 
-describe('extendObject', () => {
+describe(imgtor('extendObject'), () => {
   it('returns source when target is undefined', () => {
     const source = { a: 1 };
     expect(extendObject(undefined, source)).toBe(source);

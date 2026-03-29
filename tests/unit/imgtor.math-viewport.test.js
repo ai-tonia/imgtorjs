@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { boundingBoxForRotatedRect } from '../../lib/js/math-viewport.js';
+import { imgtor } from '../imgtor.ns.js';
 
-describe('boundingBoxForRotatedRect', () => {
+describe(imgtor('boundingBoxForRotatedRect'), () => {
   it('returns same width and height at 0°', () => {
     expect(boundingBoxForRotatedRect(100, 50, 0)).toEqual({ width: 100, height: 50 });
   });

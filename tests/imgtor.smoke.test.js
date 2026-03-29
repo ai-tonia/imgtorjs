@@ -2,11 +2,12 @@ import { readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
+import { imgtor } from './imgtor.ns.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
 
-describe('build outputs', () => {
+describe(imgtor('build outputs'), () => {
   it('emits darkroom.js with Darkroom global', () => {
     const jsPath = path.join(root, 'build', 'darkroom.js');
     expect(existsSync(jsPath)).toBe(true);
