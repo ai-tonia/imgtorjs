@@ -1,10 +1,6 @@
 /**
- * Integration-style import of `lib/entry-darkroom.js` (ESM) with a minimal
- * global `fabric` stub so plugin modules evaluate in Node/happy-dom.
- *
- * Placed under `tests/unit/` because `npm run test:unit` runs only
- * `vitest run tests/unit` (see package.json); `tests/integration/` is not
- * included in that script.
+ * Integration: full ESM entry (`lib/entry-darkroom.js`) with a minimal global
+ * `fabric` stub so plugin modules evaluate under Vitest + happy-dom.
  *
  * @vitest-environment happy-dom
  */
