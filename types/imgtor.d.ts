@@ -120,6 +120,10 @@ declare namespace imgtor {
     group?: string;
     hide?: boolean;
     disabled?: boolean;
+    /** Sets `data-plugin` on the button (for tests / automation). */
+    pluginId?: string;
+    /** Sets `data-feature` on the button (for tests / automation). */
+    feature?: string;
   }
 
   interface ButtonGroupOptions {
