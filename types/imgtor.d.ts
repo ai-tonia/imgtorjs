@@ -89,8 +89,6 @@ declare namespace imgtor {
     ratio?: number | null;
     backgroundColor?: string;
     plugins?: Record<string, unknown | false>;
-    /** @deprecated Only `'native'` is supported; kept for backward-compatible option bags. */
-    adapterKind?: 'native';
     initialize?: (this: imgtor) => void;
   }
 
