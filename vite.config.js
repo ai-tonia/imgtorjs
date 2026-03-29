@@ -31,7 +31,7 @@ function imgtorIconsSpritePlugin() {
     name: 'imgtor-icons-sprite',
     transform(code, id) {
       const normalized = id.replace(/\\/g, '/');
-      if (!normalized.includes('/lib/js/core/bootstrap.js')) {
+      if (!normalized.includes('/lib/js/core/inject-icon-sprite.js')) {
         return null;
       }
       const iconsDir = path.resolve(__dirname, 'lib/icons');

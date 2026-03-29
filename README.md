@@ -3,9 +3,7 @@
 ![License MIT](http://img.shields.io/badge/license-MIT-blue.svg)
 [![CI](https://github.com/ai-tonia/imgtorjs/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ai-tonia/imgtorjs/actions/workflows/ci.yml)
 
-**ImgTor** is a maintained canvas image editor, hosted at [github.com/ai-tonia/imgtorjs](https://github.com/ai-tonia/imgtorjs). The npm package name is **`imgtor`**. This line modernizes the build (**Vite** + **Lightning CSS** for styles), targets **Node.js 22+**, and exposes the editor as global **`imgtor`** (constructor) with a PascalCase alias **`ImgTor`** for older snippets.
-
-> **Maintainers — pull requests:** GitHub’s “Compare & pull request” button may target an **upstream** repository that is not **ai-tonia/imgtorjs**. **Do not use that for ImgTor work.** From your feature branch, run **`npm run pr:create`** (uses GitHub CLI with `--repo ai-tonia/imgtorjs --base main`) or open **[compare on this repo only](https://github.com/ai-tonia/imgtorjs/compare)** and set **base = `main`**, **head = your branch**. See **CONTRIBUTING.md**.
+**ImgTor** is a maintained canvas image editor, hosted at [github.com/ai-tonia/imgtorjs](https://github.com/ai-tonia/imgtorjs). The npm package name is **`imgtor`**. This line modernizes the build (**Vite** + **Lightning CSS** for styles), targets **Node.js 22+**, and exposes the editor as global **`imgtor`** (constructor).
 
 ### Install from npm
 
@@ -15,11 +13,13 @@ npm install imgtor
 
 The package ships **`build/imgtor.js`** and **`build/imgtor.css`**. You still need **Fabric.js 1.4.x** on the page before loading ImgTor.
 
-**TypeScript:** ambient types live in **`types/imgtor.d.ts`**. Use `/// <reference types="imgtor" />` (or include that file); globals **`imgtor`** and **`ImgTor`** are declared. Fabric remains `any`-ish in these typings.
+**TypeScript:** ambient types live in **`types/imgtor.d.ts`**. Use `/// <reference types="imgtor" />` (or include that file); the global **`imgtor`** constructor is declared there. Fabric remains `any`-ish in these typings.
+
+Upstream history: [DarkroomJS](https://github.com/MattKetmo/darkroomjs) by Matthieu Moquet. **Thank you, Matthieu** — your original library was the icebreaker that made browser-side canvas editing approachable for so many of us; **ImgTor** exists to carry that idea forward with a modern toolchain.
 
 ## What changed in this fork
 
-- **Name:** **ImgTor** (npm package **`imgtor`**, repository **ai-tonia/imgtorjs**). Prefer global **`imgtor`** in new code; **`ImgTor`** is an alias of the same constructor.
+- **Name:** **ImgTor** (npm package **`imgtor`**, repository **ai-tonia/imgtorjs**). Use global **`imgtor`** in application code.
 - **Build:** **Vite** (IIFE bundle) and **Lightning CSS** minify `lib/css/imgtor.css` → `build/imgtor.css` (no Dart Sass).
 - **Tooling:** ESLint, Prettier, and Vitest smoke tests (`npm test`).
 - **Demo:** third-party analytics were removed from the sample page.
@@ -52,21 +52,21 @@ Built files go to `build/` (not committed). The demo loads **`./build/...`** und
 
 ## Usage
 
-Instantiate **ImgTor** with a reference to the image element:
+Instantiate the editor with a reference to the image element:
 
 ```html
 <img src="some-image.jpg" id="target" />
 <script src="path/to/fabric.js"></script>
 <script src="path/to/build/imgtor.js"></script>
 <script>
-  new ImgTor('#target');
+  new imgtor('#target');
 </script>
 ```
 
 You can also pass options:
 
 ```javascript
-new ImgTor('#target', {
+new imgtor('#target', {
   minWidth: 100,
   minHeight: 100,
   maxWidth: 500,
@@ -124,7 +124,7 @@ Ask the canvas for data inside your save callback (or another hook):
 save: {
   callback: function () {
     this.imgtor.selfDestroy();
-    const newImage = dkrm.canvas.toDataURL();
+    const newImage = this.imgtor.canvas.toDataURL();
     fileStorageLocation = newImage;
   },
 },
