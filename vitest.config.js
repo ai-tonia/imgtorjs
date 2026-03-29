@@ -17,10 +17,10 @@ export default defineConfig({
       reportsDirectory: './coverage',
       // Non-regression floor; ~1–2 pts below current all-files totals for CI stability.
       thresholds: {
-        lines: 64,
-        branches: 50,
-        statements: 63,
-        functions: 94,
+        lines: 79,
+        branches: 68,
+        statements: 78,
+        functions: 98,
       },
     },
   },
