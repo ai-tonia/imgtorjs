@@ -15,12 +15,12 @@ export default defineConfig({
       all: true,
       reporter: ['text', 'json-summary', 'html', 'lcov'],
       reportsDirectory: './coverage',
-      // Non-regression floor; raise toward 80% / 70% as the suite grows.
+      // Non-regression floor; ~1–2 pts below current all-files totals for CI stability.
       thresholds: {
-        lines: 14,
-        branches: 8,
-        statements: 14,
-        functions: 31,
+        lines: 64,
+        branches: 50,
+        statements: 63,
+        functions: 94,
       },
     },
   },
