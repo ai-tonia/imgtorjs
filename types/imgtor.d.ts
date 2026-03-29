@@ -1,6 +1,6 @@
 /**
  * ImgTor global API.
- * Load `build/imgtor.js` — Canvas 2D only (no Fabric.js).
+ * Load `build/imgtor.js` — Canvas 2D editor.
  */
 
 declare class imgtor {

@@ -22,7 +22,7 @@ Or compare: `https://github.com/ai-tonia/imgtorjs/compare/main...<branch>` only.
 
 1. `migration/pr-04-plugin-history-tests` — `plugin-history.test.js`
 2. `migration/pr-05-plugin-rotate-tests` — `plugin-rotate.test.js` (open **after** PR 4 merges; branch from updated `main`)
-3. Later: crop plugin (heavy Fabric mocks) — `migration/pr-06-plugin-crop-tests`, one agent only
+3. Later: crop plugin (interaction-heavy) — `migration/pr-06-plugin-crop-tests`, one agent only
 
 ## Subagent prompt template
 
