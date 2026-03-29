@@ -10,9 +10,12 @@ This document describes how **first-party and third-party plugins** integrate wi
    imgtor.plugins['myplugin'] = imgtor.Plugin.extend({ /* prototype */ });
    ```
 
-2. **Enablement** — The core reads `options.plugins[pluginId]`. If the value is **`false`**, that plugin is skipped. Otherwise the value is passed as the second argument to the plugin constructor (merged with `defaults` on the prototype).
+2. **Enablement**
 
-3. **Instantiation order** — `_initializePlugins` walks the **enumeration order** of the object passed in (by default `imgtor.plugins`). Registration order in source files therefore matters unless you pass a custom plugin map in the future.
+   - **Object form** — `options.plugins` is a map: `options.plugins[pluginId]`. If the value is **`false`**, that plugin is skipped. Otherwise the value is passed as the second argument to the plugin constructor (merged with `defaults` on the prototype).
+   - **Array form** — `options.plugins` is a **whitelist** and **load order** list, e.g. `['history', 'rotate', 'crop', { id: 'save' }]`. Only ids that appear in the array are instantiated; any built-in not listed is **not** loaded. Items can be **strings** or **`{ id: 'crop', …options }`** (options shallow-merged; duplicate ids merge with **last occurrence wins**). **`plugins: []`** loads **no** plugins.
+
+3. **Instantiation order** — With the **object** map, `_initializePlugins` walks keys in **`imgtor.plugins`** registration order. With the **array** form, order is exactly the **array order** (duplicates use the first position for ordering, merged options from all occurrences).
 
 ## Constructor
 

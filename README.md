@@ -13,7 +13,7 @@ npm install imgtor
 
 The package ships **`build/imgtor.js`** and **`build/imgtor.css`**. The editor is **Canvas 2D** (HTML `<canvas>`).
 
-**Optional toolbar plugins** (filter, finetune, resize, frame, fill, redact, annotate, decorate, retouch) are loaded with the bundle but **disabled by default** in the demo. Enable them with **`plugins: { filter: {}, … }`** or turn them off explicitly with **`plugins: { filter: false }`**.
+**Optional toolbar plugins** (filter, finetune, resize, frame, fill, redact, annotate, decorate, retouch) are loaded with the bundle but **disabled by default** in the demo. Enable them with a **map** — **`plugins: { filter: {}, … }`** — or turn one off with **`plugins: { filter: false }`**. You can also pass an **ordered list** (whitelist): **`plugins: ['history', 'rotate', 'crop', { id: 'save' }]`** — only listed plugins load, in that order; **`plugins: []`** loads none.
 
 **TypeScript:** ambient types live in **`types/imgtor.d.ts`**. Use `/// <reference types="imgtor" />` (or include that file); the global **`imgtor`** constructor is declared there.
 

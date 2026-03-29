@@ -156,6 +156,51 @@ describe('imgtor core (prototype methods)', () => {
     expect(warnSpy).toHaveBeenCalled();
     warnSpy.mockRestore();
   });
+
+  it('_normalizePluginsOptions array is an ordered whitelist of plugin ids', () => {
+    const d = baseInstance();
+    d.options.plugins = ['save', 'crop'];
+    d._normalizePluginsOptions();
+    expect(d.options.plugins).toEqual({ save: {}, crop: {} });
+    expect(d._pluginInitOrder).toEqual(['save', 'crop']);
+
+    const Crop = vi.fn(function Crop() {});
+    const Save = vi.fn(function Save() {});
+    const Rotate = vi.fn(function Rotate() {});
+
+    d._initializePlugins({ crop: Crop, save: Save, rotate: Rotate });
+
+    expect(Save).toHaveBeenCalledBefore(Crop);
+    expect(Crop).toHaveBeenCalledTimes(1);
+    expect(Save).toHaveBeenCalledTimes(1);
+    expect(Rotate).not.toHaveBeenCalled();
+    expect(d.plugins.rotate).toBeUndefined();
+  });
+
+  it('_normalizePluginsOptions array entries can be { id, ...opts }', () => {
+    const d = baseInstance();
+    d.options.plugins = [{ id: 'crop', minWidth: 5, ratio: 2 }];
+    d._normalizePluginsOptions();
+    expect(d.options.plugins).toEqual({ crop: { minWidth: 5, ratio: 2 } });
+    expect(d._pluginInitOrder).toEqual(['crop']);
+
+    const Crop = vi.fn(function Crop() {});
+    d._initializePlugins({ crop: Crop, save: vi.fn() });
+    expect(Crop).toHaveBeenCalledWith(d, { minWidth: 5, ratio: 2 });
+    expect(d.plugins.save).toBeUndefined();
+  });
+
+  it('_normalizePluginsOptions empty array enables no plugins', () => {
+    const d = baseInstance();
+    d.options.plugins = [];
+    d._normalizePluginsOptions();
+    expect(d.options.plugins).toEqual({});
+    expect(d._pluginInitOrder).toEqual([]);
+
+    const Any = vi.fn();
+    d._initializePlugins({ crop: Any, save: Any });
+    expect(Any).not.toHaveBeenCalled();
+  });
 });
 
 describe('imgtor refresh, _replaceCurrentImage, reinitializeImage, _popTransformation (queue)', () => {
