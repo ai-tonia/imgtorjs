@@ -30,4 +30,4 @@ Central entry point for maintainer-facing design notes (not npm package docs; se
 | `decorate` | `imgtor.decorate/` | Viewport-space rectangles (minimal) |
 | `retouch` | `imgtor.retouch/` | Selection + `onSelectionComplete` hook |
 
-Disable any plugin with **`options.plugins.<id> = false`**. See **`PLUGIN_API.md`** for **`core:refreshed`** and namespaced modules.
+Disable a plugin with **`options.plugins.<id> = false`** (object form), or use **`options.plugins` as an array** to enable only specific plugins in order — see **`PLUGIN_API.md`**. Same doc covers **`core:refreshed`** and namespaced modules.

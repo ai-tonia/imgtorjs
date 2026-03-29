@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- **Core:** **`options.plugins`** may be an **array** — ordered whitelist of plugin ids (`['history', 'crop', { id: 'save' }]`) or **`[]`** for no plugins; object map form unchanged
+
 ## 5.1.0 (2026-03-29)
 
 - **Core:** dispatch **`core:refreshed`** after viewport layout in **`_replaceCurrentImage`** (plugins can re-attach overlays)

@@ -103,6 +103,14 @@ declare namespace imgtor {
     ): void;
   };
 
+  /** Per-plugin options when using object form `plugins: { crop: { … } }`. */
+  type PluginOptionsRecord = Record<string, unknown | false>;
+
+  /** Item in array form `plugins: ['crop', { id: 'save', … }]`. */
+  type PluginListEntry =
+    | string
+    | ({ id: string } & Record<string, unknown>);
+
   interface ImgTorOptions {
     minWidth?: number | null;
     minHeight?: number | null;
@@ -110,7 +118,13 @@ declare namespace imgtor {
     maxHeight?: number | null;
     ratio?: number | null;
     backgroundColor?: string;
-    plugins?: Record<string, unknown | false>;
+    /**
+     * **Object:** `{ crop: {}, save: false }` — every registered plugin is considered;
+     * `false` skips. Enumeration order follows `imgtor.plugins` registration.
+     * **Array:** `['history', 'crop', { id: 'save' }]` — **whitelist**: only listed ids load,
+     * in list order. Use `[]` for no plugins. `{ id, ...opts }` merges opts for that id.
+     */
+    plugins?: PluginOptionsRecord | PluginListEntry[];
     initialize?: (this: imgtor) => void;
   }
 
