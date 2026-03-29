@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 5.1.0 (2026-03-29)
+
+- **Core:** dispatch **`core:refreshed`** after viewport layout in **`_replaceCurrentImage`** (plugins can re-attach overlays)
+- **Plugins (namespaced folders):** **`filter`**, **`finetune`**, **`resize`**, **`frame`**, **`fill`**, **`redact`**, **`annotate`**, **`decorate`**, **`retouch`** — registered from **`lib/entry-imgtor.js`**; disable via **`options.plugins.<id> = false`**
+- **Docs / types:** **`PLUGIN_API.md`** child-module + **`buttonGroup.element`** + event table; **`PluginModule`** in **`types/imgtor.d.ts`**
+- **Tests:** integration entry asserts all plugin constructors; unit tests for **`core:refreshed`**, frame preprocess, fill palette, redact scrambler; **Vitest** coverage excludes namespaced plugin subtrees from global thresholds (focused tests in **`tests/unit/plugin-*`**)
+- **Demo / e2e:** optional plugins default **off** in **`demo/index.html`** and isolated e2e specs
+
 ## 5.0.3 (2026-03-29)
 
 - **Crop:** fix **`onMouseDown`** so a **new** drag can start when the pointer is **outside** the current zone (regression after full-canvas or large selections while the zone stayed “active”)

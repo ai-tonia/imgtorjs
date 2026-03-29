@@ -61,3 +61,40 @@ Heavy image changes go through **`imgtor.Transformation.extend`** and **`applyTr
 ## TypeScript
 
 Ambient types live in **`types/imgtor.d.ts`**: **`imgtor.Plugin`**, **`destroy()`**, **`ButtonOptions`**, **`ButtonGroupOptions`**, and **`imgtor.plugins`** as a **`Record`** of constructors.
+
+## Namespaced child modules (parent plugins)
+
+Complex plugins may live under a **folder** while registering **once** on the flat map:
+
+```
+lib/js/plugins/
+  imgtor.myplugin/
+    index.js      → sets imgtor.plugins['myplugin'] = imgtor.Plugin.extend({ ... })
+    registry.js   → pure helpers / data, export named symbols
+    ...
+```
+
+- **Flat registry:** only **`imgtor.plugins['id']`** is the constructor; there is no separate registration per child file.
+- **Public namespace:** attach stable read-only surfaces on the plugin constructor or on **`imgtor`** after load, e.g. **`imgtor.filterRegistry`** or exports consumed only from **`index.js`** — document the chosen pattern in the plugin’s README comment block.
+- **Imports:** child files are **ES modules** (`import` / `export`); **`index.js`** wires them into **`Plugin.extend`**.
+
+## Toolbar: custom controls (`buttonGroup.element`)
+
+**`ButtonGroup`** only ships icon buttons via **`createButton`**. For **`<input>`**, **`<select>`**, sliders, or layout rows, append to the group’s root element:
+
+```js
+const group = this.imgtor.toolbar.createButtonGroup();
+group.element.appendChild(document.createElement('input')); // approved pattern
+```
+
+The **`element`** is the **`div.imgtor-button-group`** node; treat it as the host for any extra DOM.
+
+## Core events
+
+Subscribe with **`this.imgtor.addEventListener(name, handler)`** (same as other DOM events on the canvas element).
+
+| Event | When |
+| ----- | ---- |
+| **`core:transformation`** | After a transformation runs and **`refresh`** completes. |
+| **`core:reinitialized`** | After **`reinitializeImage`** finishes rebuilding state. |
+| **`core:refreshed`** | After **`_replaceCurrentImage`** finishes (viewport laid out). Use this to **re-attach** viewport **`CanvasObject`** overlays that **`layoutViewportImage`** clears. |

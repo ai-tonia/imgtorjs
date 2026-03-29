@@ -13,6 +13,15 @@ test('demo crop: draw zone via API without console errors', async ({ page }) => 
   await page.evaluate(() => {
     window._imgtorCropTest = new imgtor('#target', {
       plugins: {
+        filter: false,
+        finetune: false,
+        resize: false,
+        frame: false,
+        fill: false,
+        redact: false,
+        annotate: false,
+        decorate: false,
+        retouch: false,
         history: false,
         rotate: false,
         save: false,
