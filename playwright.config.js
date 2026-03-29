@@ -2,6 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: 'e2e',
+  snapshotPathTemplate: '{testDir}/__snapshots__/{testFilePath}-snapshots/{arg}{ext}',
   use: {
     baseURL: 'http://localhost:2222',
   },

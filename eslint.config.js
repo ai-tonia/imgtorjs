@@ -15,6 +15,18 @@ export default [
     },
   },
   {
+    files: ['e2e/**/*.spec.js'],
+    languageOptions: {
+      ecmaVersion: 2024,
+      sourceType: 'module',
+      globals: {
+        ...globals.browser,
+        ImgTor: 'readonly',
+        Darkroom: 'readonly',
+      },
+    },
+  },
+  {
     languageOptions: {
       ecmaVersion: 2024,
       sourceType: 'module',

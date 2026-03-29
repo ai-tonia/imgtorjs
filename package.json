@@ -1,7 +1,7 @@
 {
   "name": "imgtor",
   "description": "Extensible image editing tool via HTML canvas (fork of DarkroomJS)",
-  "version": "3.1.2",
+  "version": "3.2.0",
   "license": "MIT",
   "type": "module",
   "engines": {
@@ -48,26 +48,25 @@
     "SECURITY.md",
     "RELEASING.md"
   ],
-  "dependencies": {},
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "eslint": "^10.1.0",
-    "happy-dom": "^20.0.10",
-    "globals": "^17.4.0",
-    "prettier": "^3.8.1",
-    "sass": "^1.98.0",
-    "vite": "^8.0.3",
-    "vitest": "^4.1.2",
     "@playwright/test": "^1.51.0",
-    "@vitest/coverage-v8": "^4.1.2"
+    "@vitest/coverage-v8": "^4.1.2",
+    "eslint": "^10.1.0",
+    "globals": "^17.4.0",
+    "happy-dom": "^20.0.10",
+    "lightningcss": "^1.32.0",
+    "prettier": "^3.8.1",
+    "vite": "^8.0.3",
+    "vitest": "^4.1.2"
   },
   "scripts": {
     "build:js": "vite build",
-    "build:css": "sass lib/css/darkroom.scss build/darkroom.css --style=compressed --no-source-map",
+    "build:css": "node scripts/build-css.mjs",
     "build": "npm run build:js && npm run build:css",
     "sync:demo": "node scripts/sync-demo-build.mjs",
     "prepublishOnly": "npm run build",
-    "dev": "vite build --watch & sass --watch lib/css/darkroom.scss:build/darkroom.css --style=expanded",
+    "dev": "vite build --watch & node scripts/watch-css.mjs",
     "develop": "npm run dev",
     "preview": "vite --config vite.demo.config.js",
     "start": "npm run build && npm run sync:demo && vite --config vite.demo.config.js",
