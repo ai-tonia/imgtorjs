@@ -1,6 +1,7 @@
 /**
- * ImgTor global API (load `build/imgtor.js` after Fabric.js).
- * Fabric types are not bundled; canvas/image use `any` for 1.x compatibility.
+ * ImgTor global API.
+ * Full editor: load `build/imgtor.js` after Fabric.js 1.4.x.
+ * Native subset (no Fabric, no crop): `build/imgtor-native.js`.
  */
 
 declare class imgtor {
@@ -48,7 +49,7 @@ declare namespace imgtor {
     ): void;
   };
 
-  /** Placeholder until native path is implemented (throws on use). */
+  /** Canvas 2D adapter (no Fabric). Subset: rotate / history / save; crop not supported. */
   const CanvasAdapterNative: typeof CanvasAdapterFabric;
 
   interface ImgTorOptions {

@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 4.7.0 (2026-03-29)
+
+- **Native subset:** **`lib/js/core/canvas-adapter-native.js`** — Canvas 2D **`CanvasAdapterNative`** (no Fabric)
+- **`build/imgtor-native.js`** — IIFE bundle via **`lib/entry-imgtor-native.js`** (history, rotate, save only; **no crop**)
+- **`adapterKind: 'native'`** works when **`CanvasAdapterNative`** is loaded; full **`imgtor.js`** includes both adapters
+- **`imgtor.rotate.native.js`** — rotate transformation compatible with native image wrapper
+- **Build:** **`npm run build:js`** runs default + **`vite.config.native.js`**; **`exports`** + **`files`** include **`imgtor-native.js`**
+- **Tests:** **`core-canvas-adapter-native.test.js`**, **`build-entry-native.test.js`**, smoke for native build artifact
+
 ## 4.6.0 (2026-03-29)
 
 - **Tests (parity gates):** integration **`build-entry.test.js`** asserts **`CanvasAdapterFabric`** / **`CanvasAdapterNative`** / **`Utils.computeCropRectFromDrag`** on the full bundle

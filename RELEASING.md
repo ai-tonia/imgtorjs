@@ -70,3 +70,5 @@ gh release create vX.Y.Z --title "imgtor vX.Y.Z" --notes "See CHANGELOG for vX.Y
 ## 6. Post-publish verification
 
 On the [npm package page](https://www.npmjs.com/package/imgtor), confirm **types** and **exports** are listed correctly for consumers (TypeScript and bundler resolution). Spot-check that the published version matches the tag and that `package.json` on the registry shows `types`, `exports`, `main`, and `style` as expected.
+
+If the release includes **`imgtor-native.js`**, verify **`exports["./imgtor-native.js"]`** resolves and the tarball lists **`build/imgtor-native.js`** under **Files**.

@@ -7,7 +7,7 @@ beforeAll(async () => {
   globalThis.imgtor = {};
   await import('../../lib/js/core/imgtor.js');
   await import('../../lib/js/core/canvas-adapter-fabric.js');
-  await import('../../lib/js/core/canvas-adapter-native-stub.js');
+  await import('../../lib/js/core/canvas-adapter-native.js');
   await import('../../lib/js/core/utils.js');
   await import('../../lib/js/core/plugin.js');
   await import('../../lib/js/core/transformation.js');
@@ -15,14 +15,15 @@ beforeAll(async () => {
 });
 
 afterEach(() => {
-  delete globalThis.__adapterKindErr;
   delete globalThis.fabric;
   globalThis.imgtor.plugins = [];
 });
 
 describe('adapterKind option', () => {
-  it('throws when adapterKind is native during async image load', async () => {
+  it('initializes with native adapter when fabric is absent', async () => {
     const OriginalImage = globalThis.Image;
+    globalThis.fabric = undefined;
+
     globalThis.Image = function MockImage() {
       this.onload = null;
       const self = this;
@@ -33,11 +34,7 @@ describe('adapterKind option', () => {
         set() {
           _src = 'x';
           queueMicrotask(() => {
-            try {
-              if (self.onload) self.onload.call(self);
-            } catch (e) {
-              globalThis.__adapterKindErr = e;
-            }
+            if (self.onload) self.onload.call(self);
           });
         },
         get() {
@@ -48,24 +45,23 @@ describe('adapterKind option', () => {
 
     const wrap = document.createElement('div');
     const img = document.createElement('img');
-    img.id = 'adapter-kind-native';
+    img.id = 'adapter-kind-native-ok';
     img.src =
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
     wrap.appendChild(img);
     document.body.appendChild(wrap);
 
-    new imgtor('#adapter-kind-native', { adapterKind: 'native' });
+    const dr = new imgtor('#adapter-kind-native-ok', {
+      adapterKind: 'native',
+      plugins: { crop: false, history: false, rotate: false, save: false },
+    });
 
-    await vi.waitFor(() => expect(globalThis.__adapterKindErr).toBeDefined());
-    expect(globalThis.__adapterKindErr.message).toMatch(/not yet supported/);
+    await vi.waitFor(() => expect(dr.containerElement).toBeTruthy());
+    expect(dr.containerElement.className).toBe('imgtor-container');
+    expect(dr.canvas).toBeDefined();
+    expect(dr.sourceCanvas).toBeDefined();
 
     wrap.remove();
     globalThis.Image = OriginalImage;
-  });
-});
-
-describe('imgtor.CanvasAdapterNative', () => {
-  it('throws on createCanvas', () => {
-    expect(() => imgtor.CanvasAdapterNative.createCanvas()).toThrow(/not implemented/);
   });
 });
