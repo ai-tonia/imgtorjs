@@ -71,3 +71,16 @@ Requires [GitHub CLI](https://cli.github.com/) (`gh`) and `gh auth login`.
 3. On the PR page, **base repository** must be **`ai-tonia/imgtorjs`**. If the PR lists dozens of unrelated files, the base is wrong — edit the PR or close it and use **`npm run pr:create`** instead.
 
 **Suggested migration / test branches** (rebase on latest `main` before each PR; one PR per branch): `migration/pr-03-plugin-save-tests`, then further `migration/pr-NN-…` slices from your local **`migration-plan/`** checklist (gitignored).
+
+You can also ship **one larger PR** with several commits when that is simpler (e.g. one branch `migration/pr-11-…`).
+
+### Next batch (good candidates for one combined PR)
+
+Rebase on latest `main`, run **`npm run lint`**, **`npm run test:coverage`**, **`npm run test:e2e`** before opening the PR.
+
+1. **`darkroom.js` init path** — unit tests for `constructor` (string selector, `Image` onload → `_initializeDOM` / `_initializeImage` / `_initializePlugins` / `refresh`) with heavy `fabric.Canvas` / `fabric.Image` stubs; optionally **`_initializePlugins` + `plugins` false** and **`__proto__` guard** if not already fully covered.
+2. **Crop remainder** — `onObjectScaling` with **`options.ratio`**, **`onMouseMoveKeyCrop`**, and tail of **`_renderCropZone`** (large-canvas / ratio branches around the lower section of `darkroom.crop.js`).
+3. **Coverage floors** — after new tests land, bump **`vitest.config.js`** thresholds again with ~1–2 pt margin under the reported “All files” line (same pattern as the threshold PR).
+4. **E2E (optional in same PR)** — one extra Playwright spec if there is a stable, fast flow (e.g. toolbar + undo visible state); skip if flaky.
+
+`.nvmrc` pins a dev Node version; **`package.json` `engines`** remains the published minimum (**Node 22+**). Use **`nvm use`** (or similar) if you rely on `.nvmrc`.
