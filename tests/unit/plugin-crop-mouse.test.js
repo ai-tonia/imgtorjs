@@ -326,6 +326,47 @@ describe('crop plugin _renderCropZone', () => {
     expect(h).toBeGreaterThan(0);
   });
 
+  it('ratio branch with isKeyCroping uses isKeyLeft / isKeyUp', () => {
+    const darkroom = createDarkroomForCrop();
+    const plugin = newCropPlugin(darkroom, { ratio: 2 });
+    plugin.requireFocus();
+    plugin.isKeyCroping = true;
+    plugin.isKeyLeft = true;
+    plugin.isKeyUp = true;
+
+    plugin._renderCropZone(200, 200, 400, 400);
+
+    expect(plugin.cropZone.width).toBeGreaterThan(0);
+    expect(plugin.cropZone.height).toBeGreaterThan(0);
+    expect(plugin.cropZone.width / plugin.cropZone.height).toBeCloseTo(2, 5);
+  });
+
+  it('ratio branch clamps when zone exceeds canvas width (maxWidth path)', () => {
+    const darkroom = createDarkroomForCrop();
+    const plugin = newCropPlugin(darkroom, { ratio: 1 });
+    plugin.requireFocus();
+
+    plugin._renderCropZone(0, 0, 900, 900);
+
+    expect(plugin.cropZone.left).toBeGreaterThanOrEqual(0);
+    expect(plugin.cropZone.top).toBeGreaterThanOrEqual(0);
+    expect(plugin.cropZone.width).toBeLessThanOrEqual(800);
+    expect(plugin.cropZone.height).toBeLessThanOrEqual(600);
+    expect(plugin.cropZone.width).toBeCloseTo(plugin.cropZone.height, 5);
+  });
+
+  it('ratio branch clamps when zone exceeds canvas height (maxHeight path)', () => {
+    const darkroom = createDarkroomForCrop();
+    const plugin = newCropPlugin(darkroom, { ratio: 1 });
+    plugin.requireFocus();
+
+    plugin._renderCropZone(0, 0, 700, 700);
+
+    expect(plugin.cropZone.width).toBeLessThanOrEqual(800);
+    expect(plugin.cropZone.height).toBeLessThanOrEqual(600);
+    expect(plugin.cropZone.width).toBeCloseTo(plugin.cropZone.height, 5);
+  });
+
   it('caps min dimensions by canvas size when options exceed canvas', () => {
     const darkroom = createDarkroomForCrop();
     const plugin = newCropPlugin(darkroom, { minWidth: 2000, minHeight: 1500 });
