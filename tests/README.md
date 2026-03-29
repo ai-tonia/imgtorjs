@@ -12,9 +12,10 @@ Test files use a **prefix by area** so related specs group together in the file 
 | Area        | Path                     | Runner                          |
 | ----------- | ------------------------ | ------------------------------- |
 | Unit        | `tests/unit/*.test.js`   | Vitest (`npm run test:unit`)   |
-| Integration | `tests/integration/`     | Vitest (multi-step flows)       |
-| Integration | `tests/integration/integration-*.test.js` | Vitest (`npm run test:unit` includes this folder) |
+| Integration | `tests/integration/*.test.js` | Vitest (`npm run test:unit` includes **`tests/integration/`**) |
 | Smoke       | `tests/core-build-smoke.test.js` | Vitest (`npm test`)      |
 | E2E         | `e2e/core-demo-*.spec.js` | Playwright (`npm run test:e2e`) |
+
+Integration specs use the **same `*.test.js` naming as unit tests**; living under **`tests/integration/`** is what marks them as integration-level.
 
 Playwright `testDir` is **`e2e/`** (repo root). See `tests/e2e/README.md`.

@@ -12,7 +12,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       // `lib/entry-imgtor.js` is import-order only; behavior is covered via
-      // `tests/integration/integration-build-entry.test.js` and is omitted here
+      // `tests/integration/build-entry.test.js` and is omitted here
       // so thresholds reflect executable library code under `lib/js/`.
       include: ['lib/js/**/*.js'],
       exclude: ['lib/js/compat/**'],

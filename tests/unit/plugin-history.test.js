@@ -35,6 +35,9 @@ function createEditor() {
       if (!listeners.has(type)) listeners.set(type, new Set());
       listeners.get(type).add(handler);
     },
+    removeEventListener(type, handler) {
+      listeners.get(type)?.delete(handler);
+    },
     dispatchEvent(type) {
       for (const h of listeners.get(type) ?? []) h();
     },
@@ -101,5 +104,18 @@ describe('history plugin', () => {
 
     expect(plugin.undoTransformations).toEqual([]);
     expect(updateSpy).toHaveBeenCalled();
+  });
+
+  it('destroy removes listeners so core:transformation no longer updates', () => {
+    const editor = createEditor();
+    const plugin = new imgtor.plugins.history(editor, {});
+    plugin.undoTransformations.push({ kind: 'old' });
+    const updateSpy = vi.spyOn(plugin, '_updateButtons');
+
+    plugin.destroy();
+    updateSpy.mockClear();
+    editor.dispatchEvent('core:transformation');
+
+    expect(updateSpy).not.toHaveBeenCalled();
   });
 });

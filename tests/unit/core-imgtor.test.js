@@ -123,6 +123,42 @@ describe('imgtor core (prototype methods)', () => {
     expect(d.refresh).toHaveBeenCalledOnce();
     expect(d.dispatchEvent).toHaveBeenCalledWith('core:transformation');
   });
+
+  it('_destroyPlugins calls destroy on each plugin instance', () => {
+    const d = baseInstance();
+    const a = { destroy: vi.fn() };
+    const b = { destroy: vi.fn() };
+    d.plugins = { a, b };
+    d._destroyPlugins();
+    expect(a.destroy).toHaveBeenCalledOnce();
+    expect(b.destroy).toHaveBeenCalledOnce();
+  });
+
+  it('_destroyPlugins skips plugins without destroy function', () => {
+    const d = baseInstance();
+    d.plugins = { plain: {} };
+    expect(() => d._destroyPlugins()).not.toThrow();
+  });
+
+  it('_initializePlugins catches failing plugin and continues with the rest', () => {
+    const d = baseInstance();
+    d.options.plugins = { bad: {}, good: {} };
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const Bad = vi.fn(function Bad() {
+      throw new Error('init fail');
+    });
+    const Good = vi.fn(function Good() {
+      this.tag = 'ok';
+    });
+
+    d._initializePlugins({ bad: Bad, good: Good });
+
+    expect(d.plugins.bad).toBeUndefined();
+    expect(Good).toHaveBeenCalledTimes(1);
+    expect(d.plugins.good).toBeInstanceOf(Good);
+    expect(warnSpy).toHaveBeenCalled();
+    warnSpy.mockRestore();
+  });
 });
 
 describe('imgtor refresh, _replaceCurrentImage, reinitializeImage, _popTransformation (queue)', () => {

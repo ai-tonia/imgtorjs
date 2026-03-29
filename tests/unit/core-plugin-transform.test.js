@@ -29,6 +29,22 @@ describe('imgtor.Plugin', () => {
     expect(Child.__super__).toBe(imgtor.Plugin.prototype);
     expect(Object.getPrototypeOf(Child.prototype)).toBe(imgtor.Plugin.prototype);
   });
+
+  it('base destroy is a no-op', () => {
+    const Child = imgtor.Plugin.extend({});
+    const instance = new Child({}, {});
+    expect(() => instance.destroy()).not.toThrow();
+  });
+
+  it('destroy can be overridden via extend', () => {
+    const d = vi.fn();
+    const Child = imgtor.Plugin.extend({
+      destroy: d,
+    });
+    const instance = new Child({}, {});
+    instance.destroy();
+    expect(d).toHaveBeenCalledOnce();
+  });
 });
 
 describe('imgtor.Transformation', () => {

@@ -18,6 +18,15 @@ describe('imgtor.UI.Toolbar / ButtonGroup / Button', () => {
     expect(div).toBe(group.element);
   });
 
+  it('createButtonGroup with position prepend inserts before existing groups', () => {
+    const host = document.createElement('div');
+    const toolbar = new imgtor.UI.Toolbar(host);
+    const first = toolbar.createButtonGroup();
+    const second = toolbar.createButtonGroup({ position: 'prepend' });
+    expect(host.firstChild).toBe(second.element);
+    expect(host.lastChild).toBe(first.element);
+  });
+
   it('createButton sets class from type and svg use href from image', () => {
     const host = document.createElement('div');
     const toolbar = new imgtor.UI.Toolbar(host);

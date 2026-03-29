@@ -1,7 +1,7 @@
 {
   "name": "imgtor",
   "description": "Extensible image editing tool via HTML canvas (ImgTor fork)",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "license": "MIT",
   "type": "module",
   "engines": {
@@ -45,7 +45,11 @@
     "LICENSE",
     "CHANGELOG.md",
     "SECURITY.md",
-    "RELEASING.md"
+    "RELEASING.md",
+    "docs/README.md",
+    "docs/PLUGIN_API.md",
+    "docs/MIGRATION_CANVAS_ADAPTER.md",
+    "docs/FABRIC_UPGRADE.md"
   ],
   "devDependencies": {
     "@eslint/js": "^10.0.1",

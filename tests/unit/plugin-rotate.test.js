@@ -78,4 +78,23 @@ describe('rotate plugin', () => {
     expect(rightArg).toBeInstanceOf(Rotation);
     expect(rightArg.options.angle).toBe(90);
   });
+
+  it('destroy removes button listeners', () => {
+    const applyTransformation = vi.fn();
+    const toolbarHost = document.createElement('div');
+    const editor = {
+      toolbar: new imgtor.UI.Toolbar(toolbarHost),
+      applyTransformation,
+    };
+    const instance = new imgtor.plugins.rotate(editor, {});
+
+    instance.destroy();
+    applyTransformation.mockClear();
+
+    const buttons = toolbarHost.querySelectorAll('button');
+    buttons[0].dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    buttons[1].dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+    expect(applyTransformation).not.toHaveBeenCalled();
+  });
 });
