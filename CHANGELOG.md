@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 5.0.3 (2026-03-29)
+
+- **Crop:** fix **`onMouseDown`** so a **new** drag can start when the pointer is **outside** the current zone (regression after full-canvas or large selections while the zone stayed “active”)
+- **Demo:** expose **`window.demoEditor`** for reliable e2e assertions
+- **e2e:** **`core-demo-features.spec.js`** — second crop selection, crop apply → transformation, rotate + undo, save → **`selfDestroy`**
+- **Tests:** unit case for active zone + click outside starts new drag
+
 ## 5.0.2 (2026-03-29)
 
 - **Cleanup:** remove unused **`adapterKind`** from defaults and TypeScript options (single canvas backend)

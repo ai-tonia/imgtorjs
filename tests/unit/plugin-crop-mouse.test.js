@@ -86,17 +86,20 @@ describe('crop plugin mouse drag', () => {
     expect(plugin.startY).toBeNull();
   });
 
-  it('onMouseDown returns when crop zone is the active object', () => {
+  it('onMouseDown outside zone starts new drag even when crop zone is still active', () => {
     const editor = createEditorForCrop();
     const plugin = newCropPlugin(editor, {});
     plugin.requireFocus();
+    plugin.cropZone.set({ left: 0, top: 0, width: 800, height: 600 });
     editor.canvas.getActiveObject.mockReturnValue(plugin.cropZone);
     editor.canvas.getPointer.mockReturnValue({ x: 500, y: 500 });
+    vi.spyOn(plugin.cropZone, 'containsPoint').mockReturnValue(false);
 
     plugin.onMouseDown({ e: {} });
 
-    expect(editor.canvas.discardActiveObject).not.toHaveBeenCalled();
-    expect(plugin.startX).toBeNull();
+    expect(editor.canvas.discardActiveObject).toHaveBeenCalledOnce();
+    expect(plugin.startX).toBe(500);
+    expect(plugin.startY).toBe(500);
   });
 
   it('onMouseDown outside zone resets dimensions and records drag origin', () => {
