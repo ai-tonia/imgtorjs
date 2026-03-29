@@ -21,6 +21,15 @@ test('demo can instantiate imgtor on #target without console errors', async ({ p
   await page.evaluate(() => {
     new imgtor('#target', {
       plugins: {
+        filter: false,
+        finetune: false,
+        resize: false,
+        frame: false,
+        fill: false,
+        redact: false,
+        annotate: false,
+        decorate: false,
+        retouch: false,
         history: false,
         rotate: false,
         crop: false,

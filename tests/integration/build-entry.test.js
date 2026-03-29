@@ -22,7 +22,22 @@ describe('lib/entry-imgtor.js (ESM)', () => {
     expect(typeof imgtor.Plugin.extend).toBe('function');
     expect(imgtor.CanvasObject).toBeDefined();
 
-    for (const name of ['history', 'rotate', 'crop', 'save']) {
+    const expected = [
+      'history',
+      'rotate',
+      'crop',
+      'save',
+      'filter',
+      'finetune',
+      'resize',
+      'frame',
+      'fill',
+      'redact',
+      'annotate',
+      'decorate',
+      'retouch',
+    ];
+    for (const name of expected) {
       expect(imgtor.plugins).toHaveProperty(name);
       expect(typeof imgtor.plugins[name]).toBe('function');
     }

@@ -10,7 +10,18 @@ declare class imgtor {
     plugins?: unknown,
   );
 
-  static plugins: Record<string, new (editor: imgtor, options: unknown) => imgtor.Plugin>;
+  static plugins: Record<string, new (editor: imgtor, options: unknown) => imgtor.Plugin> &
+    Partial<{
+      filter: new (editor: imgtor, options: unknown) => imgtor.Plugin;
+      finetune: new (editor: imgtor, options: unknown) => imgtor.Plugin;
+      resize: new (editor: imgtor, options: unknown) => imgtor.Plugin;
+      frame: new (editor: imgtor, options: unknown) => imgtor.Plugin;
+      fill: new (editor: imgtor, options: unknown) => imgtor.Plugin;
+      redact: new (editor: imgtor, options: unknown) => imgtor.Plugin;
+      annotate: new (editor: imgtor, options: unknown) => imgtor.Plugin;
+      decorate: new (editor: imgtor, options: unknown) => imgtor.Plugin;
+      retouch: new (editor: imgtor, options: unknown) => imgtor.Plugin;
+    }>;
 
   containerElement: HTMLElement | null;
   canvas: any;
@@ -32,6 +43,17 @@ declare class imgtor {
 }
 
 declare namespace imgtor {
+  /**
+   * Optional shape for a plugin’s internal ES module (child file under `imgtor.<name>/`).
+   * Not all plugins use this; it documents the namespaced-folder pattern.
+   */
+  interface PluginModule {
+    /** Human-readable id, e.g. `'filter'`. */
+    id?: string;
+    /** Optional init hook if the host merges registries before plugin construct. */
+    init?: (editor: imgtor) => void;
+  }
+
   class CanvasObject {
     left: number;
     top: number;
