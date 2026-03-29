@@ -1,6 +1,6 @@
 # End-to-end tests
 
-Browser E2E specs live in the repo root **`e2e/`** directory (see `playwright.config.js` → `testDir: 'e2e'`).
+Browser E2E specs live in the repo root **`e2e/`** directory (see `playwright.config.js` → `testDir: 'e2e'`). Files are named **`core-demo-*.spec.js`** (demo smoke, toolbar, editor).
 
 Run: `npm run test:e2e`
 
