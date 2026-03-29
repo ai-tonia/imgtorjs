@@ -93,3 +93,6 @@ declare namespace Darkroom {
     }
   }
 }
+
+/** Preferred global name for this fork (alias of `Darkroom`). */
+declare var ImgTor: typeof Darkroom;

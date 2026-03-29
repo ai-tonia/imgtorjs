@@ -10,13 +10,13 @@
 | `demo/`                 | Static demo; run `npm start` after `npm install` (build + `demo/build` link + server) |
 | `tests/`                | Vitest: smoke tests on `build/` + unit tests for pure helpers                         |
 
-Rough size: on the order of **1–2k lines** of first-party JS/SCSS (excluding `demo/vendor/fabric.js`). The project uses **npm** only; legacy Bower metadata has been removed.
+Rough size: on the order of **1–2k lines** of first-party JS/CSS (excluding `demo/vendor/fabric.js`). The project uses **npm** only; legacy Bower metadata has been removed.
 
 ### Framework (Fabric.js)
 
 The library is built and tested against **Fabric.js 1.4.x** (`demo/vendor/fabric.js`). ImgTor does **not** declare Fabric as an npm dependency so consumers can pin their own copy.
 
-**Upgrading Fabric (5.x / 6.x, etc.):** treat as a dedicated project: replace or vendor a new build, update every `fabric.*` usage in `lib/js` and the demo, and manually verify crop, rotate, undo/redo, and save. There is no automated visual regression suite yet.
+**Upgrading Fabric (5.x / 6.x, etc.):** treat as a dedicated project: replace or vendor a new build, update every `fabric.*` usage in `lib/js` and the demo, and manually verify crop, rotate, undo/redo, and save. Playwright includes a **toolbar screenshot** baseline under `e2e/__snapshots__/`; update with `npx playwright test --update-snapshots` when UI intentionally changes.
 
 ## Tests
 

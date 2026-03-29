@@ -4,7 +4,7 @@ test('demo mounts toolbar with plugin button groups', async ({ page }) => {
   const res = await page.goto('/');
   expect(res?.ok()).toBeTruthy();
 
-  await expect.poll(async () => page.evaluate(() => typeof window.Darkroom)).toBe('function');
+  await expect.poll(async () => page.evaluate(() => typeof window.ImgTor)).toBe('function');
 
   const toolbar = page.locator('.darkroom-toolbar');
   await expect(toolbar).toBeVisible();
@@ -14,5 +14,7 @@ test('demo mounts toolbar with plugin button groups', async ({ page }) => {
 
   // Demo calls crop.requireFocus() on init, so crop done/close are visible too:
   // undo, redo, rotate×2, crop, done, close, save = 8
-  await expect(toolbar.locator('button.darkroom-button:not(.darkroom-button-hidden)')).toHaveCount(8);
+  await expect(toolbar.locator('button.darkroom-button:not(.darkroom-button-hidden)')).toHaveCount(
+    8,
+  );
 });
