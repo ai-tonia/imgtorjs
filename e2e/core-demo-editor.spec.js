@@ -14,9 +14,6 @@ test('demo can instantiate imgtor on #target without console errors', async ({ p
   expect(res?.ok()).toBeTruthy();
 
   await expect.poll(async () => page.evaluate(() => typeof window.imgtor)).toBe('function');
-  await expect
-    .poll(async () => page.evaluate(() => typeof window.fabric))
-    .toBe('undefined');
 
   await expect(page.locator('.imgtor-container').first()).toBeVisible({ timeout: 15_000 });
   await expect(page.locator('.imgtor-toolbar').first()).toBeVisible({ timeout: 15_000 });

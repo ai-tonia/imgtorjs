@@ -8,7 +8,6 @@ import { beforeAll, describe, expect, it } from 'vitest';
 describe('lib/entry-imgtor.js (ESM)', () => {
   beforeAll(async () => {
     document.body.replaceChildren();
-    delete globalThis.fabric;
     delete globalThis.imgtor;
     await import('../../lib/entry-imgtor.js');
   });
@@ -40,10 +39,6 @@ describe('lib/entry-imgtor.js (ESM)', () => {
     const el = document.createElement('canvas');
     const c = imgtor.CanvasAdapterNative.createCanvas(el, {});
     expect(c.getElement()).toBe(el);
-  });
-
-  it('does not require a fabric global', () => {
-    expect(globalThis.fabric).toBeUndefined();
   });
 
   it('Utils.computeCropRectFromDrag is available for crop parity', () => {

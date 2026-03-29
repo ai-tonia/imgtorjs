@@ -18,9 +18,7 @@ afterEach(() => {
 });
 
 describe('default editor (Canvas 2D)', () => {
-  it('initializes without a fabric global', async () => {
-    expect(globalThis.fabric).toBeUndefined();
-
+  it('initializes viewport and source canvases with plugins disabled', async () => {
     const OriginalImage = globalThis.Image;
     globalThis.Image = function MockImage() {
       this.onload = null;

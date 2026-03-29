@@ -11,7 +11,7 @@
 npm install imgtor
 ```
 
-The package ships **`build/imgtor.js`** and **`build/imgtor.css`**. The editor is **Canvas 2D only** — you do **not** load Fabric.js.
+The package ships **`build/imgtor.js`** and **`build/imgtor.css`**. The editor is **Canvas 2D** (HTML `<canvas>`).
 
 **TypeScript:** ambient types live in **`types/imgtor.d.ts`**. Use `/// <reference types="imgtor" />` (or include that file); the global **`imgtor`** constructor is declared there.
 
