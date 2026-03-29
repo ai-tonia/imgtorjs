@@ -70,4 +70,37 @@ describe('lib/entry-imgtor.js (ESM)', () => {
     expect(icons).toBeTruthy();
     expect(document.body.contains(icons)).toBe(true);
   });
+
+  it('exposes CanvasAdapterFabric with layout helpers (migration parity surface)', () => {
+    expect(imgtor.CanvasAdapterFabric).toBeDefined();
+    expect(typeof imgtor.CanvasAdapterFabric.createCanvas).toBe('function');
+    expect(typeof imgtor.CanvasAdapterFabric.createLockedImage).toBe('function');
+    expect(typeof imgtor.CanvasAdapterFabric.layoutSourceImage).toBe('function');
+    expect(typeof imgtor.CanvasAdapterFabric.layoutViewportImage).toBe('function');
+  });
+
+  it('exposes CanvasAdapterNative stub (throws until implemented)', () => {
+    expect(imgtor.CanvasAdapterNative).toBeDefined();
+    expect(() => imgtor.CanvasAdapterNative.createCanvas()).toThrow(/not implemented/);
+  });
+
+  it('Utils.computeCropRectFromDrag is available for crop parity', () => {
+    expect(typeof imgtor.Utils.computeCropRectFromDrag).toBe('function');
+    const r = imgtor.Utils.computeCropRectFromDrag({
+      fromX: 0,
+      fromY: 0,
+      toX: 50,
+      toY: 40,
+      canvasWidth: 100,
+      canvasHeight: 80,
+      minWidth: 1,
+      minHeight: 1,
+      ratio: null,
+      isKeyCroping: false,
+      isKeyLeft: false,
+      isKeyUp: false,
+    });
+    expect(r.width).toBe(50);
+    expect(r.height).toBe(40);
+  });
 });
