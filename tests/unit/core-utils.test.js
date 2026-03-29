@@ -5,15 +5,15 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { boundingBoxForRotatedRect } from '../../lib/js/math-viewport.js';
 
 beforeAll(async () => {
-  globalThis.Darkroom = {};
+  globalThis.imgtor = {};
   await import('../../lib/js/core/utils.js');
 });
 
-describe('Darkroom.Utils', () => {
+describe('imgtor.Utils', () => {
   it('extend copies missing keys from defaults into options', () => {
     const options = { a: 1 };
     const defaults = { a: 99, b: 2 };
-    Darkroom.Utils.extend(options, defaults);
+    imgtor.Utils.extend(options, defaults);
     expect(options).toEqual({ a: 1, b: 2 });
   });
 
@@ -23,7 +23,7 @@ describe('Darkroom.Utils', () => {
       getHeight: () => 60,
       getAngle: () => 30,
     };
-    expect(Darkroom.Utils.computeImageViewPort(image)).toEqual(
+    expect(imgtor.Utils.computeImageViewPort(image)).toEqual(
       boundingBoxForRotatedRect(80, 60, 30),
     );
   });
@@ -34,7 +34,7 @@ describe('Darkroom.Utils', () => {
       getHeight: () => 40,
       getAngle: () => 0,
     };
-    expect(Darkroom.Utils.computeImageViewPort(image)).toEqual({
+    expect(imgtor.Utils.computeImageViewPort(image)).toEqual({
       width: 100,
       height: 40,
     });

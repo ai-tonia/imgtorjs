@@ -6,15 +6,15 @@ test('demo mounts toolbar with plugin button groups', async ({ page }) => {
 
   await expect.poll(async () => page.evaluate(() => typeof window.ImgTor)).toBe('function');
 
-  const toolbar = page.locator('.darkroom-toolbar');
+  const toolbar = page.locator('.imgtor-toolbar');
   await expect(toolbar).toBeVisible();
 
   // History, rotate, crop, save — one group each after init
-  await expect(toolbar.locator('.darkroom-button-group')).toHaveCount(4);
+  await expect(toolbar.locator('.imgtor-button-group')).toHaveCount(4);
 
   // Demo calls crop.requireFocus() on init, so crop done/close are visible too:
   // undo, redo, rotate×2, crop, done, close, save = 8
-  await expect(toolbar.locator('button.darkroom-button:not(.darkroom-button-hidden)')).toHaveCount(
+  await expect(toolbar.locator('button.imgtor-button:not(.imgtor-button-hidden)')).toHaveCount(
     8,
   );
 });

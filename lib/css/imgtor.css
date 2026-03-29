@@ -1,14 +1,14 @@
 /* ImgTor toolbar styles (source of truth for build; no Sass runtime). */
-.darkroom-container {
+.imgtor-container {
   position: relative;
 }
 
-.darkroom-image-container {
+.imgtor-image-container {
   top: 0;
   left: 0;
 }
 
-.darkroom-toolbar {
+.imgtor-toolbar {
   display: block;
   position: absolute;
   top: -45px;
@@ -22,7 +22,7 @@
   padding: 0 5px;
 }
 
-.darkroom-toolbar::before {
+.imgtor-toolbar::before {
   content: '';
   position: absolute;
   bottom: -7px;
@@ -34,17 +34,17 @@
   border-top: 7px solid #444;
 }
 
-.darkroom-button-group {
+.imgtor-button-group {
   display: inline-block;
   margin: 0;
   padding: 0;
 }
 
-.darkroom-button-group:last-child {
+.imgtor-button-group:last-child {
   border-right: none;
 }
 
-.darkroom-button {
+.imgtor-button {
   box-sizing: border-box;
   background: transparent;
   border: none;
@@ -54,46 +54,46 @@
   height: 40px;
 }
 
-.darkroom-button:hover {
+.imgtor-button:hover {
   cursor: pointer;
   background: #555;
 }
 
-.darkroom-button:active {
+.imgtor-button:active {
   cursor: pointer;
   background: #333;
 }
 
-.darkroom-button:disabled .darkroom-icon {
+.imgtor-button:disabled .imgtor-icon {
   fill: #666;
 }
 
-.darkroom-button:disabled:hover {
+.imgtor-button:disabled:hover {
   cursor: default;
   background: transparent;
 }
 
-.darkroom-button.darkroom-button-active .darkroom-icon {
+.imgtor-button.imgtor-button-active .imgtor-icon {
   fill: #33b5e5;
 }
 
-.darkroom-button.darkroom-button-hidden {
+.imgtor-button.imgtor-button-hidden {
   display: none;
 }
 
-.darkroom-button.darkroom-button-success .darkroom-icon {
+.imgtor-button.imgtor-button-success .imgtor-icon {
   fill: #99cc00;
 }
 
-.darkroom-button.darkroom-button-warning .darkroom-icon {
+.imgtor-button.imgtor-button-warning .imgtor-icon {
   fill: #ffbb33;
 }
 
-.darkroom-button.darkroom-button-danger .darkroom-icon {
+.imgtor-button.imgtor-button-danger .imgtor-icon {
   fill: #ff4444;
 }
 
-.darkroom-icon {
+.imgtor-icon {
   width: 24px;
   height: 24px;
   fill: #fff;

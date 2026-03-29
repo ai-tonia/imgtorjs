@@ -4,15 +4,23 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 4.0.0 (2026-03-28)
+
+- **Breaking:** Global constructor is **`imgtor`** (lowercase); **`ImgTor`** is the same function for older snippets
+- **Build:** **`build/imgtor.js`**, **`build/imgtor.css`**; Vite entry **`lib/entry-imgtor.js`**; source CSS **`lib/css/imgtor.css`**
+- **CSS / DOM:** class names and icon host id use **`imgtor-*`** / **`imgtor-icons`**; plugins reference **`this.imgtor`**
+- **Types:** **`types/imgtor.d.ts`** (replaces prior `*.d.ts` entry point)
+- **Plugins:** filenames **`imgtor.*.js`** under **`lib/js/plugins/`**
+
 ## 3.2.0 (2026-03-29)
 
-- **API:** global **`ImgTor`** (alias of **`Darkroom`**) for new code; demo uses **`ImgTor`**
-- **CSS:** plain **`lib/css/darkroom.css`** + **Lightning CSS** minify (`scripts/build-css.mjs`); **Dart Sass / SCSS removed**
+- **API:** global **`ImgTor`** (alias of the legacy global constructor) for new code; demo uses **`ImgTor`**
+- **CSS:** plain source CSS + **Lightning CSS** minify (`scripts/build-css.mjs`); **Dart Sass / SCSS removed**
 - **compat:** optional **`lib/js/compat/legacy-html5.js`** (`requestAnimationFrame` shims); comment in demo HTML
 - **e2e:** history/undo spec; toolbar **visual snapshot** (`e2e/__snapshots__/`); specs assert **`ImgTor`**
-- **types:** **`ImgTor`** in **`types/darkroom.d.ts`**
+- **types:** **`ImgTor`** ambient typings file
 - **docs:** remove Pintura; **`docs/FABRIC_UPGRADE.md`** playbook; README / CONTRIBUTING updates
-- **tests:** **`core-` / `plugin-` / `util-` / `core-build-`** file prefixes; extra darkroom scaling + crop ratio coverage; integration entry spec; **`test:unit`** includes **`tests/integration`**
+- **tests:** **`core-` / `plugin-` / `util-` / `core-build-`** file prefixes; extra viewport scaling + crop ratio coverage; integration entry spec; **`test:unit`** includes **`tests/integration`**
 - **tooling:** ESLint globals for Playwright **`ImgTor`**
 
 ## 3.1.2 (2026-03-28)
@@ -33,7 +41,7 @@ All notable changes to this project will be documented in this file.
 ## 3.0.0 (2026-03-28)
 
 - **Breaking (fork):** npm **`imgtor`** v3 — ImgTor modernization (Node 22+, Vite, Vitest, GitHub Actions CI)
-- TypeScript **ambient types** for global `Darkroom` (`types/darkroom.d.ts`); **`exports`** and **`types`** in `package.json`
+- TypeScript **ambient types** for the global constructor; **`exports`** and **`types`** in `package.json`
 - **Dependabot** weekly npm updates (grouped devDependencies)
 - Demo and docs: ImgTor / **ai-tonia/imgtorjs**; README CI badge and `npm install imgtor`
 - npm **`main`**, **`style`**, **`files`**, **`prepublishOnly`** for publishing built assets

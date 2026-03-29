@@ -26,9 +26,9 @@ function buildSvgSprite(iconsDir) {
   return `<svg xmlns="http://www.w3.org/2000/svg">${symbols.join('')}</svg>`;
 }
 
-function darkroomIconsSpritePlugin() {
+function imgtorIconsSpritePlugin() {
   return {
-    name: 'darkroom-icons-sprite',
+    name: 'imgtor-icons-sprite',
     transform(code, id) {
       const normalized = id.replace(/\\/g, '/');
       if (!normalized.includes('/lib/js/core/bootstrap.js')) {
@@ -45,13 +45,13 @@ function darkroomIconsSpritePlugin() {
 }
 
 export default defineConfig({
-  plugins: [darkroomIconsSpritePlugin()],
+  plugins: [imgtorIconsSpritePlugin()],
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'lib/entry-darkroom.js'),
-      name: 'Darkroom',
+      entry: path.resolve(__dirname, 'lib/entry-imgtor.js'),
+      name: 'imgtor',
       formats: ['iife'],
-      fileName: () => 'darkroom.js',
+      fileName: () => 'imgtor.js',
     },
     outDir: 'build',
     emptyOutDir: false,

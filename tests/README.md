@@ -4,7 +4,7 @@ Test files use a **prefix by area** so related specs group together in the file 
 
 | Prefix        | Examples                          | What it covers                          |
 | ------------- | --------------------------------- | --------------------------------------- |
-| **`core-`**   | `core-darkroom.test.js`, `core-init.test.js` | Darkroom core, bootstrap, UI, entry import |
+| **`core-`**   | `core-imgtor.test.js`, `core-init.test.js` | imgtor core, bootstrap, UI, entry import |
 | **`plugin-`** | `plugin-crop-core.test.js`, `plugin-history.test.js` | Plugins (crop, history, rotate, save)   |
 | **`util-`**   | `util-extend-object.test.js`      | Pure helpers shared by the library      |
 | **`core-build-`** | `core-build-smoke.test.js`    | Build artefacts exist (`npm test`)      |

@@ -10,8 +10,8 @@ ImgTor is validated against **Fabric 1.4.x** (`demo/vendor/fabric.js`). Moving t
 ## Work breakdown
 
 1. **Replace the runtime** — npm dependency or vendored bundle; ensure a single Fabric version loads in the demo and in docs.
-2. **API pass** — update every `fabric.*` usage in `lib/js/plugins/*.js` and `lib/js/core/darkroom.js` (Canvas, Image, util helpers, events).
-3. **Typings** — extend or replace `types/darkroom.d.ts` with accurate `fabric` types or narrow `any` gradually.
+2. **API pass** — update every `fabric.*` usage in `lib/js/plugins/*.js` and `lib/js/core/imgtor.js` (Canvas, Image, util helpers, events).
+3. **Typings** — extend or replace `types/imgtor.d.ts` with accurate `fabric` types or narrow `any` gradually.
 4. **Tests** — fix Vitest mocks to match new constructors; expand unit tests where behavior changed.
 5. **Manual QA** — crop, rotate, undo/redo, save, keyboard crop if enabled; compare with Fabric 1.4 baseline or screenshots.
 6. **Semver** — ship as **major** (e.g. ImgTor 4.0.0) with migration notes in CHANGELOG.

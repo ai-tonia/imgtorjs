@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>ImgTor demo</title>
-    <link rel="stylesheet" href="./build/darkroom.css" />
+    <link rel="stylesheet" href="./build/imgtor.css" />
     <link rel="stylesheet" href="./css/page.css" />
   </head>
   <body>
@@ -17,7 +17,7 @@
       </a>
 
       <div class="container">
-        <h1>ImgTor <span class="sr-only">(DarkroomJS fork)</span></h1>
+        <h1>ImgTor <span class="sr-only">(maintained fork)</span></h1>
         <p class="hero">Extensible image editing tool powered by HTML5 canvas.</p>
       </div>
     </header>
@@ -72,12 +72,12 @@
 
           <figure>
             <pre><code>.
-├── darkroom.js
+├── imgtor.js
 └── plugins
-    ├── darkroom.crop.js
-    ├── darkroom.history.js
-    ├── darkroom.rotate.js
-    └── darkroom.save.js</code></pre>
+    ├── imgtor.crop.js
+    ├── imgtor.history.js
+    ├── imgtor.rotate.js
+    └── imgtor.save.js</code></pre>
           </figure>
 
           <p>
@@ -107,7 +107,7 @@
               Transforms the canvas back into an image. This is mainly a proof of concept to show
               how plugins work. This plugin only takes
               <a
-                href="https://github.com/ai-tonia/imgtorjs/blob/main/lib/js/plugins/darkroom.save.js"
+                href="https://github.com/ai-tonia/imgtorjs/blob/main/lib/js/plugins/imgtor.save.js"
                 >a few lines</a
               >.
             </dd>
@@ -130,7 +130,7 @@
 
     <script src="./vendor/fabric.js"></script>
     <!-- Optional: <script src="../lib/js/compat/legacy-html5.js"></script> for very old browsers -->
-    <script src="./build/darkroom.js"></script>
+    <script src="./build/imgtor.js"></script>
 
     <script>
       var dkrm = new ImgTor('#target', {

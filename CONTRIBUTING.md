@@ -4,9 +4,9 @@
 
 | Area                    | Role                                                                                  |
 | ----------------------- | ------------------------------------------------------------------------------------- |
-| `lib/js/`               | Browser library (global `Darkroom`, Fabric.js on `window`)                            |
-| `lib/css/`              | Styles compiled to `build/darkroom.css`                                               |
-| `lib/entry-darkroom.js` | Vite entry: ordered imports for the IIFE bundle                                       |
+| `lib/js/`               | Browser library (global `imgtor` / `ImgTor`, Fabric.js on `window`)                   |
+| `lib/css/`              | Styles compiled to `build/imgtor.css`                                                 |
+| `lib/entry-imgtor.js`   | Vite entry: ordered imports for the IIFE bundle                                       |
 | `demo/`                 | Static demo; run `npm start` after `npm install` (build + `demo/build` link + server) |
 | `tests/`                | Vitest: smoke tests on `build/` + unit tests for pure helpers                         |
 
@@ -44,4 +44,4 @@ GitHub Actions runs **`npm ci`**, Playwright browser install, **`npm run lint`**
 
 **Dependabot** opens weekly grouped PRs for npm devDependencies (see `.github/dependabot.yml`).
 
-TypeScript users can reference **`imgtor`** types via **`types/darkroom.d.ts`** (global `Darkroom`; Fabric remains untyped).
+TypeScript users can reference **`imgtor`** types via **`types/imgtor.d.ts`** (globals `imgtor` and `ImgTor`; Fabric remains untyped).

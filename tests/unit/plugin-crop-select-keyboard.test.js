@@ -103,17 +103,17 @@ function fabricStub() {
 
 beforeAll(async () => {
   globalThis.fabric = fabricStub();
-  globalThis.Darkroom = { plugins: [] };
+  globalThis.imgtor = { plugins: [] };
   await import('../../lib/js/core/utils.js');
   await import('../../lib/js/core/plugin.js');
   await import('../../lib/js/core/transformation.js');
   await import('../../lib/js/core/ui.js');
-  const extendSpy = vi.spyOn(Darkroom.Transformation, 'extend');
-  await import('../../lib/js/plugins/darkroom.crop.js');
+  const extendSpy = vi.spyOn(imgtor.Transformation, 'extend');
+  await import('../../lib/js/plugins/imgtor.crop.js');
   extendSpy.mockRestore();
 });
 
-function createDarkroomForCrop() {
+function createEditorForCrop() {
   const toolbarHost = document.createElement('div');
   const canvasHost = document.createElement('div');
   const handlers = new Map();
@@ -136,7 +136,7 @@ function createDarkroomForCrop() {
     defaultCursor: 'default',
   };
   return {
-    toolbar: new Darkroom.UI.Toolbar(toolbarHost),
+    toolbar: new imgtor.UI.Toolbar(toolbarHost),
     image: {
       getTop: vi.fn(() => 0),
       getLeft: vi.fn(() => 0),
@@ -150,20 +150,20 @@ function createDarkroomForCrop() {
   };
 }
 
-function newCropPlugin(darkroom, options = {}) {
-  return new Darkroom.plugins.crop(darkroom, options);
+function newCropPlugin(editor, options = {}) {
+  return new imgtor.plugins.crop(editor, options);
 }
 
 describe('crop plugin selectZone', () => {
   it('updates zone via _renderCropZone, canvas helpers, and dispatches crop:update', () => {
-    const darkroom = createDarkroomForCrop();
-    const plugin = newCropPlugin(darkroom, {});
+    const editor = createEditorForCrop();
+    const plugin = newCropPlugin(editor, {});
     plugin.requireFocus();
 
-    darkroom.dispatchEvent.mockClear();
-    darkroom.canvas.bringToFront.mockClear();
-    darkroom.canvas.setActiveObject.mockClear();
-    darkroom.canvas.calcOffset.mockClear();
+    editor.dispatchEvent.mockClear();
+    editor.canvas.bringToFront.mockClear();
+    editor.canvas.setActiveObject.mockClear();
+    editor.canvas.calcOffset.mockClear();
     plugin.cropZone.setCoords.mockClear();
 
     plugin.selectZone(10, 20, 100, 80);
@@ -172,16 +172,16 @@ describe('crop plugin selectZone', () => {
     expect(plugin.cropZone.top).toBe(20);
     expect(plugin.cropZone.width).toBe(100);
     expect(plugin.cropZone.height).toBe(80);
-    expect(darkroom.canvas.bringToFront).toHaveBeenCalledWith(plugin.cropZone);
+    expect(editor.canvas.bringToFront).toHaveBeenCalledWith(plugin.cropZone);
     expect(plugin.cropZone.setCoords).toHaveBeenCalled();
-    expect(darkroom.canvas.setActiveObject).toHaveBeenCalledWith(plugin.cropZone);
-    expect(darkroom.canvas.calcOffset).toHaveBeenCalled();
-    expect(darkroom.dispatchEvent).toHaveBeenCalledWith('crop:update');
+    expect(editor.canvas.setActiveObject).toHaveBeenCalledWith(plugin.cropZone);
+    expect(editor.canvas.calcOffset).toHaveBeenCalled();
+    expect(editor.dispatchEvent).toHaveBeenCalledWith('crop:update');
   });
 
   it('applies forceDimension path with direct set() before canvas updates', () => {
-    const darkroom = createDarkroomForCrop();
-    const plugin = newCropPlugin(darkroom, {});
+    const editor = createEditorForCrop();
+    const plugin = newCropPlugin(editor, {});
     plugin.requireFocus();
 
     plugin.selectZone(33, 44, 120, 90, true);
@@ -190,15 +190,15 @@ describe('crop plugin selectZone', () => {
     expect(plugin.cropZone.top).toBe(44);
     expect(plugin.cropZone.width).toBe(120);
     expect(plugin.cropZone.height).toBe(90);
-    expect(darkroom.canvas.bringToFront).toHaveBeenCalledWith(plugin.cropZone);
-    expect(darkroom.dispatchEvent).toHaveBeenCalledWith('crop:update');
+    expect(editor.canvas.bringToFront).toHaveBeenCalledWith(plugin.cropZone);
+    expect(editor.dispatchEvent).toHaveBeenCalledWith('crop:update');
   });
 });
 
 describe('crop plugin onKeyUp quick crop', () => {
   it('clears key mode and invokes onMouseUp finalization when quickCropKey matches', () => {
-    const darkroom = createDarkroomForCrop();
-    const plugin = newCropPlugin(darkroom, { quickCropKey: 71 });
+    const editor = createEditorForCrop();
+    const plugin = newCropPlugin(editor, { quickCropKey: 71 });
     plugin.requireFocus();
     plugin.isKeyCroping = true;
 
@@ -211,25 +211,25 @@ describe('crop plugin onKeyUp quick crop', () => {
     expect(plugin.startY).toBeNull();
     expect(onMouseUpSpy).toHaveBeenCalledOnce();
     expect(plugin.cropZone.setCoords).toHaveBeenCalled();
-    expect(darkroom.canvas.setActiveObject).toHaveBeenCalledWith(plugin.cropZone);
-    expect(darkroom.canvas.calcOffset).toHaveBeenCalled();
+    expect(editor.canvas.setActiveObject).toHaveBeenCalledWith(plugin.cropZone);
+    expect(editor.canvas.calcOffset).toHaveBeenCalled();
     onMouseUpSpy.mockRestore();
   });
 });
 
 describe('crop plugin cancel button', () => {
   it('releaseFocus via cancel click removes zone and dispatches crop:update', () => {
-    const darkroom = createDarkroomForCrop();
-    const plugin = newCropPlugin(darkroom, {});
+    const editor = createEditorForCrop();
+    const plugin = newCropPlugin(editor, {});
     plugin.requireFocus();
     const zone = plugin.cropZone;
-    darkroom.dispatchEvent.mockClear();
+    editor.dispatchEvent.mockClear();
 
     plugin.cancelButton.element.click();
 
     expect(zone.remove).toHaveBeenCalled();
     expect(plugin.cropZone).toBeUndefined();
-    expect(darkroom.canvas.defaultCursor).toBe('default');
-    expect(darkroom.dispatchEvent).toHaveBeenCalledWith('crop:update');
+    expect(editor.canvas.defaultCursor).toBe('default');
+    expect(editor.dispatchEvent).toHaveBeenCalledWith('crop:update');
   });
 });

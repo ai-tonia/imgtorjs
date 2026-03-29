@@ -1,16 +1,16 @@
 /**
- * ImgTor global API (load `build/darkroom.js` after Fabric.js).
+ * ImgTor global API (load `build/imgtor.js` after Fabric.js).
  * Fabric types are not bundled; canvas/image use `any` for 1.x compatibility.
  */
 
-declare class Darkroom {
+declare class imgtor {
   constructor(
     element: string | HTMLImageElement,
-    options?: Darkroom.DarkroomOptions,
+    options?: imgtor.ImgTorOptions,
     plugins?: unknown,
   );
 
-  static plugins: Array<new (darkroom: Darkroom, options: unknown) => unknown>;
+  static plugins: Array<new (editor: imgtor, options: unknown) => unknown>;
 
   containerElement: HTMLElement | null;
   canvas: any;
@@ -19,7 +19,7 @@ declare class Darkroom {
   sourceImage: any;
   originalImageElement: HTMLImageElement | null;
   transformations: unknown[];
-  options: Darkroom.DarkroomOptions;
+  options: imgtor.ImgTorOptions;
   plugins: Record<string, unknown>;
 
   selfDestroy(): void;
@@ -30,8 +30,8 @@ declare class Darkroom {
   reinitializeImage(): void;
 }
 
-declare namespace Darkroom {
-  interface DarkroomOptions {
+declare namespace imgtor {
+  interface ImgTorOptions {
     minWidth?: number | null;
     minHeight?: number | null;
     maxWidth?: number | null;
@@ -39,7 +39,7 @@ declare namespace Darkroom {
     ratio?: number | null;
     backgroundColor?: string;
     plugins?: Record<string, unknown | false>;
-    initialize?: (this: Darkroom) => void;
+    initialize?: (this: imgtor) => void;
   }
 
   namespace Utils {
@@ -52,8 +52,8 @@ declare namespace Darkroom {
   }
 
   class Plugin {
-    constructor(darkroom: Darkroom, options: unknown);
-    darkroom: Darkroom;
+    constructor(editor: imgtor, options: unknown);
+    imgtor: imgtor;
     options: unknown;
     defaults: Record<string, unknown>;
     initialize(): void;
@@ -94,5 +94,5 @@ declare namespace Darkroom {
   }
 }
 
-/** Preferred global name for this fork (alias of `Darkroom`). */
-declare var ImgTor: typeof Darkroom;
+/** PascalCase alias used in demos and older snippets. */
+declare var ImgTor: typeof imgtor;
