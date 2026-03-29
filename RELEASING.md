@@ -59,9 +59,9 @@ Scoped packages (`@scope/name`) default to restricted; **unscoped** `imgtor` is 
 
 ## 5. GitHub Release
 
-Create a **Release** from tag `vX.Y.Z`. Paste a short excerpt from the matching `## X.Y.Z (YYYY-MM-DD)` section in CHANGELOG as the release description (you may trim or link to the full changelog).
+**Automated:** Pushing an annotated tag matching **`v*.*.*`** (e.g. `v5.2.0`) triggers [`.github/workflows/release-github.yml`](.github/workflows/release-github.yml). It creates a **GitHub Release** titled `imgtor vX.Y.Z` with body taken from the matching **`## X.Y.Z`** section in [CHANGELOG.md](CHANGELOG.md) (via `scripts/extract-changelog-release.mjs`). If a release for that tag already exists, the job skips.
 
-CLI example (requires [GitHub CLI](https://cli.github.com/) and auth):
+**Manual override:** You can still create or edit a release in the GitHub UI, or use the CLI:
 
 ```bash
 gh release create vX.Y.Z --title "imgtor vX.Y.Z" --notes "See CHANGELOG for vX.Y.Z"

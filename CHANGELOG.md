@@ -4,7 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 5.2.0 (2026-03-30)
+
 - **Core:** **`options.plugins`** may be an **array** — ordered whitelist of plugin ids (`['history', 'crop', { id: 'save' }]`) or **`[]`** for no plugins; object map form unchanged
+- **Plugins:** **annotate**, **decorate**, and **redact** bake from a **source canvas snapshot** (offscreen buffer); annotate maps viewport coordinates to source pixels
+- **UI:** Toolbar buttons expose **`data-plugin`** and **`data-feature`** for testing and host selectors; **`.imgtor-image-container`** top margin so wide toolbars do not overlap the canvas; toolbar caret **`pointer-events: none`**
+- **Demo:** All bundled plugins enabled by default; no auto **crop** focus on load
+- **Tests / e2e:** **`core-demo-all-plugins.spec.js`**, isolated demo HTML fixtures, **Playwright** drags via **`dragTo`**; toolbar visual snapshot updated; Vitest coverage floor adjustments for all-files include
 
 ## 5.1.0 (2026-03-29)
 
