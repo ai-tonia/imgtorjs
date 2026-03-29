@@ -4,7 +4,7 @@ Test files use a **prefix by area** so related specs group together in the file 
 
 | Prefix        | Examples                          | What it covers                          |
 | ------------- | --------------------------------- | --------------------------------------- |
-| **`core-`**   | `core-imgtor.test.js`, `core-canvas-adapter-native.test.js`, `core-adapter-kind.test.js`, `core-init.test.js`, `core-icon-sprite.test.js` | imgtor core, adapters, icon sprite, UI |
+| **`core-`**   | `core-imgtor.test.js`, `core-canvas-adapter-native.test.js`, `core-editor-canvas.test.js`, `core-init.test.js`, `core-icon-sprite.test.js` | imgtor core, adapters, icon sprite, UI |
 | **`plugin-`** | `plugin-crop-core.test.js`, `plugin-history.test.js` | Plugins (crop, history, rotate, save)   |
 | **`util-`**   | `util-extend-object.test.js`, `util-crop-geometry.test.js` | Pure helpers shared by the library      |
 | **`core-build-`** | `core-build-smoke.test.js`    | Build artefacts exist (`npm test`)      |

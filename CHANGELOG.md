@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 5.0.2 (2026-03-29)
+
+- **Cleanup:** remove unused **`adapterKind`** from defaults and TypeScript options (single canvas backend)
+- **Tooling:** drop obsolete **`demo/vendor/**`** ESLint ignore; rename **`core-adapter-kind.test.js`** → **`core-editor-canvas.test.js`**
+- **Audit:** **`npm audit`** — 0 vulnerabilities (devDependencies current)
+
 ## 5.0.1 (2026-03-28)
 
 - **CI:** relax Vitest coverage thresholds for **`functions`** and **`branches`** after canvas adapter growth
@@ -15,14 +21,14 @@ All notable changes to this project will be documented in this file.
 - **Breaking:** single **`build/imgtor.js`** bundle is **Canvas 2D only** via **`CanvasAdapterNative`**
 - **Crop:** **`imgtor.CanvasObject`** + canvas overlay; crop plugin uses the native wrapper API
 - **Removed:** legacy dual-adapter build, secondary subset bundle, and vendored third-party canvas engine
-- **Core:** runtime is **`CanvasAdapterNative`** only; **`adapterKind`** is **`native`**
+- **Core:** runtime is **`CanvasAdapterNative`** only
 - **Tests / e2e:** integration entry smoke; **`core-demo-crop.spec.js`** crop smoke
 
 ## 4.7.0 (2026-03-29)
 
 - **Canvas 2D subset:** expanded **`lib/js/core/canvas-adapter-native.js`** — **`CanvasAdapterNative`**
 - **Secondary bundle** (later removed in 5.0): smaller IIFE for rotate / history / save only
-- **`adapterKind: 'native'`** when the native adapter module is loaded alongside the default bundle
+- Native adapter module loadable alongside the default bundle for opt-in testing
 - **Build:** dual Vite targets; **`exports`** + **`files`** included the subset artifact
 - **Tests:** **`core-canvas-adapter-native.test.js`**, native entry integration test, smoke for subset artifact
 
@@ -37,9 +43,9 @@ All notable changes to this project will be documented in this file.
 
 ## 4.4.0 (2026-03-29)
 
-- **Options:** **`adapterKind`** to select canvas backend; native path behind a stub until Phase C
+- **Options:** constructor flag to select canvas backend; native path behind a stub until Phase C
 - **Stub module:** placeholder native adapter (throws on use); loaded after default adapter in entry
-- **Tests:** **`core-adapter-kind.test.js`**
+- **Tests:** adapter selection / native init coverage (later renamed **`core-editor-canvas.test.js`**)
 
 ## 4.3.0 (2026-03-29)
 

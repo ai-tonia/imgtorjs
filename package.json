@@ -1,7 +1,7 @@
 {
   "name": "imgtor",
   "description": "Extensible image editing tool via HTML canvas (ImgTor fork)",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "license": "MIT",
   "type": "module",
   "engines": {
