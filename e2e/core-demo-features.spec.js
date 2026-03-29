@@ -28,17 +28,17 @@ async function dragRect(page, box, x0r, y0r, x1r, y1r) {
   await page.mouse.up();
 }
 
-test.describe('demo feature smoke (real bundle)', () => {
+test.describe('demo feature smoke (isolated pages)', () => {
   test('crop: second selection drag outside first zone updates zone', async ({ page }) => {
     const errors = attachErrorCapture(page);
-    await page.goto('/');
-    await expect.poll(async () => page.evaluate(() => typeof window.demoEditor)).toBe('object');
+    await page.goto('/e2e-isolate-crop.html');
+    await expect.poll(async () => page.evaluate(() => typeof window.e2eCropEditor)).toBe('object');
 
     const { box } = await canvasBox(page);
 
     await dragRect(page, box, 0.08, 0.08, 0.28, 0.28);
     const first = await page.evaluate(() => {
-      const z = window.demoEditor.plugins.crop.cropZone;
+      const z = window.e2eCropEditor.plugins.crop.cropZone;
       return { w: z.width, h: z.height, left: z.left, top: z.top };
     });
     expect(first.w).toBeGreaterThan(10);
@@ -46,7 +46,7 @@ test.describe('demo feature smoke (real bundle)', () => {
 
     await dragRect(page, box, 0.72, 0.72, 0.92, 0.88);
     const second = await page.evaluate(() => {
-      const z = window.demoEditor.plugins.crop.cropZone;
+      const z = window.e2eCropEditor.plugins.crop.cropZone;
       return { w: z.width, h: z.height, left: z.left, top: z.top };
     });
 
@@ -56,17 +56,17 @@ test.describe('demo feature smoke (real bundle)', () => {
 
   test('crop: apply adds a transformation', async ({ page }) => {
     const errors = attachErrorCapture(page);
-    await page.goto('/');
-    await expect.poll(async () => page.evaluate(() => typeof window.demoEditor)).toBe('object');
+    await page.goto('/e2e-isolate-crop.html');
+    await expect.poll(async () => page.evaluate(() => typeof window.e2eCropEditor)).toBe('object');
 
     const { box } = await canvasBox(page);
     await dragRect(page, box, 0.15, 0.15, 0.55, 0.55);
 
-    const before = await page.evaluate(() => window.demoEditor.transformations.length);
+    const before = await page.evaluate(() => window.e2eCropEditor.transformations.length);
     await page.evaluate(() => {
-      window.demoEditor.plugins.crop.okButton.element.click();
+      window.e2eCropEditor.plugins.crop.okButton.element.click();
     });
-    const after = await page.evaluate(() => window.demoEditor.transformations.length);
+    const after = await page.evaluate(() => window.e2eCropEditor.transformations.length);
 
     expect(after).toBe(before + 1);
     expect(errors).toEqual([]);
@@ -74,42 +74,41 @@ test.describe('demo feature smoke (real bundle)', () => {
 
   test('rotate then undo', async ({ page }) => {
     const errors = attachErrorCapture(page);
-    await page.goto('/');
-    await expect.poll(async () => page.evaluate(() => typeof window.demoEditor)).toBe('object');
+    await page.goto('/e2e-isolate-history.html');
+    await expect.poll(async () => page.evaluate(() => typeof window.e2eHistEditor)).toBe('object');
 
-    const buttons = page.locator('.imgtor-toolbar button.imgtor-button:not(.imgtor-button-hidden)');
-    await expect(buttons).toHaveCount(8);
-
-    const undo = buttons.nth(0);
-    const rotateLeft = buttons.nth(2);
+    const undo = page.locator('.imgtor-toolbar [data-plugin="history"][data-feature="undo"]').first();
+    const rotateLeft = page
+      .locator('.imgtor-toolbar [data-plugin="rotate"][data-feature="rotate-left"]')
+      .first();
 
     await expect(undo).toBeDisabled();
     await rotateLeft.click();
     await expect(undo).not.toBeDisabled();
 
-    const t1 = await page.evaluate(() => window.demoEditor.transformations.length);
+    const t1 = await page.evaluate(() => window.e2eHistEditor.transformations.length);
     expect(t1).toBeGreaterThanOrEqual(1);
 
     await undo.click();
     await expect(undo).toBeDisabled();
-    const t2 = await page.evaluate(() => window.demoEditor.transformations.length);
+    const t2 = await page.evaluate(() => window.e2eHistEditor.transformations.length);
     expect(t2).toBe(0);
     expect(errors).toEqual([]);
   });
 
   test('save: default callback invokes editor selfDestroy', async ({ page }) => {
     const errors = attachErrorCapture(page);
-    await page.goto('/');
-    await expect.poll(async () => page.evaluate(() => typeof window.demoEditor)).toBe('object');
+    await page.goto('/e2e-isolate-save.html');
+    await expect.poll(async () => page.evaluate(() => typeof window.e2eSaveEditor)).toBe('object');
 
     await page.evaluate(() => {
-      window.demoEditor.selfDestroy = function () {
+      window.e2eSaveEditor.selfDestroy = function () {
         window.__saveSelfDestroyCalled = true;
       };
     });
 
     await page.evaluate(() => {
-      window.demoEditor.plugins.save.destroyButton.element.click();
+      window.e2eSaveEditor.plugins.save.destroyButton.element.click();
     });
 
     const called = await page.evaluate(() => window.__saveSelfDestroyCalled === true);

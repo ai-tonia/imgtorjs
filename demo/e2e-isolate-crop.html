@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>e2e crop only</title>
+    <link rel="stylesheet" href="./build/imgtor.css" />
+  </head>
+  <body>
+    <img src="./images/domokun-big.jpg" alt="" id="e2e-crop-target" />
+    <script src="./build/imgtor.js"></script>
+    <script>
+      window.e2eCropEditor = new imgtor('#e2e-crop-target', {
+        minWidth: 100,
+        minHeight: 100,
+        maxWidth: 600,
+        maxHeight: 500,
+        plugins: {
+          filter: false,
+          finetune: false,
+          resize: false,
+          frame: false,
+          fill: false,
+          redact: false,
+          annotate: false,
+          decorate: false,
+          retouch: false,
+          history: false,
+          rotate: false,
+          save: false,
+          crop: {},
+        },
+        initialize: function () {
+          this.plugins.crop.requireFocus();
+        },
+      });
+    </script>
+  </body>
+</html>
