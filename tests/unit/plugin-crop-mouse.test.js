@@ -5,107 +5,10 @@ import { beforeAll, describe, expect, it, vi } from 'vitest';
 
 let Crop;
 
-function fabricStub() {
-  function Rect() {
-    this.width = 0;
-    this.height = 0;
-    this.left = 0;
-    this.top = 0;
-    this.scaleX = 1;
-    this.scaleY = 1;
-    this.flipX = false;
-    this.flipY = false;
-  }
-  Rect.prototype.containsPoint = () => false;
-  Rect.prototype.setWidth = function setWidth(w) {
-    this.width = w;
-  };
-  Rect.prototype.setHeight = function setHeight(h) {
-    this.height = h;
-  };
-  Rect.prototype.setScaleX = function setScaleX(s) {
-    this.scaleX = s;
-  };
-  Rect.prototype.setScaleY = function setScaleY(s) {
-    this.scaleY = s;
-  };
-  Rect.prototype.setLeft = function setLeft(v) {
-    this.left = v;
-  };
-  Rect.prototype.setTop = function setTop(v) {
-    this.top = v;
-  };
-  Rect.prototype.getWidth = function getWidth() {
-    return this.width * this.scaleX;
-  };
-  Rect.prototype.getHeight = function getHeight() {
-    return this.height * this.scaleY;
-  };
-  Rect.prototype.getLeft = function getLeft() {
-    return this.left;
-  };
-  Rect.prototype.getTop = function getTop() {
-    return this.top;
-  };
-  Rect.prototype.setCoords = vi.fn();
-  Rect.prototype.remove = vi.fn();
-  Rect.prototype.set = function set(keyOrProps, value) {
-    if (typeof keyOrProps === 'string') this[keyOrProps] = value;
-    else Object.assign(this, keyOrProps);
-  };
-  Rect.prototype.scaleToWidth = function scaleToWidth(w) {
-    const ratio = w / this.getWidth();
-    this.setScaleX(this.scaleX * ratio);
-  };
-  Rect.prototype.scaleToHeight = function scaleToHeight(h) {
-    const ratio = h / this.getHeight();
-    this.setScaleY(this.scaleY * ratio);
-  };
-  Rect.prototype.getScaleX = function getScaleX() {
-    return this.scaleX;
-  };
-  Rect.prototype.getScaleY = function getScaleY() {
-    return this.scaleY;
-  };
-
-  class Point {
-    constructor(x, y) {
-      this.x = x;
-      this.y = y;
-    }
-  }
-
-  return {
-    document,
-    Point,
-    Image: vi.fn(function FabricImageMock(el, opts) {
-      this.el = el;
-      this.opts = opts;
-    }),
-    Rect,
-    util: {
-      createClass(parent, props) {
-        function Klass() {
-          if (parent) parent.apply(this, arguments);
-        }
-        Klass.prototype = Object.create(parent?.prototype ?? null);
-        Object.assign(Klass.prototype, props);
-        Klass.prototype.callSuper = function callSuper(name, ...args) {
-          const sup = Object.getPrototypeOf(Object.getPrototypeOf(this));
-          const fn = sup?.[name];
-          if (typeof fn === 'function') return fn.apply(this, args);
-        };
-        return Klass;
-      },
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-    },
-  };
-}
-
 beforeAll(async () => {
-  globalThis.fabric = fabricStub();
-  globalThis.imgtor = { plugins: [] };
+  globalThis.imgtor = {};
+  await import('../../lib/js/core/imgtor.js');
+  await import('../../lib/js/core/canvas-adapter-native.js');
   await import('../../lib/js/core/utils.js');
   await import('../../lib/js/core/plugin.js');
   await import('../../lib/js/core/transformation.js');
@@ -149,6 +52,7 @@ function createEditorForCrop() {
     canvas,
     applyTransformation: vi.fn(),
     addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
   };
 }
@@ -261,10 +165,11 @@ describe('crop plugin mouse drag', () => {
     const editor = createEditorForCrop();
     const plugin = newCropPlugin(editor, {});
     plugin.requireFocus();
+    const coordsSpy = vi.spyOn(plugin.cropZone, 'setCoords');
 
     plugin.onMouseUp({});
 
-    expect(plugin.cropZone.setCoords).not.toHaveBeenCalled();
+    expect(coordsSpy).not.toHaveBeenCalled();
     expect(editor.canvas.setActiveObject).not.toHaveBeenCalled();
   });
 
@@ -274,10 +179,11 @@ describe('crop plugin mouse drag', () => {
     plugin.requireFocus();
     plugin.startX = 0;
     plugin.startY = 0;
+    const coordsSpy = vi.spyOn(plugin.cropZone, 'setCoords');
 
     plugin.onMouseUp({});
 
-    expect(plugin.cropZone.setCoords).toHaveBeenCalled();
+    expect(coordsSpy).toHaveBeenCalled();
     expect(editor.canvas.setActiveObject).toHaveBeenCalledWith(plugin.cropZone);
     expect(editor.canvas.calcOffset).toHaveBeenCalled();
     expect(plugin.startX).toBeNull();

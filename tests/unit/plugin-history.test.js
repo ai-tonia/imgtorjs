@@ -4,8 +4,8 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 beforeAll(async () => {
-  globalThis.fabric = {};
-  globalThis.imgtor = { plugins: [] };
+  globalThis.imgtor = {};
+  await import('../../lib/js/core/imgtor.js');
   await import('../../lib/js/core/utils.js');
   await import('../../lib/js/core/plugin.js');
   await import('../../lib/js/core/ui.js');

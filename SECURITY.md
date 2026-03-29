@@ -22,8 +22,6 @@ In scope for reports to this project:
 
 Please do **not** report the following here; use the appropriate upstream project instead:
 
-- **[Fabric.js](https://github.com/fabricjs/fabric.js)** bugs or vulnerabilities—report them to the Fabric.js maintainers unless the issue is clearly caused only by how this repo wraps or configures Fabric in our code (in that case, describe the integration-specific aspect).
-
 - Third-party dependency issues that are not specific to our usage in imgtor (report to the dependency’s maintainers).
 
 - Theoretical issues without a practical impact on this library, demo, or pipeline, or spam / automated scanner noise without a concrete exploit path.

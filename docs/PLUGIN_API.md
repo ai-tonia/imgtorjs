@@ -31,15 +31,15 @@ function Plugin(editor, options) {
 
 ### `initialize()`
 
-Runs once when the plugin instance is created. Attach DOM listeners, Fabric canvas listeners, timers, etc. **Store stable references** to bound handlers (e.g. `this._onFoo = this.onFoo.bind(this)`) so `destroy()` can remove them with the same function reference.
+Runs once when the plugin instance is created. Attach DOM listeners, canvas wrapper listeners (`canvas.on` / `canvas.off`), timers, etc. **Store stable references** to bound handlers (e.g. `this._onFoo = this.onFoo.bind(this)`) so `destroy()` can remove them with the same function reference.
 
 ### `destroy()`
 
 - Base **`imgtor.Plugin.prototype.destroy`** is a **no-op** (safe to call).
 - Implement **`destroy`** on your extended plugin to:
   - Remove **DOM** listeners from toolbar buttons.
-  - Remove **canvas** listeners (`canvas.off(...)` for Fabric).
-  - Remove **document** listeners if you used `fabric.util.addListener`.
+  - Remove **canvas** listeners (`canvas.off(...)`).
+  - Remove **document** listeners if you attached any with `document.addEventListener`.
   - Call **`this.imgtor.removeEventListener(...)`** for any core events you subscribed to.
   - Release focus or temporary UI state if needed (e.g. crop plugin calls `releaseFocus()`).
 
