@@ -11,7 +11,9 @@
 npm install imgtor
 ```
 
-The package ships **`build/imgtor.js`** and **`build/imgtor.css`**. You still need **Fabric.js 1.4.x** on the page before loading ImgTor.
+The package ships **`build/imgtor.js`** and **`build/imgtor.css`**. The default editor needs **Fabric.js 1.4.x** on the page before **`imgtor.js`**.
+
+**Fabric-free subset:** **`build/imgtor-native.js`** — load **`imgtor.css`** the same way. Use **`adapterKind: 'native'`** and disable crop: **`plugins: { crop: false }`**. Supports **rotate**, **history**, and **save** only (Canvas 2D).
 
 **TypeScript:** ambient types live in **`types/imgtor.d.ts`**. Use `/// <reference types="imgtor" />` (or include that file); the global **`imgtor`** constructor is declared there. Fabric remains `any`-ish in these typings.
 

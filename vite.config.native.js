@@ -9,10 +9,10 @@ export default defineConfig({
   plugins: [imgtorIconsSpritePlugin()],
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'lib/entry-imgtor.js'),
+      entry: path.resolve(__dirname, 'lib/entry-imgtor-native.js'),
       name: 'imgtor',
       formats: ['iife'],
-      fileName: () => 'imgtor.js',
+      fileName: () => 'imgtor-native.js',
     },
     outDir: 'build',
     emptyOutDir: false,

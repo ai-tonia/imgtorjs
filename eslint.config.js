@@ -7,7 +7,14 @@ export default [
     ignores: ['build/**', 'demo/build/**', 'demo/vendor/**', 'node_modules/**', 'types/**'],
   },
   {
-    files: ['scripts/**/*.mjs', 'playwright.config.js'],
+    files: [
+      'scripts/**/*.mjs',
+      'playwright.config.js',
+      'vite.config.js',
+      'vite.config.native.js',
+      'vite.demo.config.js',
+      'vite.icons-plugin.js',
+    ],
     languageOptions: {
       ecmaVersion: 2024,
       sourceType: 'module',

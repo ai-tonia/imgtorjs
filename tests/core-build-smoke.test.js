@@ -15,6 +15,14 @@ describe('build outputs', () => {
     expect(src).toMatch(/imgtor/);
   });
 
+  it('emits imgtor-native.js (Fabric-free subset)', () => {
+    const jsPath = path.join(root, 'build', 'imgtor-native.js');
+    expect(existsSync(jsPath)).toBe(true);
+    const src = readFileSync(jsPath, 'utf8');
+    expect(src.length).toBeGreaterThan(300);
+    expect(src).toMatch(/imgtor/);
+  });
+
   it('emits imgtor.css', () => {
     const cssPath = path.join(root, 'build', 'imgtor.css');
     expect(existsSync(cssPath)).toBe(true);

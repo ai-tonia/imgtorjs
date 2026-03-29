@@ -1,3 +1,4 @@
 Vitest specs that load **multiple modules** or the **full ESM entry** (`lib/entry-imgtor.js`) with stubs.
 
-- **`build-entry.test.js`** — imports the entry bundle chain; asserts `imgtor` + default plugins + icon sprite host.
+- **`build-entry.test.js`** — full Fabric bundle (`lib/entry-imgtor.js`).
+- **`build-entry-native.test.js`** — native subset (`lib/entry-imgtor-native.js`, no Fabric).

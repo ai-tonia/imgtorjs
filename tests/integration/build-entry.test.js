@@ -79,9 +79,11 @@ describe('lib/entry-imgtor.js (ESM)', () => {
     expect(typeof imgtor.CanvasAdapterFabric.layoutViewportImage).toBe('function');
   });
 
-  it('exposes CanvasAdapterNative stub (throws until implemented)', () => {
+  it('exposes CanvasAdapterNative (Canvas 2D implementation)', () => {
     expect(imgtor.CanvasAdapterNative).toBeDefined();
-    expect(() => imgtor.CanvasAdapterNative.createCanvas()).toThrow(/not implemented/);
+    const el = document.createElement('canvas');
+    const c = imgtor.CanvasAdapterNative.createCanvas(el, {});
+    expect(c.getElement()).toBe(el);
   });
 
   it('Utils.computeCropRectFromDrag is available for crop parity', () => {

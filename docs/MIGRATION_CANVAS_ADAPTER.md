@@ -35,9 +35,8 @@ flowchart LR
 
 ### Phase C — Native prototype (opt-in)
 
-- **`options.adapter: 'fabric' | 'native'`** (default **`fabric`**).
-- Implement **NativeAdapter** for a **subset** (e.g. load, rotate, export) behind the flag.
-- Parity tests: same flows as Fabric path for supported operations.
+- **Partial (v4.7+):** **`adapterKind: 'native'`** with **`build/imgtor-native.js`** — Canvas 2D source + viewport, **rotate** / **history** / **save**; **crop disabled**. Full **`imgtor.js`** also registers **`CanvasAdapterNative`** for mixed loading.
+- **Still to do:** crop on native, richer parity vs Fabric, optional constructor **`adapter`** switch beyond **`adapterKind`**.
 
 ### Phase D — Progressive ownership
 
