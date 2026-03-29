@@ -21,7 +21,6 @@ export default [
       sourceType: 'module',
       globals: {
         ...globals.browser,
-        ImgTor: 'readonly',
         imgtor: 'readonly',
       },
     },

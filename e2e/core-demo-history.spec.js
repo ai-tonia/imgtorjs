@@ -4,7 +4,7 @@ test('undo is disabled until a transformation; rotate then undo restores state',
   page,
 }) => {
   await page.goto('/');
-  await expect.poll(async () => page.evaluate(() => typeof window.ImgTor)).toBe('function');
+  await expect.poll(async () => page.evaluate(() => typeof window.imgtor)).toBe('function');
 
   const buttons = page.locator(
     '.imgtor-toolbar button.imgtor-button:not(.imgtor-button-hidden)',

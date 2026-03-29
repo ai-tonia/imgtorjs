@@ -47,14 +47,11 @@ describe('lib/entry-imgtor.js (ESM)', () => {
     document.body.replaceChildren();
     globalThis.fabric = createMinimalFabricStub();
     delete globalThis.imgtor;
-    delete globalThis.ImgTor;
     await import('../../lib/entry-imgtor.js');
   });
 
   it('exposes imgtor with core namespaces and default plugin constructors', () => {
     expect(typeof imgtor).toBe('function');
-    expect(typeof globalThis.ImgTor).toBe('function');
-    expect(globalThis.ImgTor).toBe(imgtor);
     expect(imgtor.Utils).toBeDefined();
     expect(imgtor.UI).toBeDefined();
     expect(imgtor.Transformation).toBeDefined();
@@ -68,7 +65,7 @@ describe('lib/entry-imgtor.js (ESM)', () => {
     }
   });
 
-  it('runs bootstrap from the entry chain (icon host)', () => {
+  it('runs inject-icon-sprite from the entry chain (icon host)', () => {
     const icons = document.getElementById('imgtor-icons');
     expect(icons).toBeTruthy();
     expect(document.body.contains(icons)).toBe(true);

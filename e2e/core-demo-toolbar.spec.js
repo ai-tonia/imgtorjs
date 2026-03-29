@@ -4,7 +4,7 @@ test('demo mounts toolbar with plugin button groups', async ({ page }) => {
   const res = await page.goto('/');
   expect(res?.ok()).toBeTruthy();
 
-  await expect.poll(async () => page.evaluate(() => typeof window.ImgTor)).toBe('function');
+  await expect.poll(async () => page.evaluate(() => typeof window.imgtor)).toBe('function');
 
   const toolbar = page.locator('.imgtor-toolbar');
   await expect(toolbar).toBeVisible();
