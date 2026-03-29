@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('demo can instantiate ImgTor on #target without console errors', async ({ page }) => {
+test('demo can instantiate imgtor on #target without console errors', async ({ page }) => {
   const errors = [];
 
   page.on('console', (msg) => {
@@ -13,13 +13,13 @@ test('demo can instantiate ImgTor on #target without console errors', async ({ p
   const res = await page.goto('/');
   expect(res?.ok()).toBeTruthy();
 
-  await expect.poll(async () => page.evaluate(() => typeof window.ImgTor)).toBe('function');
+  await expect.poll(async () => page.evaluate(() => typeof window.imgtor)).toBe('function');
 
   await expect(page.locator('.imgtor-container').first()).toBeVisible({ timeout: 15_000 });
   await expect(page.locator('.imgtor-toolbar').first()).toBeVisible({ timeout: 15_000 });
 
   await page.evaluate(() => {
-    new ImgTor('#target', {
+    new imgtor('#target', {
       plugins: {
         history: false,
         rotate: false,

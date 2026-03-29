@@ -93,6 +93,3 @@ declare namespace imgtor {
     }
   }
 }
-
-/** PascalCase alias used in demos and older snippets. */
-declare var ImgTor: typeof imgtor;

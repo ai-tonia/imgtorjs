@@ -4,9 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- **Internals:** rename **`lib/js/core/bootstrap.js`** → **`inject-icon-sprite.js`** (SVG sprite host; less confusion with app “bootstrap”)
+- **Tooling:** ESLint e2e config declares only global **`imgtor`** (runtime still sets **`ImgTor`** for legacy pages)
+- **Docs:** README thanks to Matthieu Moquet; integration test layout table in **`tests/README.md`**
+
 ## 4.0.0 (2026-03-28)
 
-- **Breaking:** Global constructor is **`imgtor`** (lowercase); **`ImgTor`** is the same function for older snippets
+- **Breaking:** Global constructor is **`imgtor`** (lowercase); **`ImgTor`** remains on `window` for older snippets
 - **Build:** **`build/imgtor.js`**, **`build/imgtor.css`**; Vite entry **`lib/entry-imgtor.js`**; source CSS **`lib/css/imgtor.css`**
 - **CSS / DOM:** class names and icon host id use **`imgtor-*`** / **`imgtor-icons`**; plugins reference **`this.imgtor`**
 - **Types:** **`types/imgtor.d.ts`** (replaces prior `*.d.ts` entry point)
