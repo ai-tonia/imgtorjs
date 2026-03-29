@@ -60,4 +60,51 @@ describe('imgtor.CanvasAdapterFabric', () => {
       imgtor.CanvasAdapterFabric.createCanvas(document.createElement('canvas'), {}),
     ).toThrow(/Fabric\.js must be loaded/);
   });
+
+  it('layoutSourceImage adds image and sizes canvas', async () => {
+    globalThis.imgtor = {};
+    globalThis.fabric = { Canvas: vi.fn(), Image: vi.fn() };
+    await import('../../lib/js/core/canvas-adapter-fabric.js');
+
+    const canvas = {
+      add: vi.fn(),
+      setWidth: vi.fn(),
+      setHeight: vi.fn(),
+      centerObject: vi.fn(),
+    };
+    const image = { setCoords: vi.fn() };
+    imgtor.CanvasAdapterFabric.layoutSourceImage(canvas, image, 400, 300);
+
+    expect(canvas.add).toHaveBeenCalledWith(image);
+    expect(canvas.setWidth).toHaveBeenCalledWith(400);
+    expect(canvas.setHeight).toHaveBeenCalledWith(300);
+    expect(canvas.centerObject).toHaveBeenCalledWith(image);
+    expect(image.setCoords).toHaveBeenCalledOnce();
+  });
+
+  it('layoutViewportImage scales image and sizes canvas', async () => {
+    globalThis.imgtor = {};
+    globalThis.fabric = { Canvas: vi.fn(), Image: vi.fn() };
+    await import('../../lib/js/core/canvas-adapter-fabric.js');
+
+    const canvas = {
+      add: vi.fn(),
+      setWidth: vi.fn(),
+      setHeight: vi.fn(),
+      centerObject: vi.fn(),
+    };
+    const image = {
+      setScaleX: vi.fn(),
+      setScaleY: vi.fn(),
+      setCoords: vi.fn(),
+    };
+    imgtor.CanvasAdapterFabric.layoutViewportImage(canvas, image, 200, 150, 0.5);
+
+    expect(image.setScaleX).toHaveBeenCalledWith(0.5);
+    expect(image.setScaleY).toHaveBeenCalledWith(0.5);
+    expect(canvas.add).toHaveBeenCalledWith(image);
+    expect(canvas.setWidth).toHaveBeenCalledWith(200);
+    expect(canvas.setHeight).toHaveBeenCalledWith(150);
+    expect(canvas.centerObject).toHaveBeenCalledWith(image);
+  });
 });

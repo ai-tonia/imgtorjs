@@ -38,6 +38,14 @@ declare namespace imgtor {
   const CanvasAdapterFabric: {
     createCanvas(canvasElement: HTMLCanvasElement, options: Record<string, unknown>): any;
     createLockedImage(imageElement: HTMLImageElement | globalThis.Image): any;
+    layoutSourceImage(canvas: any, image: any, canvasWidth: number, canvasHeight: number): void;
+    layoutViewportImage(
+      canvas: any,
+      image: any,
+      canvasWidth: number,
+      canvasHeight: number,
+      scale: number,
+    ): void;
   };
 
   interface ImgTorOptions {
