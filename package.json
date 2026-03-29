@@ -51,7 +51,8 @@
     "docs/README.md",
     "docs/PLUGIN_API.md",
     "docs/MIGRATION_CANVAS_ADAPTER.md",
-    "docs/FABRIC_UPGRADE.md"
+    "docs/FABRIC_UPGRADE.md",
+    "docs/AGENTS_REMOVE_FABRIC.md"
   ],
   "devDependencies": {
     "@eslint/js": "^10.0.1",

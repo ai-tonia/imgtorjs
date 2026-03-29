@@ -7,6 +7,7 @@ Central entry point for maintainer-facing design and migration notes (not npm pa
 | [**PLUGIN_API.md**](./PLUGIN_API.md) | Plugin registration, **`initialize` / `destroy`**, toolbar options, error isolation, TypeScript surface. |
 | [**MIGRATION_CANVAS_ADAPTER.md**](./MIGRATION_CANVAS_ADAPTER.md) | Phased plan to introduce **CanvasAdapter**, decouple from Fabric, optional native path. |
 | [**FABRIC_UPGRADE.md**](./FABRIC_UPGRADE.md) | Playbook for upgrading the vendored Fabric.js major version. |
+| [**AGENTS_REMOVE_FABRIC.md**](./AGENTS_REMOVE_FABRIC.md) | **Stacked PRs + sub-agent prompts** to remove Fabric entirely (native crop, delete vendor, tests). |
 
 ## Suggested PR sequence (architecture work)
 

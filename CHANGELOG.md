@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- **Docs:** **`docs/AGENTS_REMOVE_FABRIC.md`** — stacked PR plan and copy-paste sub-agent prompts for removing Fabric.js
+
 ## 4.7.0 (2026-03-29)
 
 - **Native subset:** **`lib/js/core/canvas-adapter-native.js`** — Canvas 2D **`CanvasAdapterNative`** (no Fabric)
