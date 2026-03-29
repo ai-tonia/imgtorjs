@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 4.3.0 (2026-03-29)
+
+- **Adapter:** **`layoutSourceImage`** and **`layoutViewportImage`** on **`CanvasAdapterFabric`**; core **`_initializeImage`** / **`_replaceCurrentImage`** delegate layout to the adapter
+
 ## 4.2.0 (2026-03-29)
 
 - **Architecture (Phase A):** **`lib/js/core/canvas-adapter-fabric.js`** — **`imgtor.CanvasAdapterFabric.createCanvas` / `createLockedImage`**; core uses it for viewport + source canvases, source image, and **`refresh()`** image clones (behavior unchanged; Fabric still required globally)
